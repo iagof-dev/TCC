@@ -37,7 +37,7 @@ services:
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: 132490Kj@br=
-      MYSQL_DATABASE: bytestore
+      MYSQL_DATABASE: TCC
       MYSQL_USER: n3rdy
       MYSQL_PASSWORD: N3rdygamerbr@123
     volumes:
