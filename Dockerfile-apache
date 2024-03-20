@@ -1,0 +1,17 @@
+FROM php:7.4-apache
+
+RUN docker-php-ext-install pdo_mysql
+
+COPY ./app /var/www/html
+
+RUN a2enmod rewrite
+
+COPY apache-config/app.conf /etc/apache2/sites-available/app.conf
+COPY apache-config/api.conf /etc/apache2/sites-available/api.conf
+
+RUN a2ensite app.conf
+RUN a2ensite api.conf
+
+RUN service apache2 restart
+
+EXPOSE 80
