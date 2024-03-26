@@ -1,6 +1,0 @@
-[submodule "create-electron-react-app"]
-	path = create-electron-react-app
-	url = https://github.com/mariaSlimani/create-electron-react-app
-[submodule "APP/create-electron-react-app"]
-	path = APP/create-electron-react-app
-	url = https://github.com/mariaSlimani/create-electron-react-app
