@@ -1,0 +1,62 @@
+{
+  "name": "electron",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "electron": "^27.1.0",
+    "electron-builder": "^24.6.4",
+    "electron-serve": "^1.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "electron-serve": "^1.2.0",
+    "wait-on": "^7.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron-pack": "electron-builder",
+    "build-and-package": "npm run build && npm run electron-pack",
+    "electron": "wait-on http://localhost:3000 && electron .",
+    "electron-dev": "concurrently \"npm run start\" \"npm run electron\""
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "extends": null,
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "icon": "public/logo512.png",
+  "productName": "React and Electron App",
+  "files": [
+    "build/**/*",
+    "/public/electron.js"
+  ],
+  "main": "public/electron.js",
+  "homepage": "./",
+  "win": {},
+  "linux": {},
+  "mac": {}
+}
