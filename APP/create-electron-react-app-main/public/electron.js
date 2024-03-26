@@ -4,6 +4,9 @@ const path = require('path');
 const serve = require('electron-serve');
 const loadURL = serve({ directory: 'build' });
 
+const iconPath = path.join(__dirname, "build", "logo500.png");
+
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -15,17 +18,22 @@ function isDev() {
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1000,
+        height: 800,
         webPreferences: {
             nodeIntegration: true
         },
+		icon: iconPath,
         // Use this in development mode.
-        icon: isDev() ? path.join(process.cwd(), 'public/logo512.png') : path.join(__dirname, 'build/logo512.png'),
+        icon: isDev() ? path.join(process.cwd(), 'public/logo500.png') : path.join(__dirname, 'build/logo500.png'),
         // Use this in production mode.
         // icon: path.join(__dirname, 'build/logo512.png'),
         show: false
     });
+
+	mainWindow.webContents.openDevTools()
+
+	mainWindow.maximize()
 
     // This block of code is intended for development purpose only.
     // Delete this entire block of code when you are ready to package the application.
