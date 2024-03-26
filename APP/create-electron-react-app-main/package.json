@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "daisyui": "^4.9.0",
     "electron": "^27.1.0",
     "electron-builder": "^24.6.4",
     "electron-serve": "^1.2.0",
@@ -15,6 +16,7 @@
     "web-vitals": "^2.1.4"
   },
   "dependencies": {
+    "@material-tailwind/react": "^2.1.9",
     "concurrently": "^8.2.2",
     "electron-serve": "^1.2.0",
     "react-router-dom": "^6.22.3",

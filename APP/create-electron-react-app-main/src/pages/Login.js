@@ -1,4 +1,4 @@
-import { Form, useLocation } from "react-router-dom"
+import { Form, useLocation, useNavigate } from "react-router-dom"
 import Container from "../components/Container"
 import LogoLateral from '../assets/img/logo-lateral.png'
 import Input from "../components/Input"
@@ -7,10 +7,16 @@ import Info from "../components/Info"
 
 export default function Login(props) {
 	const {setPath} = {...props}
-
+	
+	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [RM, setRM] = useState()
 
+	const navigate = useNavigate()
+
 	setPath(useLocation().pathname)
+
+	// Remover quando terminar
+	navigate("/menu")
 
 	function handleRMChange(e){
 
@@ -27,9 +33,15 @@ export default function Login(props) {
 	
 
 	function handleLoginSubmit(e){
+		setIsSubmitting(true)
 		e.preventDefault()
-
 		window.alert(RM)
+
+		setTimeout(() => {
+			
+			navigate('/menu')
+			
+		}, 1500);
 	}
 
 	return(
@@ -44,7 +56,7 @@ export default function Login(props) {
 						</span>
 					
 					<button className="button no-wrap align-center mx-2 w-full py-2 px-4 rounded text-lg" type="submit">
-						Entrar
+						{ !isSubmitting? "Entrar" : <span className="loading loading-spinner loading-md"></span>}
 					</button>
 					
 				</form>

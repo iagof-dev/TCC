@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root{
-  --main-blue: #7FACEF;
+  --main-blue: #6fa5f6;
   --main-green: #62AD47;
   --main-red: #7B0F0C;
   --white-bg: #F1F1F1;
@@ -16,11 +16,13 @@
 body {
   font-family: 'Figtree', sans-serif;
   background-color: var(--white-bg);
+  color: var(--main-font-color);
 }
 
 h1{
   width: fit-content;
   font-family: "Montserrat", sans-serif;
+  
   font-weight: bold;
   font-size: 1.7rem;
   margin-bottom: 1rem;
@@ -35,12 +37,17 @@ a.menu-link{
   font-size: 1.2rem;
 }
 
+a.menu-link:hover{
+	opacity: 0.7;
+	transition: 0.7s;
+}
+
 aside.menu{
   background-color: var(--main-blue);
 }
 
 a.menu-link--active{
-  color: var(--input-font-color);
+  opacity: 0.6;
 }
 
 .container {
@@ -53,7 +60,17 @@ a.menu-link--active{
   color: var(--white-bg);
 }
 
+button.exit-button {
+	background-color: var(--main-red);
+}
+
 .button:hover {
   opacity: 0.9;
   transition: 0.4s;
+}
+
+/* Menu */
+
+p.menu__user-info{
+	color: var(--input-bg);
 }

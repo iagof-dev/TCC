@@ -2,6 +2,7 @@
 const { app, BrowserWindow, dialog } = require('electron');
 const path = require('path');
 const serve = require('electron-serve');
+const { ipcMain } = require('electron/main');
 const loadURL = serve({ directory: 'build' });
 
 const iconPath = path.join(__dirname, "build", "logo500.png");
@@ -21,7 +22,9 @@ function createWindow() {
         width: 1000,
         height: 800,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            enableRemoteModule: true,
+            contextIsolation: false
         },
 		icon: iconPath,
         // Use this in development mode.
@@ -30,6 +33,8 @@ function createWindow() {
         // icon: path.join(__dirname, 'build/logo512.png'),
         show: false
     });
+
+	mainWindow.setMenu(null)
 
 	mainWindow.webContents.openDevTools()
 
@@ -76,6 +81,8 @@ app.on('window-all-closed', function () {
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') app.quit()
 });
+
+ipcMain.on('close', ()=>app.quit())
 
 app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
