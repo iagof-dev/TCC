@@ -1,3 +1,7 @@
+<div align="center">
+  <img width="30%" src="./Arquivos/logo-centro.png" />
+</div>
+
 ## Trabalho de Conclusão de Curso 
 Sistema de Pesquisa, Empréstimo e Devolução de Livros para Bibliotecas.
 
