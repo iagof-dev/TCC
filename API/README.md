@@ -1,2 +1,9 @@
+## Como compilar
 
-# URLs de Requisições
+```
+docker compose up -d
+```
+
+
+
+## URLs de Requisições
