@@ -7,7 +7,7 @@ import Info from "../components/Info"
 import { LoginErrorDialog } from "../components/LoginErrorDialog"
 
 export default function Login(props) {
-	const { setPath } = { ...props }
+	const { setPath, userInfo, setUserInfo } = { ...props }
 
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [RM, setRM] = useState()
@@ -35,9 +35,14 @@ export default function Login(props) {
 		await fetch("https://jsonplaceholder.typicode.com/users").then(res => {
 			res.json()
 			
-			if(RM.length != 6) return
-
-			navigate('/menu')
+			if(RM.length != 6) {
+				throw "não deu bom"
+			} else {
+				setUserInfo({...userInfo, RM: RM})
+				alert(JSON.stringify(userInfo))
+				navigate('/menu/list')
+			}
+			
 		}).catch(e => {
 			setLoginError(e)
 			setIsLoginOpen(true)

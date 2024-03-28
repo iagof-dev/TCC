@@ -3,12 +3,16 @@
 :root{
   --main-blue: #6fa5f6;
   --main-green: #62AD47;
+  --main-yellow : rgb(255, 220, 124);
   --main-red: #7B0F0C;
   --white-bg: #F1F1F1;
   --white-container: #F8F8F8;
 
   --main-font-color: #242424;
   --input-font-color: #666666;
+
+  --input-font-color--opaque: #e7e7e7;
+  --input-font-color--more-opaque: #f0f0f0;
 
   --input-bg: #E4E4E4;
 }
@@ -24,13 +28,18 @@ p {
   font-size: 1.3rem;
 }
 
-h1{
+h1, h2{
   width: fit-content;
   font-family: "Montserrat", sans-serif;
   
   font-weight: bold;
   font-size: 1.7rem;
   margin-bottom: 1rem;
+}
+
+h2 {
+  font-weight: 500;
+  font-size: 1.5rem;
 }
 
 img.login__logo{
@@ -54,10 +63,12 @@ a.menu-link{
   font-size: 1.2rem;
 }
 
-a.menu-link:hover{
+a.menu-link:hover, li.menu__item:hover, svg.menu__item__icon:hover {
 	opacity: 0.7;
 	transition: 0.7s;
 }
+
+
 
 aside{
   background-color: var(--main-blue);
@@ -90,4 +101,57 @@ button.exit-button {
 
 p.menu__user-info{
 	color: var(--input-bg);
+}
+
+/* List */
+
+th {
+  font-size: 1.2rem;
+}
+
+table {
+  background-color: var(--white-bg);
+}
+
+div.table-wrapper {
+  background-color: var(--input-font-color--opaque);
+  padding: 0.1rem;
+  border-radius: 0.6rem;
+}
+
+tbody tr:hover {
+  background-color: var(--input-font-color--more-opaque);
+  transition: 0.3s;
+}
+
+tr {
+  background-color: var(--white-container);
+  padding: 0.1rem;
+}
+
+td {
+  font-size: 1rem;
+}
+
+td.td-situation--first {
+  border-top-right-radius: 0.75rem;
+}
+
+td.td-situation--last {
+  border-bottom-right-radius: 0.75rem;
+}
+
+td.td-situation-green {
+  background-color: var(--main-green);
+  color: var(--white-bg);
+}
+
+td.td-situation-yellow {
+  background-color: var(--main-yellow);
+}
+
+td.td-situation-red {
+  background-color: var(--main-red);
+  opacity: 0.8;
+  color: var(--white-bg);
 }

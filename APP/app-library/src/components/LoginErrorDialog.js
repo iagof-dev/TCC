@@ -18,9 +18,6 @@ export function LoginErrorDialog(props) {
 
 	return (
 		<>
-			<a className="menu-link cursor-pointer" onClick={handleOpen} variant="gradient">
-				Sair
-			</a>
 			<div className="w-20">
 				<Dialog open={open} handler={handleOpen} size="xs">
 				
