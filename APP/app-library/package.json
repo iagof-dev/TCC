@@ -8,7 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "daisyui": "^4.9.0",
     "electron": "^27.1.0",
-    "electron-builder": "^24.6.4",
+    "electron-builder": "^24.13.3",
     "electron-serve": "^1.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
