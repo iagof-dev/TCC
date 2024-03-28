@@ -30,14 +30,18 @@ export default function Login(props) {
 
 	async function testAPI() {
 
+		setIsSubmitting(true)
+
 		await fetch("https://jsonplaceholder.typicode.com/users").then(res => {
 			res.json()
 			
+			if(RM.length != 6) return
+
 			navigate('/menu')
 		}).catch(e => {
 			setLoginError(e)
-			console.log(`erro: ${e}`);
 			setIsLoginOpen(true)
+			setIsSubmitting(false)
 		})
 
 
@@ -45,13 +49,15 @@ export default function Login(props) {
 
 	//se mexer explode
 	function onKeyDownRM(e) {
+		if(e.key == "Enter") testAPI()
 		if (!/^\d$|^Backspace$/.test(e.key)) {
 			e.preventDefault();
 		}
+
 	}
 
 	function handleLoginSubmit(e) {
-		setIsSubmitting(true)
+		
 		e.preventDefault()
 
 		testAPI()

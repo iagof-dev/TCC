@@ -1,8 +1,13 @@
 export default function List(props) {
 	const { setPath, path} = { ...props }
 	return(
-		<h1>
-			List
-		</h1>
+
+		<>
+			<h1>
+				List
+			</h1>
+		
+		</>
+		
 	)
 }

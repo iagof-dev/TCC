@@ -19,6 +19,11 @@ body {
   color: var(--main-font-color);
 }
 
+p {
+  font-family: 'Figtree', sans-serif;
+  font-size: 1.3rem;
+}
+
 h1{
   width: fit-content;
   font-family: "Montserrat", sans-serif;
@@ -32,8 +37,20 @@ img.login__logo{
   width: 17rem;
 }
 
+aside ul li a {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+a.tooltip {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
 a.menu-link{
-  color: var(--white-bg);
+  color: var(--main-font-color);
   font-size: 1.2rem;
 }
 
@@ -42,7 +59,7 @@ a.menu-link:hover{
 	transition: 0.7s;
 }
 
-aside.menu{
+aside{
   background-color: var(--main-blue);
 }
 
