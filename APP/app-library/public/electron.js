@@ -26,6 +26,7 @@ function createWindow() {
             enableRemoteModule: true,
             contextIsolation: false
         },
+		frame: false,
 		icon: iconPath,
         // Use this in development mode.
         icon: isDev() ? path.join(process.cwd(), 'public/logo500.png') : path.join(__dirname, 'build/logo500.png'),
@@ -37,6 +38,12 @@ function createWindow() {
 	mainWindow.setMenu(null)
 
 	mainWindow.webContents.openDevTools()
+
+	mainWindow.webContents.on('before-input-event', (_, input) => {
+		if (input.type === 'keyDown' && input.key === 'Alt') {
+		  mainWindow.webContents.toggleDevTools();
+		}
+	});
 
 	mainWindow.maximize()
 

@@ -60,13 +60,13 @@ a.tooltip {
 
 a.menu-link{
   color: var(--main-font-color);
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
-a.menu-link:hover, li.menu__item:hover, svg.menu__item__icon:hover {
+/* a.menu-link:hover, li.menu__item:hover, svg.menu__item__icon:hover {
 	opacity: 0.7;
 	transition: 0.7s;
-}
+} */
 
 
 
@@ -76,6 +76,11 @@ aside{
 
 a.menu-link--active{
   opacity: 0.6;
+}
+
+a.menu__item:hover {
+	opacity: 0.7;
+	transition: 0.3s;
 }
 
 .container {
@@ -103,10 +108,15 @@ p.menu__user-info{
 	color: var(--input-bg);
 }
 
+ul.menu-ul {
+	background-color: var(--white-bg);
+}
+
 /* List */
 
 th {
-  font-size: 1.2rem;
+  font-size: 1.02rem;
+  color: var(--main-font-color);
 }
 
 table {
@@ -115,7 +125,7 @@ table {
 
 div.table-wrapper {
   background-color: var(--input-font-color--opaque);
-  padding: 0.1rem;
+  padding: 0.071rem;
   border-radius: 0.6rem;
 }
 
@@ -127,10 +137,14 @@ tbody tr:hover {
 tr {
   background-color: var(--white-container);
   padding: 0.1rem;
+  margin: 0;
+  border: 1px solid var(--input-font-color--opaque);
+  border-bottom: none;
 }
 
 td {
   font-size: 1rem;
+  width: fit-content;
 }
 
 td.td-situation--first {
@@ -154,4 +168,12 @@ td.td-situation-red {
   background-color: var(--main-red);
   opacity: 0.8;
   color: var(--white-bg);
+}
+
+input.marked {
+	background-color: var(--input-font-color);
+}
+
+input.not-marked {
+	background-color: var(--input-font-color--opaque);
 }

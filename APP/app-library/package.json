@@ -30,7 +30,7 @@
     "eject": "react-scripts eject",
     "electron-pack": "electron-builder",
     "build-and-package": "npm run build && npm run electron-pack",
-    "electron": "wait-on http://127.0.0.1:3000/ && electron .",
+    "electron": "wait-on http://localhost:3000/ && electron .",
     "electron-dev": "concurrently \"npm run start\" \"npm run electron\""
   },
   "eslintConfig": {

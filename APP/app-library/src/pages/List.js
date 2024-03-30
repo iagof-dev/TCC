@@ -1,12 +1,17 @@
+import { useEffect, useState } from "react"
+
 export default function List(props) {
 	const { setPath, path, userInfo } = { ...props }
 
+
+	//Após o fetch
 	const booksHistory = [
 		{
 			title: "Quincas Borba",
 			author: "Machado de Assis",
 			loanDate: "14/06/24",
 			loanPeriod: "15",
+			rating: 4,
 			situation: "Devolvido"
 		},
 		{
@@ -14,6 +19,7 @@ export default function List(props) {
 			author: "Barry A. Burd",
 			loanDate: "14/02/24",
 			loanPeriod: "15",
+			rating: 1,
 			situation: "Pendente"
 		},
 		{
@@ -21,9 +27,27 @@ export default function List(props) {
 			author: "Barry A. Burd",
 			loanDate: "14/02/24",
 			loanPeriod: "15",
+			rating: 2,
 			situation: "Atrasado"
 		},
+
 	]
+
+	let previousRatings = []
+
+	booksHistory.map((b) => {
+		previousRatings.push(b.rating)
+	})
+
+	const [booksNewRatings, setBooksNewRatings] = useState(previousRatings)
+	const [DOMRatingValues, setDOMRatingValues] = useState(previousRatings)
+
+	const [hasRatingsBeenChanged, setHasRatingsBeenChanged] = useState(false)
+
+	useEffect(() => {
+		setHasRatingsBeenChanged(JSON.stringify(DOMRatingValues) != JSON.stringify(previousRatings))
+	}, [DOMRatingValues])
+
 
 	return (
 
@@ -35,16 +59,17 @@ export default function List(props) {
 			<h2>
 				Leituras anteriores, pendentes e atrasadas
 			</h2>
-			<div className="table-wrapper overflow-x-auto overflow-y-scroll w-[70rem] h-[20rem]">
-				<table className="table">
+			<div className="table-wrapper overflow-x-auto overflow-y-scroll w-fit h-[20rem]">
+				<table className="table w-fit">
 					{/* head */}
 					<thead>
 						<tr>
 							<th></th>
 							<th>Título</th>
 							<th>Autor</th>
-							<th>Data de Empréstimo</th>
-							<th>Período de <br /> Empréstimo (dias)</th>
+							<th>Data de <br />Empréstimo</th>
+							<th>Período<br />(dias)</th>
+							<th>Nota</th>
 							<th>Situação</th>
 						</tr>
 					</thead>
@@ -52,11 +77,12 @@ export default function List(props) {
 						{booksHistory.map((b, i) => {
 							let situationColor = ""
 
-							switch (b.situation){
+
+							switch (b.situation) {
 								case "Devolvido":
 									situationColor = "green"
 									break
-								
+
 								case "Pendente":
 									situationColor = "yellow"
 									break
@@ -67,14 +93,38 @@ export default function List(props) {
 							}
 
 							return (
-								<tr className={` ${i == 0? "tr--first" : ""} ${i == booksHistory.length-1? "tr--last" : ""}`}>
+								<tr className={` ${i == 0 ? "tr--first" : ""} ${i == booksHistory.length - 1 ? "tr--last" : ""}`}>
 									<th>{booksHistory.length - i}</th>
 									<td>{b.title}</td>
 									<td>{b.author}</td>
 									<td>{b.loanDate}</td>
 									<td>{b.loanPeriod}</td>
-									<td className={`td-situation td-situation-${situationColor} ` 
-									// + `${i == 0? "td-situation--first" : ""} ${i == booksHistory.length-1? "td-situation--last" : ""}`
+									<td>
+										<div className="rating">
+
+											{
+												[...Array(5)].map((e, j) => {
+													return (
+														<input type="radio" onClick={() => {
+															let _ratings = [...booksNewRatings]
+
+															_ratings[i] = j
+
+															setBooksNewRatings(_ratings)
+															setDOMRatingValues(_ratings)
+														}}
+															key={j}
+															name={`rating-${i}`}
+															className={`mask mask-star ${DOMRatingValues[i] >= j ? "marked" : "not-marked"}`}
+														/>
+													)
+												})
+											}
+
+										</div>
+									</td>
+									<td className={`td-situation td-situation-${situationColor} `
+										// + `${i == 0? "td-situation--first" : ""} ${i == booksHistory.length-1? "td-situation--last" : ""}`
 									}>{b.situation} </td>
 								</tr>
 							)
@@ -83,6 +133,9 @@ export default function List(props) {
 					</tbody>
 				</table>
 			</div>
+			{
+				hasRatingsBeenChanged ? <button className="button no-wrap align-center mt-2 w-full py-2 px-4 rounded text-lg">Confirmar alterações</button> : ""
+			}
 		</>
 
 	)
