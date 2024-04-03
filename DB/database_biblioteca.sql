@@ -19,7 +19,10 @@ create table
     );
 
 create table
-    if not exists bibliotecarias (id int auto_increment primary key, nome varchar(35));
+    if not exists bibliotecarias (
+        id int auto_increment primary key,
+        nome varchar(35)
+    );
 
 create table
     if not exists livros (
