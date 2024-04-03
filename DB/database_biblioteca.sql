@@ -19,12 +19,12 @@ create table
     );
 
 create table
-    if not exists bibliotecarias (id int auto_increment primary key, nome tinytext);
+    if not exists bibliotecarias (id int auto_increment primary key, nome varchar(35));
 
 create table
     if not exists livros (
         id int primary key auto_increment,
-        codigo int (32) not null unique,
+        codigo char(10) not null unique,
         titulo mediumtext not null,
         autor mediumtext not null,
         capa varchar(1),
