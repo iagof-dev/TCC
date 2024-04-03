@@ -16,7 +16,10 @@
     "web-vitals": "^2.1.4"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@material-tailwind/react": "^2.1.9",
+    "@mui/material": "^5.15.14",
     "concurrently": "^8.2.2",
     "electron-serve": "^1.2.0",
     "react-router-dom": "^6.22.3",
@@ -30,7 +33,7 @@
     "eject": "react-scripts eject",
     "electron-pack": "electron-builder",
     "build-and-package": "npm run build && npm run electron-pack",
-    "electron": "wait-on http://localhost:3000/ && electron .",
+    "electron": "wait-on http://127.0.0.1:3000/ && electron .",
     "electron-dev": "concurrently \"npm run start\" \"npm run electron\""
   },
   "eslintConfig": {

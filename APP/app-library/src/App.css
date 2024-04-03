@@ -23,10 +23,12 @@ body {
   color: var(--main-font-color);
 }
 
-p {
+p, .p {
   font-family: 'Figtree', sans-serif;
   font-size: 1.3rem;
 }
+
+
 
 h1, h2{
   width: fit-content;
@@ -176,4 +178,20 @@ input.marked {
 
 input.not-marked {
 	background-color: var(--input-font-color--opaque);
+}
+
+/* Search */
+
+p.p-hint {
+  color: var(--input-font-color);
+  font-size: 0.95rem;
+}
+
+label.input-label {
+  font-size: 1.2rem;
+}
+
+.autocomplete {
+  background-color: #F9FAFB;
+  font-family: "Montserrat", sans-serif !important;
 }
