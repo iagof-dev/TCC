@@ -5,9 +5,9 @@ use SGBE;
 create table
     if not exists alunos (
         rm int (6) primary key auto_increment,
-        nome mediumtext not null,
+        nome tinytext not null,
         id_curso int not null,
-        telefone char(20) not null unique
+        telefone char(12) not null unique
     );
 
 create table
