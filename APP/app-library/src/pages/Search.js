@@ -12,7 +12,17 @@ export default function Search(props) {
 	const theme = createTheme({
 		typography: [
 			"Figtree"
-		].join(",")
+		].join(","),
+
+		pallete: {
+			background: {
+				paper: "#e7e7e7"
+			},
+
+			text: {
+				primary: "#666666"
+			}
+		}
 	})
 
 
@@ -59,6 +69,8 @@ export default function Search(props) {
 						sx={{ width: 300 }}
 						renderInput={(params) => <TextField {...params} label="" />}
 					/> */}
+
+					{/* Usar Template Styles */}
 
 					<Autocomplete
 						multiple
