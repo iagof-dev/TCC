@@ -11,6 +11,10 @@ Alunos:
   - Select by RM
   - Select by Phone
 
+Genero:
+  - Select ALL
+  - Insert
+
 Livro:
   - Select ALL
   - Select by ID/Codigo
@@ -28,6 +32,13 @@ Avaliação:
   - Select sum all ratings for specific book
   - Insert
   - Update
+
+Notificação:
+  - Select by id_emprestimo
+  - Insert
+
+Coordenadores:
+  - Select all with curso_coordenadores
 
 
 ## URLs de Requisições
