@@ -22,6 +22,7 @@ Emprestimos:
   - Select by ID
   - Select by id_aluno
   - Select by id_livro
+    
 Avaliação:
   - Select by id_livro
   - Select sum all ratings for specific book
