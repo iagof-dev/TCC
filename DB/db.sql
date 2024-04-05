@@ -69,9 +69,9 @@ create table
         numero varchar(20) not null,
         id_emprestimo smallint not null,
         data_envio datetime not null,
-        iteracao int (1) not null -- Corresponde a quantidade de vezes de notificação enviadas ao pedido de devolução especifico
-                                  -- Com o objetivo de manter o controle da ordem de envio das notificações.
-                                  -- Exemplo: Foi enviada uma notificação hoje, valor: 1 para id de devolução #1234, amanhã será enviado outro
+        iteracao int (1) not null -- "Variavel de controle", Corresponde a quantidade de vezes de notificação enviadas ao pedido de devolução especifico
+        -- Com o objetivo de manter o controle da ordem de envio das notificações.
+        -- Exemplo: Foi enviada uma notificação hoje, valor: 1 para id de devolução #1234, amanhã será enviado outro
     );
 
 create table
@@ -89,9 +89,9 @@ create table
     );
 
 create table
-    if not exists avaliacao (
+    if not exists avaliacoes (
         id int primary key auto_increment,
         id_livro int not null REFERENCES livros (id),
+        id_aluno int not null REFERENCES alunos (rm),
         avaliacao float not null
     );
-
