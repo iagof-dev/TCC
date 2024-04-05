@@ -1,97 +1,99 @@
-create database if not exists sgbe;
+CREATE DATABASE IF NOT EXISTS sgbe;
 
-use sgbe;
+USE sgbe;
 
-create table
-    if not exists alunos (
-        rm int (6) primary key auto_increment,
-        nome mediumtext not null,
-        id_curso int not null,
-        telefone char(12) not null
+CREATE TABLE
+    IF NOT EXISTS alunos (
+        rm INT (6) PRIMARY KEY AUTO_INCREMENT,
+        nome mediumTEXT NOT NULL,
+        id_curso INT NOT NULL,
+        telefone char(12) NOT NULL
     );
 
-create table
-    if not exists cursos (
-        id int primary key auto_increment,
-        ano int not null,
-        curso tinytext not null,
-        periodo tinytext not null
+CREATE TABLE
+    IF NOT EXISTS cursos (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        ano INT NOT NULL,
+        curso TINYTEXT NOT NULL,
+        periodo TINYTEXT NOT NULL
     );
 
-create table
-    if not exists bibliotecarias (id int auto_increment primary key, nome tinytext);
+CREATE TABLE
+    IF NOT EXISTS bibliotecarias (id INT AUTO_INCREMENT PRIMARY KEY, nome TINYTEXT);
 
-create table
-    if not exists livros (
-        id int primary key auto_increment,
-        codigo int (32) not null unique,
-        titulo mediumtext not null,
-        autor mediumtext not null,
-        capa varchar(1),
-        volumes int not null,
-        sinopse text not null
+CREATE TABLE
+    IF NOT EXISTS livros (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        codigo INT (32) NOT NULL unique,
+        titulo mediumTEXT NOT NULL,
+        autor mediumTEXT NOT NULL,
+        capa VARCHAR(1),
+        volumes INT NOT NULL,
+        sinopse TEXT NOT NULL
     );
 
-create table
-    if not exists generos (
-        id int primary key auto_increment,
-        genero varchar(120) not null
+CREATE TABLE
+    IF NOT EXISTS generos (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        genero VARCHAR(120) NOT NULL
     );
 
-create table
-    if not exists livro_generos (
-        id_livro int not null REFERENCES livros (id),
-        id_genero int not null REFERENCES generos (id)
+CREATE TABLE
+    IF NOT EXISTS livro_generos (
+        id_livro INT NOT NULL REFERENCES livros (id),
+        id_genero INT NOT NULL REFERENCES generos (id)
     );
 
-create table
-    if not exists emprestimos (
-        id int auto_increment primary key,
-        id_aluno int not null references alunos (rm),
-        id_livro int not null references livros (id),
-        data_aluguel date not null,
-        data_devolucao date not null,
-        status_livro varchar(20) not null -- PENDENTE, AO DEVOLVER, DEVOLVIDO
+CREATE TABLE
+    IF NOT EXISTS emprestimos (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        id_aluno INT NOT NULL REFERENCES alunos (rm),
+        id_livro INT NOT NULL REFERENCES livros (id),
+        data_aluguel DATE NOT NULL,
+        data_devolucao DATE NOT NULL,
+        status_livro VARCHAR(20) NOT NULL -- PENDENTE, AO DEVOLVER, DEVOLVIDO
     );
 
-create table
-    if not exists c_logs (
-        id int auto_increment primary key,
-        autor text not null,
-        acao tinytext not null,
-        sujeito tinytext not null,
-        efetivado datetime not null
+CREATE TABLE
+    IF NOT EXISTS c_logs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        autor TEXT NOT NULL,
+        acao TINYTEXT NOT NULL,
+        sujeito TINYTEXT NOT NULL,
+        efetivado DATETIME NOT NULL
     );
 
-create table
-    if not exists notificacoes (
-        id int primary key auto_increment,
-        numero varchar(20) not null,
-        id_emprestimo smallint not null,
-        data_envio datetime not null,
-        iteracao int (1) not null -- "Variavel de controle", Corresponde a quantidade de vezes de notificação enviadas ao pedido de devolução especifico
+CREATE TABLE
+    IF NOT EXISTS notificacoes (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        id_aluno INT NOT NULL REFERENCES alunos (rm),
+        id_emprestimo SMALLINT NOT NULL,
+        data_envio DATETIME NOT NULL,
+        iteracao INT (1) NOT NULL -- "Variavel de controle", Corresponde a quantidade de vezes de notificação enviadas ao pedido de devolução especifico
         -- Com o objetivo de manter o controle da ordem de envio das notificações.
         -- Exemplo: Foi enviada uma notificação hoje, valor: 1 para id de devolução #1234, amanhã será enviado outro
     );
 
-create table
-    if not exists coordenadores (
-        id int primary key auto_increment,
-        nome tinytext not null,
-        numero varchar(12) not null,
+CREATE TABLE
+    IF NOT EXISTS coordenadores (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        nome TINYTEXT NOT NULL,
+        numero VARCHAR(12) NOT NULL
     );
 
-create table
-    if not exists curso_coordenadores (
-        id int primary key auto_increment,
-        id_curso int REFERENCES cursos (id),
-        id_coordenador int REFERENCES coordenadores (id)
+CREATE TABLE
+    IF NOT EXISTS curso_coordenadores (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        id_curso INT REFERENCES cursos (id),
+        id_coordenador INT REFERENCES coordenadores (id)
     );
 
-create table
-    if not exists avaliacoes (
-        id int primary key auto_increment,
-        id_livro int not null REFERENCES livros (id),
-        id_aluno int not null REFERENCES alunos (rm),
-        avaliacao float not null
+CREATE TABLE
+    IF NOT EXISTS avaliacoes (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        id_livro INT NOT NULL REFERENCES livros (id),
+        id_aluno INT NOT NULL REFERENCES alunos (rm),
+        avaliacao float NOT NULL
     );
+
+
