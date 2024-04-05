@@ -1,7 +1,6 @@
--- ======================================================================== --
---                   INSERTS DE EXEMPLOS PARA TESTE DA API                  --
--- 100% ATUALIZADO, É RUIM DE ATURAR, VIROU MODA E TODO MUNDO QUER TESTAR   --
--- ======================================================================== --
+-- INSERTS DE EXEMPLOS PARA TESTE DA API --
+-- 100% ATUALIZADO, É RUIM DE ATURAR, VIROU MODA E TODO MUNDO QUER TESTAR --
+
 
 INSERT INTO alunos values (221001, 'Iago Fragnan', 3, '1499299'), (221020, 'Alexsandro Rodrighero', 6, '1439999'), (221021, 'Rodolfo', 7, '149999999');
 
