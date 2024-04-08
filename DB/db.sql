@@ -7,7 +7,7 @@ CREATE TABLE
         rm INT (6) PRIMARY KEY AUTO_INCREMENT,
         nome mediumTEXT NOT NULL,
         id_curso INT NOT NULL,
-        telefone char(12) NOT NULL
+        telefone CHAR(12) NOT NULL  -- Numero é char
     );
 
 CREATE TABLE
@@ -78,7 +78,7 @@ CREATE TABLE
     IF NOT EXISTS coordenadores (
         id INT PRIMARY KEY AUTO_INCREMENT,
         nome TINYTEXT NOT NULL,
-        numero VARCHAR(12) NOT NULL
+        numero CHAR(12) NOT NULL
     );
 
 CREATE TABLE
