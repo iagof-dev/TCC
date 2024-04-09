@@ -56,9 +56,20 @@ export default function List(props) {
 				Bem-vindo(a), {userInfo.name}!
 			</h1>
 
-			<h2>
-				Leituras anteriores, pendentes e atrasadas
-			</h2>
+			<span className="flex flex-nowrap w-full justify-between items-center mb-4">
+				<h2>
+					Leituras anteriores, pendentes e atrasadas
+				</h2>
+				{
+					hasRatingsBeenChanged ? <button className="button no-wrap align-center mt-2 w-fit py-2 px-4 rounded text-lg flex gap-3">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+							<path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+						</svg>
+
+						Confirmar alterações
+					</button> : ""
+				}
+			</span>
 			<div className="table-wrapper overflow-x-auto overflow-y-scroll w-fit h-[20rem]">
 				<table className="table w-fit">
 					{/* head */}
@@ -133,9 +144,7 @@ export default function List(props) {
 					</tbody>
 				</table>
 			</div>
-			{
-				hasRatingsBeenChanged ? <button className="button no-wrap align-center mt-2 w-full py-2 px-4 rounded text-lg">Confirmar alterações</button> : ""
-			}
+
 		</>
 
 	)
