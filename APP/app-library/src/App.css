@@ -4,6 +4,7 @@
   --main-blue: #6fa5f6;
   --main-green: #62AD47;
   --main-yellow : rgb(255, 220, 124);
+  --main-purple: rgb(74, 0, 101);
   --main-red: #7B0F0C;
   --white-bg: #F1F1F1;
   --white-container: #F8F8F8;
@@ -194,4 +195,13 @@ label.input-label {
 .autocomplete {
   background-color: #F9FAFB;
   font-family: "Montserrat", sans-serif !important;
+}
+
+button.button-search {
+	background-color: var(--main-purple);
+	color: var(--input-bg);
+}
+
+section.results-container {
+	background-color: var(--input-font-color--opaque);
 }
