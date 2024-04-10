@@ -78,7 +78,7 @@ CREATE TABLE
     IF NOT EXISTS coordenadores (
         id INT PRIMARY KEY AUTO_INCREMENT,
         nome TINYTEXT NOT NULL,
-        numero CHAR(12) NOT NULL
+        telefone CHAR(12) NOT NULL
     );
 
 CREATE TABLE
