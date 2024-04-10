@@ -14,8 +14,8 @@ CREATE TABLE
     IF NOT EXISTS cursos (
         id INT PRIMARY KEY AUTO_INCREMENT,
         ano INT NOT NULL,
-        curso TINYTEXT NOT NULL,
-        periodo TINYTEXT NOT NULL
+        curso VARCHAR(80) NOT NULL,
+        periodo  VARCHAR(80) NOT NULL
     );
 
 CREATE TABLE
