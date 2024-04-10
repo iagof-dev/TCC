@@ -28,7 +28,7 @@ CREATE TABLE
         titulo TINYTEXT NOT NULL,
         autor TINYTEXT NOT NULL,
         editora TINYTEXT NOT NULL,
-        capa TEXT, -- CAPA VAI SER URL???!
+        capa varchar(255) NOT NULL,
         volumes INT NOT NULL,
         sinopse TEXT NOT NULL
     );
