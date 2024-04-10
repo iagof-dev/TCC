@@ -4,8 +4,6 @@
 
 [✅] criar tabela de coordenadores para guardar registro do contato e poder enviar uma mensagem automatica avisando que o aluno x está devendo livro 
 
-[] criar tabela de autores (canva, brmodelo e sql)
-
 [] criar tabela da editora (canva, brmodelo e sql)
 
 [] criar tabela de professores (canva, brmodelo e sql)
