@@ -5,7 +5,7 @@ USE sgbe;
 CREATE TABLE
     IF NOT EXISTS alunos (
         rm INT (6) PRIMARY KEY AUTO_INCREMENT,
-        nome mediumTEXT NOT NULL,
+        nome TINYTEXT NOT NULL,
         id_curso INT NOT NULL,
         telefone CHAR(12) NOT NULL  -- Numero é char
     );
@@ -25,8 +25,8 @@ CREATE TABLE
     IF NOT EXISTS livros (
         id INT PRIMARY KEY AUTO_INCREMENT,
         codigo INT (32) NOT NULL unique,
-        titulo mediumTEXT NOT NULL,
-        autor mediumTEXT NOT NULL,
+        titulo TINYTEXT NOT NULL,
+        autor TINYTEXT NOT NULL,
         capa VARCHAR(1),
         volumes INT NOT NULL,
         sinopse TEXT NOT NULL
