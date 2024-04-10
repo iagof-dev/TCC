@@ -27,6 +27,7 @@ CREATE TABLE
         codigo INT (32) NOT NULL unique,
         titulo TINYTEXT NOT NULL,
         autor TINYTEXT NOT NULL,
+        editora TINYTEXT NOT NULL,
         capa VARCHAR(1),
         volumes INT NOT NULL,
         sinopse TEXT NOT NULL
