@@ -72,9 +72,9 @@ export default function Login(props) {
 	return (
 		<div className="flex w-screen h-screen flex-col items-center justify-center">
 			<img className="login__logo" src={LogoLateral} />
-			<Container>
+			<div className="container p-5 shadow-md rounded-xl border-2 flex flex-col align-center w-fit h-fit">
 				<h1>Login de Aluno</h1>
-				<form className="flex flex-col items-center gap-3" onSubmit={handleLoginSubmit}>
+				<form className="flex flex-col items-center justify-center gap-3" onSubmit={handleLoginSubmit}>
 					<span className="gap-5">
 						<label className="mr-10 text-lg">RM:</label>
 						<input required className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-70 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" placeholder="000000" pattern="[0-9]*" onChange={handleRMChange} onKeyDown={onKeyDownRM} value={RM} maxLength={"6"} type="text" />
@@ -85,7 +85,7 @@ export default function Login(props) {
 					</button>
 
 				</form>
-			</Container>
+			</div>
 
 			<LoginErrorDialog open={isLoginOpen} setOpen={setIsLoginOpen}/>
 		</div>

@@ -53,7 +53,7 @@ export default function Layout(props) {
 			</div>
 
 		</aside>
-		<div className="flex h-screen justify-center flex-center flex-grow">
+		<div className="flex h-screen justify-center flex-center flex-grow overflow-y-scroll">
 			<Container>
 				<Outlet />
 			</Container>

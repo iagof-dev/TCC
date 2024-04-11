@@ -9,7 +9,7 @@ export default function Info(props) {
                 <h3 className="text-[#62AD47] font-bold text-lg">
                     {title}
                 </h3>
-                <p className="text-[#62AD47]">
+                <p className="text-[#62AD47] text-base">
                     {content}
                 </p>
             </div>

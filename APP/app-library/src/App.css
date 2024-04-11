@@ -205,3 +205,14 @@ button.button-search {
 section.results-container {
 	background-color: var(--input-font-color--opaque);
 }
+
+/* List */
+section.book {
+	background-color: var(--white-container);
+	padding: 0.4rem;
+}
+
+/* .book:first-child{
+	margin-top: 3rem;
+} */
+

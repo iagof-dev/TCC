@@ -2,21 +2,74 @@ import { useEffect, useState } from 'react'
 import Autocomplete from '@mui/material/Autocomplete';
 import { TextField, createTheme } from '@mui/material'
 import Chip from '@mui/material/Chip';
+import Info from '../components/Info';
 import Book from '../components/Book'
+import BookSearchContainer from '../components/BookSearchContainer';
 
 export default function Search(props) {
+	const { setPath, path } = { ...props }
+
 	const [selectedGenresAndCourses, setSelectedGenresAndCourses] = useState([])
 	const [hasSearchBeenMade, setHasSearchBeenMade] = useState(false)
 	const [resultBooks, setResultBooks] = useState([
-		{ author: "Autor", title: "titulo", rating: 4, status: "disponivel", synopsis: "era uma vez...", coverURL: "a" }
-	])
+		{
+		  "id": 0,
+		  "code": "SDGJ8416",
+		  "author": "Machado de Assis",
+		  "title": "Quincas Borba",
+		  "rating": 2,
+		  "status": "disponível",
+		  "synopsis": "O romance a ascensão social de Rubião que, após receber toda a herança do filósofo louco Quincas Borba - criador da filosofia 'Humanitas' e muda-se para a Corte no final do século XlX...",
+		  "coverURL": "https://cdn.awsli.com.br/2500x2500/2419/2419289/produto/20280348554e2f54b5b.jpg"
+		},
+		{
+		  "id": 1,
+		  "code": "HJKL3490",
+		  "author": "José de Alencar",
+		  "title": "Iracema",
+		  "rating": 4,
+		  "status": "emprestado",
+		  "synopsis": "Em um cenário paradisíaco, surge a bela Iracema, índia guerreira e apaixonada.",
+		  "coverURL": "https://cirandacultural.fbitsstatic.net/img/p/iracema-74052/260578.jpg?w=520&h=520&v=no-change&qs=ignore"
+		},
+		{
+		  "id": 2,
+		  "code": "ZXCV9876",
+		  "author": "Jorge Amado",
+		  "title": "Capitães da Areia",
+		  "rating": 5,
+		  "status": "disponível",
+		  "synopsis": "Um grupo de meninos de rua luta pela sobrevivência em Salvador.",
+		  "coverURL": "https://m.media-amazon.com/images/I/816CKGW3kXL._AC_UF1000,1000_QL80_.jpg"
+		},
+		{
+		  "id": 3,
+		  "code": "QWER1234",
+		  "author": "Clarice Lispector",
+		  "title": "Perto do Coração Selvagem",
+		  "rating": 3,
+		  "status": "reservado",
+		  "synopsis": "Uma jovem em busca de si mesma e do seu lugar no mundo.",
+		  "coverURL": "https://images-americanas.b2w.io/produtos/01/00/img/1227806/7/1227806762_1GG.jpg"
+		}
+	  ]
+	  )
 
-	const { setPath, path } = { ...props }
 
-	const genresAndCourses = ["Administração", "Informática", "Nutrição", "Admin3istração", "Informá2tica", "Nutr3ição", "Admini2stração", "Inform4ática", "Nutri5ção",]
+
+	const genresAndCourses = ["Administração", "Informática", "Nutrição"]
 
 	function handleSearch(e) {
 		e.preventDefault()
+		//Busca dos livros pela API
+
+		if (hasSearchBeenMade) {
+			setHasSearchBeenMade(false)
+			setTimeout(() => {
+				setHasSearchBeenMade(true)
+			}, 1)
+			return
+		}
 		setHasSearchBeenMade(true)
 	}
 
@@ -99,23 +152,16 @@ export default function Search(props) {
 					</button>
 
 				</span>
+				<div className="m-3">
+					<Info title={"Para empréstimo,"} content={"consulte o(a) bibliotecário(a)!"} />
+				</div>
 			</form>
 
-			{(()=>{
-				if (hasSearchBeenMade) {
-					<section className='results-container p-4 w-full flex no-wrap justify-center gap-5 items-center min-h-3 rounded'>
+			{hasSearchBeenMade ? <BookSearchContainer hasSearchBeenMade={hasSearchBeenMade} resultBooks={resultBooks} /> : ""}
 
-						{
-							resultBooks.map((b, i) => {
-								<Book author={b.author} title={b.title} rating={b.rating} status={b.status} synopsis={b.synopsis} coverURL={b.coverURL} />
-							})
-						}
 
-					</section>
-						}
-			})()}
 
-					{/* if (hasSearchBeenMade) {
+			{/* if (hasSearchBeenMade) {
 						return (<section className='results-container p-4 w-full flex no-wrap justify-center gap-5 items-center min-h-3 rounded'>
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
 								<path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
@@ -124,9 +170,9 @@ export default function Search(props) {
 							<p>Não há resultados para essa busca</p>
 						</section>)
 					} else  */}
-					
-					
-				
+
+
+
 
 
 			{/* <section className='results-container w-full min-h-3 rounded'>
