@@ -70,7 +70,10 @@ CREATE TABLE
         id_aluno INT NOT NULL REFERENCES alunos (rm),
         id_emprestimo SMALLINT NOT NULL,
         data_envio DATETIME NOT NULL,
-        iteracao INT (1) NOT NULL -- "Variavel de controle", Corresponde a quantidade de vezes de notificação enviadas ao pedido de devolução especifico
+        iteracao INT (1) NOT NULL 
+        -- ✅ Iteração: Ação de repetição
+        -- ❌ Interação: é um tipo de ação que ocorre entre duas ou mais entidades.
+        -- "Variavel de controle", Corresponde a quantidade de vezes de notificação enviadas ao pedido de devolução especifico
         -- Com o objetivo de manter o controle da ordem de envio das notificações.
         -- Exemplo: Foi enviada uma notificação hoje, valor: 1 para id de devolução #1234, amanhã será enviado outro
     );
