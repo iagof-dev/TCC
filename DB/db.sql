@@ -26,8 +26,8 @@ CREATE TABLE
         id INT PRIMARY KEY AUTO_INCREMENT,
         codigo CHAR(8) NOT NULL unique,
         titulo TINYTEXT NOT NULL,
-        id_autor INT NOT NULL,
-        id_editora INT NOT NULL,
+        id_autor INT NOT NULL REFERENCES autores (id),
+        id_editora INT NOT NULL REFERENCES editoras (id),
         capa TINYTEXT NOT NULL,
         volumes INT NOT NULL,
         sinopse TEXT NOT NULL
