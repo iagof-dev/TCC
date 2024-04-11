@@ -6,4 +6,6 @@
 
 [] criar tabela da editora (canva, brmodelo e sql)
 
+[] adicionar campo com chave estrangeira no livro linkando a tabela editora com id
+
 [] criar tabela de professores (canva, brmodelo e sql)
