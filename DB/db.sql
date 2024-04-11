@@ -28,7 +28,7 @@ CREATE TABLE
         titulo TINYTEXT NOT NULL,
         autor TINYTEXT NOT NULL,
         editora TINYTEXT NOT NULL,
-        capa varchar(255) NOT NULL,
+        capa TINYTEXT NOT NULL,
         volumes INT NOT NULL,
         sinopse TEXT NOT NULL
     );
