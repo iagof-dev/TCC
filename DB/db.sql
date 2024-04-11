@@ -26,7 +26,7 @@ CREATE TABLE
         id INT PRIMARY KEY AUTO_INCREMENT,
         codigo CHAR(8) NOT NULL unique,
         titulo TINYTEXT NOT NULL,
-        autor TINYTEXT NOT NULL,
+        id_autor INT NOT NULL,
         id_editora INT NOT NULL,
         capa TINYTEXT NOT NULL,
         volumes INT NOT NULL,
@@ -43,6 +43,12 @@ CREATE TABLE
     IF NOT EXISTS editoras (
         id INT PRIMARY KEY AUTO_INCREMENT,
         editora VARCHAR(120) NOT NULL
+    );
+
+CREATE TABLE
+    IF NOT EXISTS autores (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        autor TINYTEXT NOT NULL
     );
 
 CREATE TABLE
