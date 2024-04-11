@@ -24,10 +24,10 @@ CREATE TABLE
 CREATE TABLE
     IF NOT EXISTS livros (
         id INT PRIMARY KEY AUTO_INCREMENT,
-        codigo INT (32) NOT NULL unique,
+        codigo CHAR(8) NOT NULL unique,
         titulo TINYTEXT NOT NULL,
         autor TINYTEXT NOT NULL,
-        editora TINYTEXT NOT NULL,
+        id_editora INT NOT NULL,
         capa TINYTEXT NOT NULL,
         volumes INT NOT NULL,
         sinopse TEXT NOT NULL
@@ -37,6 +37,12 @@ CREATE TABLE
     IF NOT EXISTS generos (
         id INT PRIMARY KEY AUTO_INCREMENT,
         genero VARCHAR(120) NOT NULL
+    );
+
+CREATE TABLE
+    IF NOT EXISTS editoras (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        editora VARCHAR(120) NOT NULL
     );
 
 CREATE TABLE
