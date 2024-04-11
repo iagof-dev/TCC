@@ -6,7 +6,7 @@
 
 [] criar tabela de autores (canva, brmodelo e sql)
 
-[] criar tabela da editora (canva, brmodelo e sql)
+[✅] criar tabela da editora (canva, brmodelo e sql)
 
-[] adicionar campo com chave estrangeira no livro linkando a tabela editora com id
+[✅] adicionar campo com chave estrangeira no livro linkando a tabela editora com id
 
