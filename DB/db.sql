@@ -24,7 +24,7 @@ CREATE TABLE
 CREATE TABLE
     IF NOT EXISTS livros (
         id INT PRIMARY KEY AUTO_INCREMENT,
-        codigo CHAR(8) NOT NULL unique,
+        codigo VARCHAR(8) NOT NULL unique,
         titulo TINYTEXT NOT NULL,
         id_autor INT NOT NULL REFERENCES autores (id),
         id_editora INT NOT NULL REFERENCES editoras (id),
