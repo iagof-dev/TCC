@@ -19,7 +19,7 @@ export default function BookSearchContainer(props) {
 	return (
 		<section className='results-container p-1 w-full flex flex-col no-wrap justify-start gap-5 items-center rounded-md min-h-[20vh] max-h-[60vh] overflow-y-scroll'>
 			{isLoading ? (
-				<span className="loading loading-spinner loading-lg"></span>
+				<span className="loading m-auto loading-spinner loading-lg"></span>
 			) : (
 				resultBooks.map((book) => (
 					<Book
@@ -31,6 +31,7 @@ export default function BookSearchContainer(props) {
 						status={book.status}
 						synopsis={book.synopsis}
 						coverURL={book.coverURL}
+						tags={book.tags}
 					/>
 				))
 			)}

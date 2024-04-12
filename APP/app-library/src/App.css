@@ -4,6 +4,7 @@
   --main-blue: #6fa5f6;
   --main-green: #62AD47;
   --main-yellow : rgb(255, 220, 124);
+  --intense-yellow: rgb(255, 215, 105);
   --main-purple: rgb(74, 0, 101);
   --main-red: #7B0F0C;
   --white-bg: #F1F1F1;
@@ -216,3 +217,12 @@ section.book {
 	margin-top: 3rem;
 } */
 
+p.status-d, p.status-D {
+	border-color: var(--main-green);
+	color: var(--main-green);
+}
+
+p.status-i, p.status-I {
+	border-color: var(--intense-yellow);
+	color: var(--intense-yellow);
+}
