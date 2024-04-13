@@ -48,30 +48,49 @@ SELECT
 FROM
     generos;
 
-INSERT INTO
-    generos
-values
-    (DEFAULT, '');
-
 -- LIVROS
 SELECT
-    *
+    l.id,
+    l.codigo,
+    l.titulo,
+    a.autor,
+    e.editora
 FROM
-    livros;
+    livros as l
+    inner join autores as a
+    inner join editoras as e
+where
+    l.id_autor = a.id
+    and l.id_editora = e.id;
 
 SELECT
-    *
+    l.id,
+    l.codigo,
+    l.titulo,
+    a.autor,
+    e.editora
 FROM
-    livros
-WHERE
-    id = 1;
+    livros as l
+    inner join autores as a
+    inner join editoras as e
+where
+    l.id_autor = a.id
+    and l.id_editora = e.id
+    and l.id = '2';
 
 SELECT
-    *
+    l.id,
+    l.titulo,
+    a.autor,
+    e.editora
 FROM
-    livros
-WHERE
-    codigo = '1001';
+    livros as l
+    inner join autores as a
+    inner join editoras as e
+where
+    l.id_autor = a.id
+    and l.id_editora = e.id
+    and l.codigo = '2';
 
 UPDATE livros
 SET
@@ -175,10 +194,10 @@ WHERE
 
 -- AVALIAÇÃO
 SELECT
-    COUNT(avalicoes) as avaliadores,
-    SUM(avalicoes) as nota
+    COUNT(avaliacao) as avaliadores,
+    SUM(avaliacao) as nota
 FROM
-    avalicoes
+    avaliacoes
 WHERE
     id_livro = 1;
 
@@ -195,25 +214,30 @@ WHERE
 
 -- Notificação
 SELECT
-    *
+    n.id,
+    n.data_envio,
+    al.telefone,
+    n.iteracao
 FROM
-    notificacoes
+    notificacoes as n
+    INNER JOIN alunos as al
+    INNER JOIN emprestimos as e
 WHERE
-    id_emprestimo = 1;
+    n.id_aluno = al.rm
+    AND n.id_emprestimo = e.id;
 
 INSERT INTO
     notificacoes
 VALUES
     (
         DEFAULT,
-        id_aluno,
-        id_emprestimo,
-        data_atual,
-        iteracao
+        'id_aluno',
+        'id_emprestimo',
+        'data_atual',
+        'iteracao'
     );
 
 -- COORDENADORES
-
 SELECT
     cor.*,
     cur.curso AS Curso,
