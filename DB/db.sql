@@ -68,7 +68,8 @@ CREATE TABLE
         id_livro INT NOT NULL REFERENCES livros (id),
         data_aluguel DATE NOT NULL,
         data_devolucao DATE NOT NULL,
-        status_livro VARCHAR(20) NOT NULL -- PENDENTE, AO DEVOLVER, DEVOLVIDO
+        status_livro VARCHAR(20) NOT NULL, -- PENDENTE, AO DEVOLVER, DEVOLVIDO
+        prazo int not null
     );
 
 CREATE TABLE
