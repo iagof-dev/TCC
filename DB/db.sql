@@ -85,7 +85,7 @@ CREATE TABLE
     IF NOT EXISTS notificacoes (
         id INT PRIMARY KEY AUTO_INCREMENT,
         id_aluno INT NOT NULL REFERENCES alunos (rm),
-        id_emprestimo SMALLINT NOT NULL,
+        id_emprestimo INT NOT NULL REFERENCES emprestimos (id),
         data_envio DATETIME NOT NULL,
         iteracao INT (1) NOT NULL 
         -- ✅ Iteração: Ação de repetição
