@@ -69,7 +69,7 @@ CREATE TABLE
         data_aluguel DATE NOT NULL,
         data_devolucao DATE NOT NULL,
         status_livro VARCHAR(20) NOT NULL, -- PENDENTE, AO DEVOLVER, DEVOLVIDO
-        prazo int not null
+        prazo int NOT NULL
     );
 
 CREATE TABLE
