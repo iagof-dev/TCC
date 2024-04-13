@@ -105,8 +105,8 @@ CREATE TABLE
 CREATE TABLE
     IF NOT EXISTS curso_coordenadores (
         id INT PRIMARY KEY AUTO_INCREMENT,
-        id_curso INT REFERENCES cursos (id),
-        id_coordenador INT REFERENCES coordenadores (id)
+        id_curso INT NOT NULL REFERENCES cursos (id),
+        id_coordenador INT NOT NULL REFERENCES coordenadores (id)
     );
 
 CREATE TABLE
