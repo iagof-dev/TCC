@@ -35,7 +35,7 @@ export default function Search(props) {
 			"title": "Perto do Coração Selvagem",
 			"rating": 3,
 			"status": "Indisponível",
-			"synopsis": "Uma jovem em busca de si mesma e do seu lugar no mundo.",
+			"synopsis": "Publicado em 1943, Perto do Coração Selvagem marca a estreia literária da renomada escritora brasileira Clarice Lispector. O romance, aclamado pela crítica e público, apresenta uma narrativa inovadora e introspectiva, mergulhando nas profundezas da alma humana e explorando temas como identidade, amor, solidão e a busca pelo sentido da vida.",
 			"coverURL": "https://images-americanas.b2w.io/produtos/01/00/img/1227806/7/1227806762_1GG.jpg",
 			"tags": ["Naturalista", "Romance"]
 		  },

@@ -165,7 +165,8 @@ td.td-situation-green {
 }
 
 td.td-situation-yellow {
-  background-color: var(--main-yellow);
+  background-color: var(--intense-yellow);
+  color: white;
 }
 
 td.td-situation-red {
@@ -176,6 +177,8 @@ td.td-situation-red {
 
 input.marked {
 	background-color: var(--input-font-color);
+  opacity: 1;
+  color: var(--main-font-color);
 }
 
 input.not-marked {
@@ -225,4 +228,9 @@ p.status-d, p.status-D {
 p.status-i, p.status-I {
 	border-color: var(--intense-yellow);
 	color: var(--intense-yellow);
+}
+
+.book-rating {
+  background-color: var(--main-font-color);
+  color: var(--main-font-color);
 }
