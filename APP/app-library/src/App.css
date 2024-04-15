@@ -234,3 +234,7 @@ p.status-i, p.status-I {
   background-color: var(--main-font-color);
   color: var(--main-font-color);
 }
+
+p.rating-label{
+  color: var(--input-font-color);
+}

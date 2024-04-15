@@ -1,12 +1,9 @@
 import { Form, useLocation, useNavigate } from "react-router-dom"
-import Container from "../components/Container"
 import LogoLateral from '../assets/img/logo-lateral.png'
-import Input from "../components/Input"
 import { useState } from "react"
-import Info from "../components/Info"
 import { LoginErrorDialog } from "../components/LoginErrorDialog"
 
-export default function Login(props) {
+export default function StudentLogin(props) {
 	const { setPath, userInfo, setUserInfo } = { ...props }
 
 	const [isSubmitting, setIsSubmitting] = useState(false)

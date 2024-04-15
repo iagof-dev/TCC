@@ -18,15 +18,15 @@ export default function Search(props) {
 	const [hasSearchBeenMade, setHasSearchBeenMade] = useState(false)
 	const [resultBooks, setResultBooks] = useState([
 		{
-		  "id": 0,
-		  "code": "SDGJ8416",
-		  "author": "Machado de Assis",
-		  "title": "Quincas Borba",
-		  "rating": 2,
-		  "status": "Disponível",
-		  "synopsis": "O romance a ascensão social de Rubião que, após receber toda a herança do filósofo louco Quincas Borba - criador da filosofia 'Humanitas' e muda-se para a Corte no final do século XlX...",
-		  "coverURL": "https://cdn.awsli.com.br/2500x2500/2419/2419289/produto/20280348554e2f54b5b.jpg",
-		  "tags": ["Naturalista", "Romance"]
+			"id": 0,
+			"code": "SDGJ8416",
+			"author": "Machado de Assis",
+			"title": "Quincas Borba",
+			"rating": 2,
+			"status": "Disponível",
+			"synopsis": "O romance a ascensão social de Rubião que, após receber toda a herança do filósofo louco Quincas Borba - criador da filosofia 'Humanitas' e muda-se para a Corte no final do século XlX...",
+			"coverURL": "https://cdn.awsli.com.br/2500x2500/2419/2419289/produto/20280348554e2f54b5b.jpg",
+			"tags": ["Naturalista", "Romance"]
 		},
 		{
 			"id": 0,
@@ -38,39 +38,18 @@ export default function Search(props) {
 			"synopsis": "Publicado em 1943, Perto do Coração Selvagem marca a estreia literária da renomada escritora brasileira Clarice Lispector. O romance, aclamado pela crítica e público, apresenta uma narrativa inovadora e introspectiva, mergulhando nas profundezas da alma humana e explorando temas como identidade, amor, solidão e a busca pelo sentido da vida.",
 			"coverURL": "https://images-americanas.b2w.io/produtos/01/00/img/1227806/7/1227806762_1GG.jpg",
 			"tags": ["Naturalista", "Romance"]
-		  },
-		// {
-		//   "id": 1,
-		//   "code": "HJKL3490",
-		//   "author": "José de Alencar",
-		//   "title": "Iracema",
-		//   "rating": 4,
-		//   "status": "emprestado",
-		//   "synopsis": "Em um cenário paradisíaco, surge a bela Iracema, índia guerreira e apaixonada.",
-		//   "coverURL": "https://cirandacultural.fbitsstatic.net/img/p/iracema-74052/260578.jpg?w=520&h=520&v=no-change&qs=ignore"
-		// },
-		// {
-		//   "id": 3,
-		//   "code": "QWER1234",
-		//   "author": "Clarice Lispector",
-		//   "title": "Perto do Coração Selvagem",
-		//   "rating": 3,
-		//   "status": "reservado",
-		//   "synopsis": "Uma jovem em busca de si mesma e do seu lugar no mundo.",
-		//   "coverURL": "https://images-americanas.b2w.io/produtos/01/00/img/1227806/7/1227806762_1GG.jpg"
-		// }
-	  ]
-	  )
-
-
+		},
+	]
+	)
 
 	const genresAndCourses = ["Administração", "Informática", "Nutrição", "Romance", "Suspense"]
 
 	function handleSearch(e) {
 		e.preventDefault()
+
 		//Busca dos livros pela API
 
-		setFormData({...formData, tags: selectedGenresAndCourses})
+		setFormData({ ...formData, tags: selectedGenresAndCourses })
 
 		if (hasSearchBeenMade) {
 			setHasSearchBeenMade(false)
@@ -87,7 +66,7 @@ export default function Search(props) {
 		<>
 
 			<h1 className="pb-5 text-3xl">
-				📚 Pesquisa de Livro
+				🔎 Pesquisa de Livro
 			</h1>
 			<form className='max-w-[50vw] mb-4' onSubmit={handleSearch}>
 				<p className="p-hint">
@@ -97,7 +76,7 @@ export default function Search(props) {
 					<label className="input-label">
 						Título
 					</label>
-					<input placeholder="Título do Livro" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-[50vw] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" />
+					<input placeholder="Título do Livro" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-[50vw] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" />
 				</span>
 				<p className="p-hint">
 					ou
@@ -106,7 +85,7 @@ export default function Search(props) {
 					<label className="input-label">
 						Autor
 					</label>
-					<input placeholder="Nome do autor" value={formData.author} onChange={e => setFormData({...formData, author: e.target.value})} className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-[50vw] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" />
+					<input placeholder="Nome do autor" value={formData.author} onChange={e => setFormData({ ...formData, author: e.target.value })} className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-[50vw] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" />
 				</span>
 				<p className="p-hint">
 					ou

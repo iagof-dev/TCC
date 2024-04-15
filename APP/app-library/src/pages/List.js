@@ -3,11 +3,11 @@ import { useEffect, useState } from "react"
 export default function List(props) {
 	const { setPath, path, userInfo } = { ...props }
 
-
 	//Após o fetch
-	const booksHistory = [
+	const [booksHistory, setBookHistory] = useState([
 		{
 			title: "Quincas Borba",
+			code: "ABCD1234",
 			author: "Machado de Assis",
 			loanDate: "14/06/24",
 			loanPeriod: "15",
@@ -17,6 +17,7 @@ export default function List(props) {
 		{
 			title: "Java para Leigos",
 			author: "Barry A. Burd",
+			code: "WWRE4563",
 			loanDate: "14/02/24",
 			loanPeriod: "15",
 			rating: 1,
@@ -25,13 +26,14 @@ export default function List(props) {
 		{
 			title: "Java para Leigos",
 			author: "Barry A. Burd",
+			code: "FYTM5467",
 			loanDate: "14/02/24",
 			loanPeriod: "15",
 			rating: 2,
 			situation: "Atrasado"
 		},
 
-	]
+	])
 
 	let previousRatings = []
 
@@ -43,6 +45,24 @@ export default function List(props) {
 	const [DOMRatingValues, setDOMRatingValues] = useState(previousRatings)
 
 	const [hasRatingsBeenChanged, setHasRatingsBeenChanged] = useState(false)
+
+	function setNewRatings(){
+
+		//Update livros
+
+		let booksWithNewRatings = []
+
+		booksHistory.map((book, id) => {
+			if (book.rating != DOMRatingValues[id]) {
+				booksWithNewRatings.push({code: book.code, rating: DOMRatingValues[id]})
+				book.rating = DOMRatingValues[id]
+			}
+		})
+
+		console.log(booksWithNewRatings);
+
+		setHasRatingsBeenChanged(false)
+	}
 
 	useEffect(() => {
 		setHasRatingsBeenChanged(JSON.stringify(DOMRatingValues) != JSON.stringify(previousRatings))
@@ -56,12 +76,14 @@ export default function List(props) {
 				Bem-vindo(a), {userInfo.name}!
 			</h1>
 
+			<input type="radio" className="mask mask-star"/>
+
 			<span className="flex flex-nowrap w-full justify-between items-center mb-4">
 				<h2>
-					Leituras anteriores, pendentes e atrasadas
+					📚 Leituras anteriores, pendentes e atrasadas
 				</h2>
 				{
-					hasRatingsBeenChanged ? <button className="button no-wrap align-center mt-2 w-fit py-2 px-4 rounded text-lg flex gap-3">
+					hasRatingsBeenChanged ? <button className="button no-wrap align-center mt-2 w-fit py-2 px-4 rounded text-lg flex gap-3" onClick={setNewRatings}>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
 							<path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
 						</svg>
@@ -80,7 +102,7 @@ export default function List(props) {
 							<th>Autor</th>
 							<th>Data de <br />Empréstimo</th>
 							<th>Período<br />(dias)</th>
-							<th>Nota</th>
+							<th>Avaliação</th>
 							<th>Situação</th>
 						</tr>
 					</thead>
@@ -111,27 +133,24 @@ export default function List(props) {
 									<td>{b.loanDate}</td>
 									<td>{b.loanPeriod}</td>
 									<td>
-										<div className="rating">
 
-											{
-												[...Array(5)].map((e, j) => {
-													return (
-														<input type="radio" onClick={() => {
-															let _ratings = [...booksNewRatings]
-
-															_ratings[i] = j
-
-															setBooksNewRatings(_ratings)
-															setDOMRatingValues(_ratings)
-														}}
-															key={j}
-															name={`rating-${i}`}
-															className={`mask mask-star ${DOMRatingValues[i] >= j ? "marked" : "not-marked"}`}
-														/>
-													)
-												})
-											}
-
+											<div className="rating">
+												{
+													[...Array(5)].map((e, j) => {
+														return (
+															<input type="radio" onClick={() => {
+																let _ratings = [...booksNewRatings]
+																_ratings[i] = j
+																setBooksNewRatings(_ratings)
+																setDOMRatingValues(_ratings)
+															}}
+																key={j}
+																name={`rating-${i}`}
+																className={`mask mask-star ${DOMRatingValues[i] >= j ? "marked" : "not-marked"}`}
+															/>
+														)
+													})
+												}
 										</div>
 									</td>
 									<td className={`td-situation td-situation-${situationColor} `

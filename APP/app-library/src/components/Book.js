@@ -28,7 +28,8 @@ export default function Book(props) {
 							}
 						</div>
 
-						<div className="flex gap-1">
+						<div className="flex flex-col items-center">
+						<div className="rating flex gap-1">
 							{
 								[...Array(5)].map((e, j) => {
 									return (
@@ -36,13 +37,22 @@ export default function Book(props) {
 											
 											key={j}
 											name={`rating-${id}`}
-											className={`mask scale-150 mask-star ${rating >= j ? "marked" : "not-marked opacity-20"} book-rating bg-slate-900`}
-											// className={`mask mask-star scale-150 marked`}
-											style={{backgroundColor: "#000000"}}
+											className={`mask mask-star ${rating >= j ? "marked" : "not-marked"}`}
+
 										/>
+										// <input type="radio"
+										// 	key={j}
+										// 	name={`rating-${id}`}
+										// 	className={`bg-black  `}
+									
+										// />
 									)
 								})
 							}
+						</div>
+						<p className="rating-label text-sm">
+							Avaliação média
+						</p>
 						</div>
 					</span>
 					<p className="text-lg">
@@ -59,7 +69,7 @@ export default function Book(props) {
 						<p className="text-sm text-right">
 							Código: <span className=" font-semibold">{code}</span>
 						</p>
-						<p className={`px-3 py-2 border-2 rounded-md text-base status-${status.charAt(0)}`}>
+						<p className={`px-3 py-2 border-2 rounded-md text-base text-center status-${status.charAt(0)}`}>
 							{status}
 						</p>
 					</div>
