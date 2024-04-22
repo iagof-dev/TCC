@@ -143,9 +143,9 @@ FROM
     emprestimos as lo
     INNER JOIN livros as lv
     INNER JOIN alunos as al
-WHERE
-    lo.id_aluno = al.rm
-    and lo.id_livro = lv.id;
+WHERE 
+	lo.id_livro = lv.id
+    AND lo.rm_aluno = al.rm;
 
 SELECT
     lo.id,
@@ -158,10 +158,10 @@ FROM
     emprestimos as lo
     INNER JOIN livros as lv
     INNER JOIN alunos as al
-WHERE
-    lo.id_aluno = al.rm
-    and lo.id_livro = lv.id
-    and lo.id = 1;
+WHERE 
+	lo.id_livro = lv.id
+    AND lo.id_aluno = al.rm
+    AND al.rm = 2210002;
 
 SELECT
     lo.id,
@@ -174,10 +174,10 @@ FROM
     emprestimos as lo
     INNER JOIN livros as lv
     INNER JOIN alunos as al
-WHERE
-    lo.id_aluno = al.rm
-    and lo.id_livro = lv.id
-    and lo.id_aluno = 221059;
+WHERE 
+	lo.id_livro = lv.id
+    AND lo.id_aluno = al.rm
+    AND lo.id_livro = 2;
 
 SELECT
     lo.id,
@@ -190,26 +190,10 @@ FROM
     emprestimos as lo
     INNER JOIN livros as lv
     INNER JOIN alunos as al
-WHERE
-    lo.id_aluno = al.rm
-    and lo.id_livro = lv.id
-    and lv.id = 3;
-
-SELECT
-    lo.id,
-    al.rm,
-    lv.titulo,
-    lo.data_aluguel,
-    lo.data_devolucao,
-    lo.status_livro
-FROM
-    emprestimos as lo
-    INNER JOIN livros as lv
-    INNER JOIN alunos as al
-WHERE
-    lo.id_aluno = al.rm
-    and lo.id_livro = lv.id
-    and lv.codigo = 1003;
+WHERE 
+	lo.id_livro = lv.id
+    AND lo.rm_aluno = al.rm
+    AND lo.status_livro = "PENDENTE";
 
 -- AVALIAÇÃO
 SELECT
