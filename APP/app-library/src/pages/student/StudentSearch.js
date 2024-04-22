@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import Autocomplete from '@mui/material/Autocomplete';
 import { TextField, createTheme } from '@mui/material'
 import Chip from '@mui/material/Chip';
-import Info from '../components/Info';
-import Book from '../components/Book'
-import BookSearchContainer from '../components/BookSearchContainer';
+import Info from '../../components/Info';
+import Book from '../../components/Book'
+import BookSearchContainer from '../../components/BookSearchContainer';
 
 export default function Search(props) {
 	const { setPath, path } = { ...props }

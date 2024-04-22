@@ -1,7 +1,7 @@
 import { Form, useLocation, useNavigate } from "react-router-dom"
-import LogoLateral from '../assets/img/logo-lateral.png'
+import LogoLateral from '../../assets/img/logo-lateral.png'
 import { useState } from "react"
-import { LoginErrorDialog } from "../components/LoginErrorDialog"
+import { LoginErrorDialog } from "../../components/LoginErrorDialog"
 
 export default function StudentLogin(props) {
 	const { setPath, userInfo, setUserInfo } = { ...props }
@@ -37,7 +37,7 @@ export default function StudentLogin(props) {
 			} else {
 				setUserInfo({...userInfo, RM: RM})
 				alert(JSON.stringify(userInfo))
-				navigate('/menu/list')
+				navigate('/studentMenu/studentList')
 			}
 			
 		}).catch(e => {

@@ -1,14 +1,15 @@
 import { Form, useLocation, useNavigate } from "react-router-dom"
-import LogoLateral from '../assets/img/logo-lateral.png'
+import LogoLateral from '../../assets/img/logo-lateral.png'
 import { TextField } from "@mui/material"
 import { useEffect, useState } from "react"
-import { LoginErrorDialog } from "../components/LoginErrorDialog"
+import { LoginErrorDialog } from "../../components/LoginErrorDialog"
 import Autocomplete from '@mui/material/Autocomplete';
 
 export default function LibrarianLogin(props) {
     const { setPath, userInfo, setUserInfo } = { ...props }
 
     const [loginNames, setLoginNames] = useState(["Silvana", "Gil", "Maria Ivone"])
+    const [selectedLibrarian, setSelectedLibrarian] = useState("")
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [name, setName] = useState()
@@ -64,10 +65,11 @@ export default function LibrarianLogin(props) {
 
                         <Autocomplete
                             id="free-solo-demo"
-                            freeSolo
                             fullWidth
                             options={loginNames}
-                            renderInput={(params) => <TextField {...params} label="" />}
+                            renderInput={(params) => <TextField {...params} label="" />
+
+                            }
                         />
                     </span>
 
