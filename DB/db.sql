@@ -63,7 +63,7 @@ CREATE TABLE
 CREATE TABLE
     IF NOT EXISTS emprestimos (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        id_aluno INT NOT NULL REFERENCES alunos (rm),
+        rm_aluno INT NOT NULL REFERENCES alunos (rm),
         id_bibliotecaria INT NOT NULL REFERENCES bibliotecarias (id),
         id_livro INT NOT NULL REFERENCES livros (id),
         data_aluguel DATE NOT NULL,
