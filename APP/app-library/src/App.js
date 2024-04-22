@@ -42,9 +42,9 @@ function App() {
 
 		<Routes>
 
-			<Route path="/" element={<LibrarianLogin setPath={setPath} userInfo={userInfo} setUserInfo={setUserInfo} />} />
+			<Route path="/" element={<LibrarianLogin setPath={setPath} librarian={librarian} setLibrarian={setLibrarian} />}/>
 
-			<Route path="/librarianMenu" >
+			<Route path="/librarianMenu" element={<LibrarianMenu setPath={setPath} librarian={librarian}/>}  >
 			
 			{/* Empréstimo/devolução */}
 

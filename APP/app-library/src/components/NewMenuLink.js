@@ -9,7 +9,7 @@ export default function NewMenuLink(props) {
             </svg>
 
 
-            <a className={`menu-link ${path == linkTarget ? "menu-link--active" : ""} text-left w-[5rem]`}>
+            <a className={`menu-link ${path == linkTarget ? "menu-link--active" : ""} text-right w-fit text-lg`}>
                 {title}
             </a>
         </a>

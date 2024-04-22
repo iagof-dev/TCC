@@ -17,8 +17,8 @@ export default function StundentLayout(props) {
 	setPath(useLocation().pathname)
 
 	return (<div className="flex flex-nowrap w-screen">
-		<aside className="h-screen w-[15vw] flex flex-col p-6 gap-2 justify-between  rounded-r-xl">
-			<section className="flex flex-col">
+		<aside className="h-screen w-[18vw] flex flex-col p-6 gap-2 justify-between  rounded-r-xl">
+			<section className="flex flex-col mt-3">
 				<p className="menu__user-info font-bold text-2xl m-0 p-0">
 					{userInfo.name}
 				</p>
