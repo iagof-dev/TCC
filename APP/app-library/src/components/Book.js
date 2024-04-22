@@ -1,3 +1,4 @@
+import { button } from "@material-tailwind/react"
 import "../App.css"
 
 export default function Book(props) {
@@ -12,7 +13,7 @@ export default function Book(props) {
 			<div className="flex flex-col justify-between w-full">
 				<span className="flex flex-col">
 					<span className="flex justify-between items-center">
-						<p className={`font-bold ${title.length > 14? "text-base" : ""}`}>
+						<p className={`font-bold ${title.length > 14 ? "text-base" : ""}`}>
 							{title}
 						</p>
 
@@ -29,30 +30,30 @@ export default function Book(props) {
 						</div>
 
 						<div className="flex flex-col items-center">
-						<div className="rating flex gap-1">
-							{
-								[...Array(5)].map((e, j) => {
-									return (
-										<input type="radio"
-											
-											key={j}
-											name={`rating-${id}`}
-											className={`mask mask-star ${rating >= j ? "marked" : "not-marked"}`}
+							<div className="rating flex gap-1">
+								{
+									[...Array(5)].map((e, j) => {
+										return (
+											<input type="radio"
 
-										/>
-										// <input type="radio"
-										// 	key={j}
-										// 	name={`rating-${id}`}
-										// 	className={`bg-black  `}
-									
-										// />
-									)
-								})
-							}
-						</div>
-						<p className="rating-label text-sm">
-							Avaliação média
-						</p>
+												key={j}
+												name={`rating-${id}`}
+												className={`mask mask-star ${rating >= j ? "marked" : "not-marked"}`}
+
+											/>
+											// <input type="radio"
+											// 	key={j}
+											// 	name={`rating-${id}`}
+											// 	className={`bg-black  `}
+
+											// />
+										)
+									})
+								}
+							</div>
+							<p className="rating-label text-sm">
+								Avaliação média
+							</p>
 						</div>
 					</span>
 					<p className="text-lg">
@@ -63,7 +64,16 @@ export default function Book(props) {
 				</span>
 				<div className="w-full flex justify-between no-wrap">
 					<p className=" text-sm max-w-[20vw] my-4">
-						{synopsis}
+						{/* add "ver mais" */}
+						{synopsis.length >= 150 ? (
+							<>
+								{`${synopsis.slice(0, 150)}...`}
+
+								<a className="cursor-pointer">
+									ver mais
+								</a></>
+
+						) : synopsis}
 					</p>
 					<div className="flex flex-col justify-center">
 						<p className="text-sm text-right">

@@ -9,7 +9,7 @@ import BookSearchContainer from '../../components/BookSearchContainer';
 export default function Search(props) {
 	const { setPath, path } = { ...props }
 
-	const [selectedGenresAndCourses, setSelectedGenresAndCourses] = useState([])
+	const [selectedCategories, setSelectedCategories] = useState([])
 	const [formData, setFormData] = useState({
 		title: "",
 		author: "",
@@ -49,7 +49,7 @@ export default function Search(props) {
 
 		//Busca dos livros pela API
 
-		setFormData({ ...formData, tags: selectedGenresAndCourses })
+		setFormData({ ...formData, tags: selectedCategories })
 
 		if (hasSearchBeenMade) {
 			setHasSearchBeenMade(false)
@@ -93,7 +93,7 @@ export default function Search(props) {
 				<span className="flex gap-3 w-full items-center justify-between">
 
 					<label className="input-label">
-						Gênero/curso
+						Categorias
 					</label>
 
 					{/* <Autocomplete
@@ -113,7 +113,7 @@ export default function Search(props) {
 						id="tags-filled"
 						fullWidth
 						options={genresAndCourses}
-						onChange={(event, values) => setSelectedGenresAndCourses(values)}
+						onChange={(event, values) => setSelectedCategories(values)}
 						freeSolo
 						renderTags={(value, getTagProps) =>
 							value.map((option, index) => (
@@ -125,7 +125,7 @@ export default function Search(props) {
 							<TextField
 								{...params}
 								variant="filled"
-								placeholder="Gêneros ou cursos"
+								placeholder="Categorias"
 								className=' bg-gray-200 appearance-none border-2 border-gray-200 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
 							/>
 						)}

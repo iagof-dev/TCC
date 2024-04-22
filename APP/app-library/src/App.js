@@ -16,58 +16,58 @@ function App() {
 	const [librarian, setLibrarian] = useState("")
 
 	//Student Application
-	// return (
-	// 	<BrowserRouter>
-
-	// 		<Routes>
-	// 			<Route path='/' element={<StudentLogin setPath={setPath} userInfo={userInfo} setUserInfo={setUserInfo} />} />
-
-	// 			<Route path='/studentMenu' element={<StundentLayout setPath={setPath} path={path}  userInfo={userInfo} setUserInfo={setUserInfo}/>}>
-
-	// 				<Route path="/studentMenu/studentList" element={<List setPath={setPath} path={path} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
-
-	// 				<Route path="/studentMenu/studentSearch" element={<Search setPath={setPath} path={path} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
-					
-	// 			</Route>
-
-	// 		</Routes>
-
-	// 	</BrowserRouter>
-	// );
-
-
-	//Librarian Application
 	return (
 		<BrowserRouter>
 
-		<Routes>
+			<Routes>
+				<Route path='/' element={<StudentLogin setPath={setPath} userInfo={userInfo} setUserInfo={setUserInfo} />} />
 
-			<Route path="/" element={<LibrarianLogin setPath={setPath} librarian={librarian} setLibrarian={setLibrarian} />}/>
+				<Route path='/studentMenu' element={<StundentLayout setPath={setPath} path={path}  userInfo={userInfo} setUserInfo={setUserInfo}/>}>
 
-			<Route path="/librarianMenu" element={<LibrarianMenu setPath={setPath} librarian={librarian}/>}  >
-			
-			{/* Empréstimo/devolução */}
+					<Route path="/studentMenu/studentList" element={<List setPath={setPath} path={path} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
 
-				<Route path="/librarianMenu/librarianLoan"/>
+					<Route path="/studentMenu/studentSearch" element={<Search setPath={setPath} path={path} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
+					
+				</Route>
 
-			{/* Listar leituras dos alunos */}
-
-				< Route path="/librarianMenu/librarianList"/>
-
-			{/* Adicionar livro ao sistema */}
-
-				<Route path="/librarianMenu/librarianAdd"/>
-
-			{/* Editar/remover livro do sistema */}
-
-				<Route path="/librarianMenu/librarianEdit"/>
-
-			</Route>
-
-		</Routes>
+			</Routes>
 
 		</BrowserRouter>
-	)
+	);
+
+
+	//Librarian Application
+	// return (
+	// 	<BrowserRouter>
+
+	// 	<Routes>
+
+	// 		<Route path="/" element={<LibrarianLogin setPath={setPath} librarian={librarian} setLibrarian={setLibrarian} />}/>
+
+	// 		<Route path="/librarianMenu" element={<LibrarianMenu setPath={setPath} librarian={librarian}/>}  >
+			
+	// 		{/* Empréstimo/devolução */}
+
+	// 			<Route path="/librarianMenu/librarianLoan"/>
+
+	// 		{/* Listar leituras dos alunos */}
+
+	// 			< Route path="/librarianMenu/librarianList"/>
+
+	// 		{/* Adicionar livro ao sistema */}
+
+	// 			<Route path="/librarianMenu/librarianAdd"/>
+
+	// 		{/* Editar/remover livro do sistema */}
+
+	// 			<Route path="/librarianMenu/librarianEdit"/>
+
+	// 		</Route>
+
+	// 	</Routes>
+
+	// 	</BrowserRouter>
+	// )
 }
 
 export default App;
