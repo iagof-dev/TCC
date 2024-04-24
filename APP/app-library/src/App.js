@@ -1,12 +1,12 @@
 
 import "tailwindcss/tailwind.css"
 import './App.css';
-import StundentLayout from './pages/student/StudentLayout';
+import StudentLayout from './pages/student/StudentLayout';
 import StudentLogin from './pages/student/StudentLogin'
 import LibrarianLogin from "./pages/librarian/LibrarianLogin";
 import List from './pages/student/StudentList'
 import Search from './pages/student/StudentSearch'
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, HashRouter, Route, Routes, useLocation } from "react-router-dom";
 import { useState } from "react";
 import LibrarianMenu from "./pages/librarian/LibrarianMenu";
 
@@ -19,10 +19,11 @@ function App() {
 	return (
 		<BrowserRouter>
 
+
 			<Routes>
 				<Route path='/' element={<StudentLogin setPath={setPath} userInfo={userInfo} setUserInfo={setUserInfo} />} />
 
-				<Route path='/studentMenu' element={<StundentLayout setPath={setPath} path={path}  userInfo={userInfo} setUserInfo={setUserInfo}/>}>
+				<Route path='/studentMenu' element={<StudentLayout setPath={setPath} path={path}  userInfo={userInfo} setUserInfo={setUserInfo}/>}>
 
 					<Route path="/studentMenu/studentList" element={<List setPath={setPath} path={path} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
 

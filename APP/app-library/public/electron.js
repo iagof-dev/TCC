@@ -5,7 +5,7 @@ const serve = require('electron-serve');
 const { ipcMain } = require('electron/main');
 const loadURL = serve({ directory: 'build' });
 
-const iconPath = path.join(__dirname, "build", "logo500.png");
+const iconPath = path.join(__dirname, "build", "logo500.ico");
 
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -29,7 +29,7 @@ function createWindow() {
 		frame: false,
 		icon: iconPath,
         // Use this in development mode.
-        icon: isDev() ? path.join(process.cwd(), 'public/logo500.png') : path.join(__dirname, 'build/logo500.png'),
+        icon: isDev() ? path.join(process.cwd(), 'public/logo500.ico') : path.join(__dirname, 'build/logo500.ico'),
         // Use this in production mode.
         // icon: path.join(__dirname, 'build/logo512.png'),
         show: false

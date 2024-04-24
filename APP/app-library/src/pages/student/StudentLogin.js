@@ -3,6 +3,7 @@ import LogoLateral from '../../assets/img/logo-lateral.png'
 import { useState } from "react"
 import { LoginErrorDialog } from "../../components/LoginErrorDialog"
 
+
 export default function StudentLogin(props) {
 	const { setPath, userInfo, setUserInfo } = { ...props }
 

@@ -55,15 +55,49 @@
       "last 1 safari version"
     ]
   },
-  "icon": "public/logo500.png",
+  "icon": "public/logo500.ico",
   "productName": "Sistema da Biblioteca",
+  "extraResources": [
+    "src/assets/*",
+    "src/*",
+    "*"
+  ],
+  "build": {
+    "extraResources": [
+      {
+        "from": "../assets",
+        "to": "assets",
+        "filter": [
+          "**/*",
+          "!*.mp3"
+        ]
+      }
+    ],
+    "fileAssociations": [
+      {
+        "ext": "ico",
+        "name": "icon",
+        "icon": "src/assets/img/logo500.ico"
+      }
+    ],
+    "icon": "logo500.ico",
+    "asar": false
+  },
   "files": [
     "build/**/*",
     "/public/electron.js"
   ],
   "main": "public/electron.js",
   "homepage": "./",
-  "win": {},
+  "win": {
+    "icon": "src/assets/img/logo500.ico"
+  },
+
+  "config": {
+    "win": {
+      "icon" :"src/assets/img/logo500.ico"
+    }
+},
   "linux": {},
   "mac": {}
 }

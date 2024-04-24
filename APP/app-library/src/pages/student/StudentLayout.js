@@ -11,7 +11,7 @@ import NewMenuLink from "../../components/NewMenuLink";
 
 
 
-export default function StundentLayout(props) {
+export default function StudentLayout(props) {
 	const { setPath, path, userInfo, setUserInfo } = { ...props }
 
 	setPath(useLocation().pathname)
@@ -48,8 +48,8 @@ export default function StundentLayout(props) {
 			</section>
 
 			<div className="flex flex-nowrap items-center justify-between">
-				<img className=" w-[4rem] h-fit" src={Logo500} />
-				<img className=" w-[4rem]" src={EtecLogo} />
+				<img className=" w-[4rem] h-fit" src={"/" + Logo500} />
+				<img className=" w-[4rem]" src={"/" + EtecLogo} />
 			</div>
 
 		</aside>
