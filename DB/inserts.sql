@@ -41,7 +41,7 @@ INSERT INTO livro_generos (id_livro, id_genero) VALUES
 (2, 2);
 
 
-INSERT INTO emprestimos (id_aluno, id_bibliotecaria, id_livro, data_aluguel, data_devolucao, status_livro, prazo) VALUES
+INSERT INTO emprestimos (rm_aluno, id_bibliotecaria, id_livro, data_aluguel, data_devolucao, status_livro, prazo) VALUES
 (1, 1, 1, '2023-04-01', '2023-04-15', 'PENDENTE', 14),
 (2, 2, 2, '2023-04-05', '2023-04-19', 'DEVOLVIDO', 14);
 
