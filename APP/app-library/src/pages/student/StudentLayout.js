@@ -10,7 +10,6 @@ import Logo500 from '../../assets/img/logo500.png'
 import NewMenuLink from "../../components/NewMenuLink";
 
 
-
 export default function StudentLayout(props) {
 	const { setPath, path, userInfo, setUserInfo } = { ...props }
 

@@ -29,7 +29,7 @@ function createWindow() {
 		frame: false,
 		icon: iconPath,
         // Use this in development mode.
-        icon: isDev() ? path.join(process.cwd(), 'public/logo500.ico') : path.join(__dirname, 'build/logo500.ico'),
+        icon: isDev() ? path.join(process.cwd(), 'logo500.ico') : path.join(__dirname, 'build/logo500.ico'),
         // Use this in production mode.
         // icon: path.join(__dirname, 'build/logo512.png'),
         show: false

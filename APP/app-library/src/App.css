@@ -238,3 +238,15 @@ p.status-i, p.status-I {
 p.rating-label{
   color: var(--input-font-color);
 }
+
+/* Librarian */
+
+button.button-loan {
+  background-color: transparent;
+  border: 1px solid var(--main-blue);
+  color: var(--main-blue);
+}
+
+button.button-loan--active {
+  background-color: var(--main-blue);
+}
