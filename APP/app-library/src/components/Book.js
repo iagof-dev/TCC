@@ -21,7 +21,7 @@ export default function Book(props) {
 							{
 								tags.map(tag => {
 									return (
-										<p className="px-2 h-fit py-1 border-solid border-2 rounded-xl text-sm">
+										<p className="px-2 h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
 											{tag}
 										</p>
 									)
@@ -79,7 +79,7 @@ export default function Book(props) {
 						<p className="text-sm text-right">
 							Código: <span className=" font-semibold">{code}</span>
 						</p>
-						<p className={`px-3 py-2 border-2 rounded-md text-base text-center status-${status.charAt(0)}`}>
+						<p className={`px-3 py-2 border-[1px] rounded-md text-base text-center status-${status.charAt(0)}`}>
 							{status}
 						</p>
 					</div>

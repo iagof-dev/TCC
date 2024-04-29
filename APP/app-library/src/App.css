@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
 :root{
   --main-blue: #6fa5f6;
@@ -17,16 +18,19 @@
   --input-font-color--more-opaque: #f0f0f0;
 
   --input-bg: #E4E4E4;
+
+  --main-font: "Figtree", sans-serif;
+  --title-font: "Montserrat", sans-serif;
 }
 
 body {
-  font-family: 'Figtree', sans-serif;
+  font-family: var(--main-font);
   background-color: var(--white-bg);
   color: var(--main-font-color);
 }
 
 p, .p {
-  font-family: 'Figtree', sans-serif;
+  font-family: var(--main-font);
   font-size: 1.3rem;
 }
 
@@ -34,7 +38,7 @@ p, .p {
 
 h1, h2{
   width: fit-content;
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--title-font);
   
   font-weight: bold;
   font-size: 1.7rem;
@@ -175,6 +179,21 @@ td.td-situation-red {
   color: var(--white-bg);
 }
 
+.easter-egg {
+  background-image: url(/src/assets/img/bg.png);
+  --main-font: "Comic Neue", sans-serif;
+  --title-font: "Comic Neue", sans-serif;
+  --main-blue: rgb(50, 129, 50);
+
+}
+
+.not-easter-egg {
+  background-image: none;
+  --main-font: "Figtree", sans-serif;
+  --title-font: "Montserrat", sans-serif;
+  --main-blue: #6fa5f6;
+}
+
 input.marked {
 	background-color: var(--input-font-color);
   opacity: 1;
@@ -189,6 +208,7 @@ input.not-marked {
 
 p.p-hint {
   color: var(--input-font-color);
+  margin-block: 0.5rem;
   font-size: 0.95rem;
 }
 
@@ -198,7 +218,7 @@ label.input-label {
 
 .autocomplete {
   background-color: #F9FAFB;
-  font-family: "Montserrat", sans-serif !important;
+  font-family: var(--title-font) !important;
 }
 
 button.button-search {

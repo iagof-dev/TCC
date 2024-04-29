@@ -13,10 +13,12 @@ import NewMenuLink from "../../components/NewMenuLink";
 
 export default function LibrarianMenu(props) {
 	const { setPath, path, librarian } = { ...props }
+	
+
 
 	setPath(useLocation().pathname)
 
-	return (<div className="flex flex-nowrap w-screen">
+	return (<div className={`flex flex-nowrap w-screen`}>
 		<aside className="h-screen w-[18vw] flex flex-col p-6 gap-2 justify-between  rounded-r-xl">
 			<section className="flex flex-col mt-3">
 				<p className="menu__user-info font-bold text-2xl p-0">
@@ -86,8 +88,8 @@ export default function LibrarianMenu(props) {
 			</section>
 
 			<div className="flex flex-nowrap items-center justify-between">
-				<img className=" w-[4rem] h-fit" src={"/" + Logo500} />
-				<img className=" w-[4rem]" src={"/" + EtecLogo} />
+				<img className=" w-[4rem] h-fit" src={ Logo500} />
+				<img className=" w-[4rem]" src={ EtecLogo} />
 			</div>
 
 		</aside>

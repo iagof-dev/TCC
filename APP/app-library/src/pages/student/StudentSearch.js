@@ -76,7 +76,7 @@ export default function Search(props) {
 					<label className="input-label">
 						Título
 					</label>
-					<input placeholder="Título do Livro" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-[50vw] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" />
+					<input placeholder="Título do Livro" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" />
 				</span>
 				<p className="p-hint">
 					ou
@@ -85,7 +85,7 @@ export default function Search(props) {
 					<label className="input-label">
 						Autor
 					</label>
-					<input placeholder="Nome do autor" value={formData.author} onChange={e => setFormData({ ...formData, author: e.target.value })} className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-[50vw] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" />
+					<input placeholder="Nome do autor" value={formData.author} onChange={e => setFormData({ ...formData, author: e.target.value })} className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" />
 				</span>
 				<p className="p-hint">
 					ou
@@ -126,7 +126,7 @@ export default function Search(props) {
 								{...params}
 								variant="filled"
 								placeholder="Categorias"
-								className=' bg-gray-200 appearance-none border-2 border-gray-200 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+								className=' bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
 							/>
 						)}
 					/>

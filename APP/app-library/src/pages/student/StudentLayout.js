@@ -10,12 +10,17 @@ import Logo500 from '../../assets/img/logo500.png'
 import NewMenuLink from "../../components/NewMenuLink";
 
 
+
+
+
 export default function StudentLayout(props) {
 	const { setPath, path, userInfo, setUserInfo } = { ...props }
 
+	const [counter, setCounter] = useState(1)
+
 	setPath(useLocation().pathname)
 
-	return (<div className="flex flex-nowrap w-screen">
+	return (<div className={`flex flex-nowrap w-screen ${counter % 3 == 0? "easter-egg" : "not-easter-egg"}`}>
 		<aside className="h-screen w-[18vw] flex flex-col p-6 gap-2 justify-between  rounded-r-xl">
 			<section className="flex flex-col mt-3">
 				<p className="menu__user-info font-bold text-2xl m-0 p-0">
@@ -47,8 +52,8 @@ export default function StudentLayout(props) {
 			</section>
 
 			<div className="flex flex-nowrap items-center justify-between">
-				<img className=" w-[4rem] h-fit" src={"/" + Logo500} />
-				<img className=" w-[4rem]" src={"/" + EtecLogo} />
+				<img className=" w-[4rem] h-fit" src={ Logo500} onClick={() => setCounter(counter + 1)} />
+				<img className=" w-[4rem]" src={ EtecLogo} />
 			</div>
 
 		</aside>

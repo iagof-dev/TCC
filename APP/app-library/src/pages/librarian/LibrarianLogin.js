@@ -50,7 +50,7 @@ export default function LibrarianLogin(props) {
     return (
         <div className="flex w-screen h-screen flex-col items-center justify-center">
             <img className="login__logo" src={LogoLateral} />
-            <div className="container p-5 shadow-md rounded-xl border-2 flex flex-col align-center w-fit h-fit">
+            <div className="container p-5 shadow-md rounded-xl border-[1px] flex flex-col align-center w-fit h-fit">
                 <h1>Login de Bibliotecário(a)</h1>
                 <form className="flex flex-col items-center justify-center gap-3" onSubmit={handleLoginSubmit}>
                     <span className="gap-5 flex items-center w-full">
