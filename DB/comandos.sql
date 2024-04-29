@@ -195,6 +195,22 @@ WHERE
     AND lo.rm_aluno = al.rm
     AND lo.status_livro = "PENDENTE";
 
+SELECT
+    lo.id,
+    al.rm,
+    lv.titulo,
+    lo.data_aluguel,
+    lo.data_devolucao,
+    lo.status_livro
+FROM
+    emprestimos as lo
+    INNER JOIN livros as lv
+    INNER JOIN alunos as al
+WHERE 
+	lo.id_livro = lv.id
+    AND lo.rm_aluno = al.rm
+    AND lo.status_livro = "ATRASADO";
+
 -- AVALIAÇÃO
 SELECT
     COUNT(avaliacao) as avaliadores,
