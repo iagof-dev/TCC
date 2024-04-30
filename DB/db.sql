@@ -68,7 +68,7 @@ CREATE TABLE
         id_livro INT NOT NULL REFERENCES livros (id),
         data_aluguel DATE NOT NULL,
         data_devolucao DATE NOT NULL,
-        id_status_livro VARCHAR(20) NOT NULL,
+        id_status_livro INT(2) NOT NULL,
         prazo INT NOT NULL
     );
 
