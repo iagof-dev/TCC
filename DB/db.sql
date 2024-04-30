@@ -117,4 +117,11 @@ CREATE TABLE
         avaliacao float NOT NULL
     );
 
+CREATE TABLE
+    IF NOT EXISTS estado_emprestimos (
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    nome TINYTEXT
+    );
+
+
 
