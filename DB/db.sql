@@ -123,7 +123,11 @@ CREATE TABLE
     nome TINYTEXT
     );
 
-INSERT INTO estado_emprestimos values (default, 'pendente'), (default, 'atrasado'), (default, 'restituido');
+INSERT INTO estado_emprestimos values 
+    (default, 'pendente'),
+    (default, 'atrasado'),
+    (default, 'restituido')
+    ;
 
 
 
