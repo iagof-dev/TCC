@@ -21,6 +21,8 @@
 
   --main-font: "Figtree", sans-serif;
   --title-font: "Montserrat", sans-serif;
+
+  --general-opacity: 1;
 }
 
 body {
@@ -52,6 +54,10 @@ h2 {
 
 img.login__logo{
   width: 17rem;
+}
+
+aside {
+  opacity: var(--general-opacity);
 }
 
 aside ul li a {
@@ -93,6 +99,7 @@ a.menu__item:hover {
 
 .container {
   background-color: var(--white-container);
+  opacity: var(--general-opacity);
 }
 
 
@@ -184,6 +191,7 @@ td.td-situation-red {
   --main-font: "Comic Neue", sans-serif;
   --title-font: "Comic Neue", sans-serif;
   --main-blue: rgb(50, 129, 50);
+  --general-opacity: .7;
 
 }
 
@@ -192,6 +200,7 @@ td.td-situation-red {
   --main-font: "Figtree", sans-serif;
   --title-font: "Montserrat", sans-serif;
   --main-blue: #6fa5f6;
+  --general-opacity: 1
 }
 
 input.marked {

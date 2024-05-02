@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Autocomplete from '@mui/material/Autocomplete';
-import { TextField, createTheme } from '@mui/material'
+import { TextField, ThemeProvider, createTheme } from '@mui/material'
 import Chip from '@mui/material/Chip';
 import Info from '../../components/Info';
 import Book from '../../components/Book'
@@ -62,37 +62,62 @@ export default function Search(props) {
 		console.log(formData);
 	}
 
+	const theme = createTheme({
+		typography: {
+			fontFamily: [
+				'Figtree',
+			].join(','),
+		},
+
+
+	});
+
 	return (
 		<>
 
 			<h1 className="pb-5 text-3xl">
 				🔎 Pesquisa de Livro
 			</h1>
+			<ThemeProvider theme={theme}>
 			<form className='max-w-[50vw] mb-4' onSubmit={handleSearch}>
 				<p className="p-hint">
 					Pesquise por
 				</p>
 				<span class="flex gap-7 w-full items-center">
-					<label className="input-label">
+					<label className="input-label w-[6rem]">
 						Título
 					</label>
-					<input placeholder="Título do Livro" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" />
+
+					<TextField
+					className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
+					placeholder="Título do Livro" 
+					value={formData.title} 
+					onChange={e => setFormData({ ...formData, title: e.target.value })}
+					
+					/>
 				</span>
 				<p className="p-hint">
 					ou
 				</p>
 				<span class="flex gap-7 w-full items-center">
-					<label className="input-label">
+					<label className="input-label w-[6rem]">
 						Autor
 					</label>
-					<input placeholder="Nome do autor" value={formData.author} onChange={e => setFormData({ ...formData, author: e.target.value })} className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" />
+
+					<TextField
+					className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
+					placeholder="Nome do autor" 
+					value={formData.author} 
+					onChange={e => setFormData({ ...formData, author: e.target.value })}
+					
+					/>
 				</span>
 				<p className="p-hint">
 					ou
 				</p>
 				<span className="flex gap-3 w-full items-center justify-between">
 
-					<label className="input-label">
+					<label className="input-label w-[9rem]">
 						Categorias
 					</label>
 
@@ -117,18 +142,13 @@ export default function Search(props) {
 						freeSolo
 						renderTags={(value, getTagProps) =>
 							value.map((option, index) => (
-								<Chip variant="outlined" label={option} {...getTagProps({ index })} />
+								<Chip variant="outlined" className='text-lg' label={option} {...getTagProps({ index })}  />
 
 							))
 						}
-						renderInput={(params) => (
-							<TextField
-								{...params}
-								variant="filled"
-								placeholder="Categorias"
-								className=' bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-							/>
-						)}
+						renderInput={(params) => <TextField {...params}
+                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                                />}
 					/>
 
 					<button className='button button-search no-wrap items-center flex gap-3 align-center mx-2 w-fit py-2 px-4 rounded text-lg' type='submit'>
@@ -144,6 +164,7 @@ export default function Search(props) {
 					<Info title={"Para empréstimo,"} content={"consulte o(a) bibliotecário(a)!"} />
 				</div>
 			</form>
+			</ThemeProvider>
 
 			{hasSearchBeenMade ? <BookSearchContainer hasSearchBeenMade={hasSearchBeenMade} resultBooks={resultBooks} /> : ""}
 
