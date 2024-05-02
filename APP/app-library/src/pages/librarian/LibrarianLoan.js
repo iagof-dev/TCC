@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Autocomplete } from "@mui/material"
+import { Autocomplete, ThemeProvider, Typography, createTheme } from "@mui/material"
 import { TextField } from "@mui/material"
 import { onKeyDownRM } from "../miscellaneous"
 import Info from "../../components/Info"
@@ -72,9 +72,21 @@ export default function LibrarianLoan() {
         //API: post empréstimo
     }
 
+    const theme = createTheme({
+        typography: {
+          fontFamily: [
+            'Montserrat',
+          ].join(','),
+        },
+
+        
+      });
+      
+
     function loanContent() {
         return (
             <>
+            <ThemeProvider theme={theme}>
                 <hr className="mt-4" />
 
                 <p className="p-hint">
@@ -87,10 +99,15 @@ export default function LibrarianLoan() {
                         <label className="input-label">
                             Código
                         </label>
+
+
+
                         <input placeholder="Código"
                             value={formData.code} onBlur={() => searchForBookByCode(formData.code)} onChange={e => setFormData({ ...formData, code: e.target.value })}
                             className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[40rem] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" />
                     </span>
+
+
 
                     <p className="p-hint">
                         ou por
@@ -100,7 +117,9 @@ export default function LibrarianLoan() {
                         <label className="input-label">
                             Título
                         </label>
-                        <Autocomplete
+
+                            <Autocomplete
+                            
                             value={formData.title}
                             onChange={(event, newValue) => {
                                 if (!newValue) return
@@ -112,11 +131,16 @@ export default function LibrarianLoan() {
                             }}
                             id="controllable-states-demo"
                             options={bookTitles}
+                            size="sm"
                             sx={{ width: 650 }}
                             renderInput={(params) => <TextField {...params} className=' bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
                             />}
 
                         />
+                        
+                            
+
+                        
                     </span>
 
                     <hr />
@@ -188,6 +212,7 @@ export default function LibrarianLoan() {
                         Registrar empréstimo
                     </button>
                 </form>
+                </ThemeProvider>
             </>
         )
 

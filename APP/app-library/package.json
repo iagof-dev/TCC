@@ -65,7 +65,7 @@
   "build": {
     "extraResources": [
       {
-        "from": "../assets",
+        "from": "../app-library/src/assets",
         "to": "assets",
         "filter": [
           "**/*",
