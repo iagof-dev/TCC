@@ -41,12 +41,12 @@ INSERT INTO livros_generos (id_livro, id_genero) VALUES
 (2, 2);
 
 
-INSERT INTO emprestimos (rm_aluno, id_bibliotecaria, id_livro, data_aluguel, data_devolucao, status_livro, prazo) VALUES
-(1, 1, 1, '2023-04-01', '2023-04-15', 'PENDENTE', 14),
-(2, 2, 2, '2023-04-05', '2023-04-19', 'DEVOLVIDO', 14);
+INSERT INTO emprestimos (rm_aluno, id_bibliotecaria, id_livro, data_aluguel, data_devolucao, id_status_livro, prazo) VALUES
+(2210002, 1, 1, '2023-04-01', '2023-04-15', 1, 14),
+(2210003, 2, 2, '2023-04-05', '2023-04-19', 2, 14);
 
-INSERT INTO notificacoes (id_aluno, id_emprestimo, data_envio, iteracao) VALUES
-(1, 1, '2023-04-16', 1);
+INSERT INTO notificacoes (rm_aluno, id_emprestimo, data_envio, iteracao) VALUES
+(2210002, 1, '2023-04-16', 1);
 
 INSERT INTO coordenadores (nome, telefone) VALUES
 ('Roberto Carlos', '1122334455');
@@ -54,6 +54,7 @@ INSERT INTO coordenadores (nome, telefone) VALUES
 INSERT INTO curso_coordenadores (id_curso, id_coordenador) VALUES
 (1, 1);
 
-INSERT INTO avaliacoes (id_livro, id_aluno, avaliacao) VALUES
-(1, 1, 4.5);
-
+INSERT INTO avaliacoes (id_livro, rm_aluno, avaliacao) VALUES
+(1, 2210001, 4.5),
+(1, 2210002, 5.0),
+(1, 2210002, 2.0);
