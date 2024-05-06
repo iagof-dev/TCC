@@ -36,7 +36,7 @@ INSERT INTO generos (genero) VALUES
 ('Educação'),
 ('Tecnologia');
 
-INSERT INTO livro_generos (id_livro, id_genero) VALUES
+INSERT INTO livros_generos (id_livro, id_genero) VALUES
 (1, 1),
 (2, 2);
 

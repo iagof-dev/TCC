@@ -55,7 +55,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    IF NOT EXISTS livro_generos (
+    IF NOT EXISTS livros_generos (
         id_livro INT NOT NULL REFERENCES livros (id),
         id_genero INT NOT NULL REFERENCES generos (id)
     );
