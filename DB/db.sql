@@ -1,3 +1,4 @@
+
 CREATE DATABASE IF NOT EXISTS sgbe;
 
 USE sgbe;
@@ -84,7 +85,7 @@ CREATE TABLE
 CREATE TABLE
     IF NOT EXISTS notificacoes (
         id INT PRIMARY KEY AUTO_INCREMENT,
-        id_aluno INT NOT NULL REFERENCES alunos (rm),
+        rm_aluno INT NOT NULL REFERENCES alunos (rm),
         id_emprestimo INT NOT NULL REFERENCES emprestimos (id),
         data_envio DATETIME NOT NULL,
         iteracao INT (1) NOT NULL 
@@ -113,7 +114,7 @@ CREATE TABLE
     IF NOT EXISTS avaliacoes (
         id INT PRIMARY KEY AUTO_INCREMENT,
         id_livro INT NOT NULL REFERENCES livros (id),
-        id_aluno INT NOT NULL REFERENCES alunos (rm),
+        rm_aluno INT NOT NULL REFERENCES alunos (rm),
         avaliacao float NOT NULL
     );
 
@@ -128,6 +129,3 @@ INSERT INTO estado_emprestimos values
     (default, 'atrasado'),
     (default, 'restituido')
     ;
-
-
-
