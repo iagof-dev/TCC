@@ -3,9 +3,12 @@ import { Autocomplete, FormControl, FormControlLabel, FormLabel, Radio, RadioGro
 import { TextField } from "@mui/material"
 import { onKeyDownRM } from "../miscellaneous"
 import Info from "../../components/Info"
+import DevolutionBooksContainer from "./DevolutionBooksContainer"
 
 export default function LibrarianLoan() {
     const [loanOrDevolution, setLoanOrDevolution] = useState(0)
+    const [hasRequestedDevolution, setHasRequestedDevolution] = useState(false)
+    const [isRequesting, setIsRequesting] = useState(false)
     const [formData, setFormData] = useState({
         code: 0,
         title: "",
@@ -42,6 +45,17 @@ export default function LibrarianLoan() {
 
     const bookTitles = books.map(b => b.title)
 
+    const devolutionBooks = [
+        {
+            code: 1,
+            title: "O Pequeno Príncipe",
+            author: "Antoine de Saint-Exupéry",
+            loanDate: "14/02/24",
+			loanPeriod: "15",
+			situation: "Atrasado"
+        }
+    ]
+
     function searchForBookByCode(code) {
         if (!code) return
 
@@ -70,8 +84,14 @@ export default function LibrarianLoan() {
     function handleLoan(e) {
         e.preventDefault()
         //API: post empréstimo
-        alert(JSON.stringify(formData));
-        console.log(formData);
+
+    }
+
+    function handleDevolution(e) {
+        e.preventDefault()
+        
+        setHasRequestedDevolution(true)
+        setIsRequesting(true)
     }
 
     const theme = createTheme({
@@ -265,6 +285,8 @@ export default function LibrarianLoan() {
                     Identifique o aluno
                 </p>
 
+                
+                <form onSubmit={(e) => handleDevolution(e)}>
                 <div className="flex flex-nowrap justify-between gap-5">
                     <div>
                         <span class="flex gap-7 w-full items-center justify-start my-3">
@@ -323,9 +345,17 @@ export default function LibrarianLoan() {
                         </div>
                     </div>
                 </div>
-                <button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" type="submit" onSubmit={(e) => handleLoan(e)}>
-                        Buscar por livros emprestados
-                    </button>
+                <button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" type="submit">
+                    Buscar por livros emprestados
+                </button>
+                </form>
+
+
+                {
+                    hasRequestedDevolution? <DevolutionBooksContainer isRequesting={isRequesting} devolutionBooks={devolutionBooks} /> : ""
+                }
+
+
             </>
 
         )

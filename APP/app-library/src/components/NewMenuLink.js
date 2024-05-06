@@ -8,8 +8,7 @@ export default function NewMenuLink(props) {
     const navigate = useNavigate()
 
     return (
-        <a className="menu__item tooltip tooltip-right w-100 flex flex-nowrap justify-between outline-none" 
-        // href={path == linkTarget ? "#" : linkTarget}
+        <a className="menu__item tooltip h-fit tooltip-right w-100 flex flex-col justify-center items-center outline-none" 
         onClick={() => {
             navigate(linkTarget)
         }}
@@ -24,7 +23,7 @@ export default function NewMenuLink(props) {
             <Link/>
 
 
-            <a className={`menu-link ${path == linkTarget ? "menu-link--active" : ""} text-right w-fit text-lg`}>
+            <a className={`menu-link ${path == linkTarget ? "menu-link--active" : ""} text-center w-fit text-sm`}>
                 {title}
             </a>
         </a>

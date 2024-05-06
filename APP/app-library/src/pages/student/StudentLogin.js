@@ -39,7 +39,6 @@ export default function StudentLogin(props) {
 				throw "não deu bom"
 			} else {
 				setUserInfo({...userInfo, RM: RM})
-				alert(JSON.stringify(userInfo))
 				navigate('/studentMenu/studentList')
 			}
 			

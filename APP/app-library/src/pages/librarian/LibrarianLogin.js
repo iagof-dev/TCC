@@ -27,7 +27,6 @@ export default function LibrarianLogin(props) {
     // navigate("/menu")
 
     function handleLogin(){
-        alert(`MDSSSSSSSSSSSSS: ${loginInputValue}`)
         setLibrarian(loginInputValue)
         if(loginInputValue == ''){
 			setIsLoginOpen(true)
