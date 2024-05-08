@@ -188,6 +188,11 @@ td.td-situation-red {
   color: var(--white-bg);
 }
 
+td.td-situation-black {
+  background-color: #242424;
+  color: var(--white-bg);
+}
+
 .easter-egg {
   background-image: url(/src/assets/img/bg.png);
   --main-font: "Comic Neue", sans-serif;

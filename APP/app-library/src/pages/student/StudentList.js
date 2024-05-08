@@ -32,6 +32,15 @@ export default function List(props) {
 			rating: 2,
 			situation: "Atrasado"
 		},
+		{
+			title: "Java para Leigos",
+			author: "Barry A. Burd",
+			code: "FYTM5467",
+			loanDate: "14/02/24",
+			loanPeriod: "15",
+			rating: 2,
+			situation: "Perdido"
+		},
 
 	])
 
@@ -122,6 +131,10 @@ export default function List(props) {
 
 								case "Atrasado":
 									situationColor = "red"
+									break
+
+								case "Perdido":
+									situationColor = "black"
 									break
 							}
 

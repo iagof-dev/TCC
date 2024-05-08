@@ -28,7 +28,7 @@ export default function DevolutionBooksContainer(props) {
                 <th>Período<br />(dias)</th>
                 <th>Situação</th>
                 <th>
-                    Ação
+                    Ações
                 </th>
             </tr>
         </thead>
@@ -57,9 +57,13 @@ export default function DevolutionBooksContainer(props) {
                         <td className={`td-situation td-situation-${situationColor} `
                             // + `${i == 0? "td-situation--first" : ""} ${i == booksHistory.length-1? "td-situation--last" : ""}`
                         }>{b.situation} </td>
-                        <td>
-                            <button>
+                        <td className="flex gap-4">
+                            <button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg">
                                 Devolver
+                            </button>
+                            <button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-slate-400 text-slate-50">
+                                Relatar <br/>
+                                perda
                             </button>
                         </td>
                     </tr>

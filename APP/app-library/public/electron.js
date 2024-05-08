@@ -26,7 +26,7 @@ function createWindow() {
             enableRemoteModule: true,
             contextIsolation: false
         },
-		frame: false,
+		frame: true,
 		icon: iconPath,
         // Use this in development mode.
         icon: isDev() ? path.join(process.cwd(), 'logo500.ico') : path.join(__dirname, 'build/logo500.ico'),
@@ -47,7 +47,7 @@ function createWindow() {
 
 	mainWindow.maximize()
 
-    mainWindow.resizable = false
+    mainWindow.resizable = true
 
     // This block of code is intended for development purpose only.
     // Delete this entire block of code when you are ready to package the application.
