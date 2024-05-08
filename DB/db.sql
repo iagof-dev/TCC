@@ -127,5 +127,6 @@ CREATE TABLE
 INSERT INTO estado_emprestimos values 
     (default, 'pendente'),
     (default, 'atrasado'),
-    (default, 'restituido')
+    (default, 'restituido'),
+    (default, 'extraviado')
     ;
