@@ -19,7 +19,7 @@ export default function LibrarianMenu(props) {
 	setPath(useLocation().pathname)
 
 	return (<div className={`flex flex-nowrap w-screen`}>
-		<aside className="h-screen w-[16vw] flex flex-col p-6 gap-2 justify-between  rounded-r-xl">
+		<aside className="h-screen w-[14rem] flex flex-col p-6 gap-2 justify-between  rounded-r-xl">
 			<section className="flex flex-col mt-3">
 				<p className="menu__user-info font-bold text-2xl p-0">
 					{librarian}
@@ -39,6 +39,7 @@ export default function LibrarianMenu(props) {
 								svgPath={<path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />}
 							/>
 						</li>
+						<hr/>
 						<li>
 							<NewMenuLink
 								path={path}
@@ -49,6 +50,7 @@ export default function LibrarianMenu(props) {
 								}
 							/>
 						</li>
+						<hr/>
 						<li>
 							<NewMenuLink
 								path={path}
@@ -61,6 +63,7 @@ export default function LibrarianMenu(props) {
 								}
 							/>
 						</li>
+						<hr/>
 						<li>
 							<NewMenuLink
 								path={path}

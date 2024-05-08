@@ -51,8 +51,8 @@ export default function LibrarianLoan() {
             title: "O Pequeno Príncipe",
             author: "Antoine de Saint-Exupéry",
             loanDate: "14/02/24",
-			loanPeriod: "15",
-			situation: "Atrasado"
+            loanPeriod: "15",
+            situation: "Atrasado"
         }
     ]
 
@@ -89,9 +89,13 @@ export default function LibrarianLoan() {
 
     function handleDevolution(e) {
         e.preventDefault()
-        
+
         setHasRequestedDevolution(true)
         setIsRequesting(true)
+
+        setTimeout( () => {
+            setIsRequesting(false)
+        },1000)
     }
 
     const theme = createTheme({
@@ -285,75 +289,116 @@ export default function LibrarianLoan() {
                     Identifique o aluno
                 </p>
 
-                
+
                 <form onSubmit={(e) => handleDevolution(e)}>
-                <div className="flex flex-nowrap justify-between gap-5">
-                    <div>
-                        <span class="flex gap-7 w-full items-center justify-start my-3">
-                            <label className="input-label w-[5rem]">
-                                RM
-                            </label>
+                    <div className="flex flex-nowrap justify-between gap-5">
+                        <div>
+                            <span class="flex gap-7 w-full items-center justify-start my-3">
+                                <label className="input-label w-[5rem]">
+                                    RM
+                                </label>
 
-                            <TextField
-                                placeholder="RM"
-                                value={formData.RM}
-                                inputProps={{ maxLength: 6 }}
-                                onBlur={() => searchForStudentByRM(formData.RM)}
-                                onKeyDown={(e) => {
-                                    onKeyDownRM(e)
-                                }} onChange={e => {
-                                    setFormData({ ...formData, RM: e.target.value })
-                                }}
-                                required
-                                style={{ width: 200 }}
-                                className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
+                                <TextField
+                                    placeholder="RM"
+                                    value={formData.RM}
+                                    inputProps={{ maxLength: 6 }}
+                                    onBlur={() => searchForStudentByRM(formData.RM)}
+                                    onKeyDown={(e) => {
+                                        onKeyDownRM(e)
+                                    }} onChange={e => {
+                                        setFormData({ ...formData, RM: e.target.value })
+                                    }}
+                                    required
+                                    style={{ width: 200 }}
+                                    className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
 
-                            />
-                        </span>
-                        <span class="flex gap-7 w-full items-center justify-between my-3">
-                            <label className="input-label w-[5rem]">
-                                Nome
-                            </label>
-                            <TextField
-                                placeholder="Nome"
-                                value={formData.name} onBlur={() => searchForBookByCode(formData.name)} onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                readOnly
-                                disabled
-                                multiline
-                                required
-                                style={{ width: 300 }}
-                                rows={2}
-                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                                />
+                            </span>
+                            <span class="flex gap-7 w-full items-center justify-between my-3">
+                                <label className="input-label w-[5rem]">
+                                    Nome
+                                </label>
+                                <TextField
+                                    placeholder="Nome"
+                                    value={formData.name} onBlur={() => searchForBookByCode(formData.name)} onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                    readOnly
+                                    disabled
+                                    multiline
+                                    required
+                                    style={{ width: 300 }}
+                                    rows={2}
+                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
 
-                            />
-                        </span>
-                    </div>
-                    <div className="flex items-center gap-3 m-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#62AD47" className="w-12 h-12">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z" />
-                        </svg>
+                                />
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-3 m-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#62AD47" className="w-12 h-12">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z" />
+                            </svg>
 
-                        <div className="flex flex-col">
-                            <p className="text-[#62AD47] text-base">
-                                Bibliotecário(a),
-                            </p>
-                            <h3 className="text-[#62AD47] font-bold text-lg">
-                                Exija a comprovação do aluno! <br />
-                                (Carteirinha ou Identidade)
-                            </h3>
+                            <div className="flex flex-col">
+                                <p className="text-[#62AD47] text-base">
+                                    Bibliotecário(a),
+                                </p>
+                                <h3 className="text-[#62AD47] font-bold text-lg">
+                                    Exija a comprovação do aluno! <br />
+                                    (Carteirinha ou Identidade)
+                                </h3>
 
+                            </div>
                         </div>
                     </div>
-                </div>
-                <button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" type="submit">
-                    Buscar por livros emprestados
-                </button>
+                    <button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" type="submit">
+                        Buscar por livros emprestados
+                    </button>
                 </form>
 
 
                 {
-                    hasRequestedDevolution? <DevolutionBooksContainer isRequesting={isRequesting} devolutionBooks={devolutionBooks} /> : ""
+                    hasRequestedDevolution ? <DevolutionBooksContainer isRequesting={isRequesting} devolutionBooks={devolutionBooks} /> : ""
                 }
+
+                {/* Open the modal using document.getElementById('ID').showModal() method */}
+                <button className="btn" onClick={() => document.getElementById('modal_success').showModal()}>open modal</button>
+                <dialog id="modal_success" className="modal ">
+                    <div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+
+                        <div>
+                            <h3 className="font-bold text-3xl ">Jão!</h3>
+                            <p className="py-4">Devolução realizada!</p>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn">Fechar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
+
+                <button className="btn" onClick={() => document.getElementById('modal_error').showModal()}>open modal</button>
+                <dialog id="modal_error" className="modal ">
+                    <div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                        </svg>
+
+                        <div>
+                            <h3 className="font-bold text-3xl text-slate-50">Jão!</h3>
+                            <p className="py-4 text-slate-50">Devolução realizada!</p>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn">Fechar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
 
 
             </>
