@@ -164,33 +164,33 @@ td {
   width: fit-content;
 }
 
-td.td-situation--first {
+.td-situation--first {
   border-top-right-radius: 0.75rem;
 }
 
-td.td-situation--last {
+.td-situation--last {
   border-bottom-right-radius: 0.75rem;
 }
 
-td.td-situation-green {
-  background-color: var(--main-green);
+.td-situation-green {
+  border: solid 1px var(--main-green);
   color: var(--white-bg);
 }
 
-td.td-situation-yellow {
-  background-color: var(--intense-yellow);
-  color: white;
+.td-situation-yellow {
+  border: solid 1px var(--intense-yellow);
+  color: var(--intense-yellow)
 }
 
-td.td-situation-red {
-  background-color: var(--main-red);
+.td-situation-red {
+  border: solid 1px var(--main-red);
   opacity: 0.8;
-  color: var(--white-bg);
+  color: var(--main-red)
 }
 
-td.td-situation-black {
-  background-color: #242424;
-  color: var(--white-bg);
+.td-situation-black {
+  border: solid 1px #242424;
+  color: #242424;
 }
 
 .easter-egg {

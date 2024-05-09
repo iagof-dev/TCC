@@ -53,7 +53,15 @@ export default function LibrarianLoan() {
             loanDate: "14/02/24",
             loanPeriod: "15",
             situation: "Atrasado"
-        }
+        },
+        {
+            code: 1,
+            title: "O Pequeno Príncipe",
+            author: "Antoine de Saint-Exupéry",
+            loanDate: "14/02/24",
+            loanPeriod: "15",
+            situation: "Pendente"
+        },
     ]
 
     function searchForBookByCode(code) {
@@ -97,7 +105,7 @@ export default function LibrarianLoan() {
             }
         });
 
-        if(!studentFound) studentNotFound()
+        if(!studentFound || formData.RM.length < 6) studentNotFound()
 
         
     }
@@ -125,7 +133,7 @@ export default function LibrarianLoan() {
 
     }
 
-    function handleDevolution(e) {
+    function handleDevolutionBooksRequest(e) {
         e.preventDefault()
 
         setHasRequestedDevolution(true)
@@ -368,7 +376,6 @@ export default function LibrarianLoan() {
                     </div>
                 </dialog>
 
-                <button className="btn" onClick={() => document.getElementById('modalLoanSuccess').showModal()}>open modal</button>
                 <dialog id="modalLoanSuccess" className="modal ">
                     <div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
@@ -404,7 +411,7 @@ export default function LibrarianLoan() {
                 </p>
 
 
-                <form onSubmit={(e) => handleDevolution(e)}>
+                <form onSubmit={(e) => handleDevolutionBooksRequest(e)}>
                     <div className="flex flex-nowrap justify-between gap-5">
                         <div>
                             <span class="flex gap-7 w-full items-center justify-start my-3">
@@ -473,8 +480,6 @@ export default function LibrarianLoan() {
                     hasRequestedDevolution ? <DevolutionBooksContainer isRequesting={isRequesting} devolutionBooks={devolutionBooks} /> : ""
                 }
 
-                {/* Open the modal using document.getElementById('ID').showModal() method */}
-                <button className="btn" onClick={() => document.getElementById('modal_success').showModal()}>open modal</button>
                 <dialog id="modal_success" className="modal ">
                     <div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
@@ -493,7 +498,6 @@ export default function LibrarianLoan() {
                     </div>
                 </dialog>
 
-                <button className="btn" onClick={() => document.getElementById('modal_error').showModal()}>open modal</button>
                 <dialog id="modal_error" className="modal ">
                     <div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
@@ -506,6 +510,24 @@ export default function LibrarianLoan() {
                             <div className="modal-action">
                                 <form method="dialog">
                                     {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn">Fechar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
+
+                <dialog id="modalRMError" className="modal ">
+                    <div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                        </svg>
+
+                        <div>
+                            <h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+                            <p className="py-4 text-slate-50">Verifique se o RM está preenchido corretamente!</p>
+                            <div className="modal-action">
+                                <form method="dialog">
                                     <button className="btn">Fechar</button>
                                 </form>
                             </div>
