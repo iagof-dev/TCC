@@ -20,25 +20,25 @@ function App() {
 	const [librarian, setLibrarian] = useState("")
 
 	//Student Application
-	// return (
-	// 	<BrowserRouter>
+	return (
+		<BrowserRouter>
 
 
-	// 		<Routes>
-	// 			<Route path='/' element={<StudentLogin setPath={setPath} userInfo={userInfo} setUserInfo={setUserInfo} />} />
+			<Routes>
+				<Route path='/' element={<StudentLogin setPath={setPath} userInfo={userInfo} setUserInfo={setUserInfo} />} />
 
-	// 			<Route path='/studentMenu' element={<StudentLayout setPath={setPath} path={path}  userInfo={userInfo} setUserInfo={setUserInfo}/>}>
+				<Route path='/studentMenu' element={<StudentLayout setPath={setPath} path={path}  userInfo={userInfo} setUserInfo={setUserInfo}/>}>
 
-	// 				<Route path="/studentMenu/studentList" element={<List setPath={setPath} path={path} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
+					<Route path="/studentMenu/studentList" element={<List setPath={setPath} path={path} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
 
-	// 				<Route path="/studentMenu/studentSearch" element={<Search setPath={setPath} path={path} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
+					<Route path="/studentMenu/studentSearch" element={<Search setPath={setPath} path={path} userInfo={userInfo} setUserInfo={setUserInfo}/>}/>
 
-	// 			</Route>
+				</Route>
 
-	// 		</Routes>
+			</Routes>
 
-	// 	</BrowserRouter>
-	// );
+		</BrowserRouter>
+	);
 
 
 	//Librarian Application

@@ -86,7 +86,7 @@ export default function LibrarianLoan() {
 
     function studentNotFound(){
         document.getElementById('modalRMError').showModal()
-        setFormData({...formData, RM: "", name: ""})
+        setFormData({...formData, name: ""})
     }
 
     function bookNotFound(){

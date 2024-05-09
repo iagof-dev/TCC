@@ -1,46 +1,51 @@
 import { useEffect, useState } from "react"
+import { json } from "react-router-dom"
 
 export default function List(props) {
 	const { setPath, path, userInfo } = { ...props }
 
 	//Após o fetch
 	const [booksHistory, setBookHistory] = useState([
-		{
-			title: "Quincas Borba",
-			code: "ABCD1234",
-			author: "Machado de Assis",
-			loanDate: "14/06/24",
-			loanPeriod: "15",
-			rating: 4,
-			situation: "Devolvido"
-		},
-		{
-			title: "Java para Leigos",
-			author: "Barry A. Burd",
-			code: "WWRE4563",
-			loanDate: "14/02/24",
-			loanPeriod: "15",
-			rating: 1,
-			situation: "Pendente"
-		},
-		{
-			title: "Java para Leigos",
-			author: "Barry A. Burd",
-			code: "FYTM5467",
-			loanDate: "14/02/24",
-			loanPeriod: "15",
-			rating: 2,
-			situation: "Atrasado"
-		},
-		{
-			title: "Java para Leigos",
-			author: "Barry A. Burd",
-			code: "FYTM5467",
-			loanDate: "14/02/24",
-			loanPeriod: "15",
-			rating: 2,
-			situation: "Perdido"
-		},
+// 		{
+// 			titulo: "Quincas Borba",
+// 			code: "ABCD1234",
+// 			autor: "Machado de Assis",
+// 			data_aluguel
+// : "14/06/24",
+// 			loanPeriod: "15",
+// 			rating: 4,
+// 			situation: "Devolvido"
+// 		},
+// 		{
+// 			titulo: "Java para Leigos",
+// 			autor: "Barry A. Burd",
+// 			code: "WWRE4563",
+// 			data_aluguel
+// : "14/02/24",
+// 			loanPeriod: "15",
+// 			rating: 1,
+// 			situation: "Pendente"
+// 		},
+// 		{
+// 			titulo: "Java para Leigos",
+// 			autor: "Barry A. Burd",
+// 			code: "FYTM5467",
+// 			data_aluguel
+// : "14/02/24",
+// 			loanPeriod: "15",
+// 			rating: 2,
+// 			situation: "Atrasado"
+// 		},
+// 		{
+// 			titulo: "Java para Leigos",
+// 			autor: "Barry A. Burd",
+// 			code: "FYTM5467",
+// 			data_aluguel
+// : "14/02/24",
+// 			loanPeriod: "15",
+// 			rating: 2,
+// 			situation: "Perdido"
+// 		},
 
 	])
 
@@ -74,8 +79,31 @@ export default function List(props) {
 	}
 
 	useEffect(() => {
+		fetch("https://marciossupiais.shop/emprestimos/listar").then(res => res.json()).then(data => {
+			setBookHistory(data.DATA)
+			console.log(data);
+		})
+	}, [])
+
+	useEffect(() => {
 		setHasRatingsBeenChanged(JSON.stringify(DOMRatingValues) != JSON.stringify(previousRatings))
 	}, [DOMRatingValues])
+
+	function dataConvert(dataString) {
+
+		if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(dataString)) {
+		  throw new Error('Data inválida no formato YYYY-MM-DD');
+		}
+	  
+		// Separa os componentes da data
+		const partes = dataString.split('-');
+		const ano = partes[0];
+		const mes = partes[1].padStart(2, '0'); // Preenche com zeros à esquerda se necessário
+		const dia = partes[2].padStart(2, '0');
+	  
+		return `${dia}/${mes}/${ano}`;
+	  }
+	  
 
 
 	return (
@@ -141,10 +169,10 @@ export default function List(props) {
 							return (
 								<tr className={` ${i == 0 ? "tr--first" : ""} ${i == booksHistory.length - 1 ? "tr--last" : ""}`}>
 									<th>{booksHistory.length - i}</th>
-									<td>{b.title}</td>
-									<td>{b.author}</td>
-									<td>{b.loanDate}</td>
-									<td>{b.loanPeriod}</td>
+									<td>{b.titulo}</td>
+									<td>{b.autor}</td>
+									<td>{b.data_aluguel}</td>
+									<td>{dataConvert(b.loanPeriod)}</td>
 									<td>
 
 											<div className="rating">
