@@ -4,4 +4,8 @@
 
 [Documentação](https://n3rdy.gitbook.io/sistema-gerenciamento-da-biblioteca-api-tcc/)
 
-90% finalizada.
+
+
+
+
+[Backup Documentação](https://web.archive.org/web/20240509220916/https://n3rdy.gitbook.io/sistema-gerenciamento-da-biblioteca-api-tcc)
