@@ -61,7 +61,7 @@ export default function DevolutionBooksContainer(props) {
                             <button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg">
                                 Devolver
                             </button>
-                            <button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-slate-400 text-slate-50">
+                            <button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-slate-900 text-slate-50">
                                 Relatar <br/>
                                 perda
                             </button>

@@ -68,22 +68,60 @@ export default function LibrarianLoan() {
             }
         })
 
-        if (!hasFoundTheBook) setFormData({ ...formData, title: "" })
+        if (!hasFoundTheBook) {
+            setFormData({ ...formData, title: "", code: "" })
+            bookNotFound()
+        }
 
 
+    }
+
+    function studentNotFound(){
+        document.getElementById('modalRMError').showModal()
+        setFormData({...formData, RM: "", name: ""})
+    }
+
+    function bookNotFound(){
+        document.getElementById('modalBookError').showModal()
+        setFormData({...formData, code: "", title: ""})
     }
 
     function searchForStudentByRM(RM) {
         if (RM.length < 6) return
+        let studentFound = false
 
         students.forEach(student => {
-            if (student.RM == RM) setFormData({ ...formData, name: student.name })
+            if (student.RM == RM) {
+                setFormData({ ...formData, name: student.name })
+                studentFound = true
+            }
         });
+
+        if(!studentFound) studentNotFound()
+
+        
     }
 
     function handleLoan(e) {
+        setIsRequesting(true)
         e.preventDefault()
         //API: post empréstimo
+    
+        setTimeout(() => {
+            
+
+            document.getElementById('modalLoanSuccess').showModal()
+            setFormData({
+                code: 0,
+                title: "",
+                RM: "",
+                name: "",
+                time: 2
+            })
+            setIsRequesting(false)
+        },1000)
+
+        
 
     }
 
@@ -269,9 +307,85 @@ export default function LibrarianLoan() {
                     </span>
 
                     <button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" type="submit" onSubmit={(e) => handleLoan(e)}>
-                        Registrar empréstimo
+                        {isRequesting? <span className="loading m-auto loading-spinner loading-lg"></span>: "Registrar empréstimo"}
                     </button>
                 </form>
+
+                <dialog id="modalRMError" className="modal ">
+                    <div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                        </svg>
+
+                        <div>
+                            <h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+                            <p className="py-4 text-slate-50">Verifique se o RM está preenchido corretamente!</p>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn">Fechar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
+
+                <dialog id="modalBookError" className="modal ">
+                    <div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                        </svg>
+
+                        <div>
+                            <h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+                            <p className="py-4 text-slate-50">Verifique se o código de livro está preenchido corretamente!</p>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn">Fechar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
+
+                <dialog id="modalEmptyError" className="modal ">
+                    <div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                        </svg>
+
+                        <div>
+                            <h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+                            <p className="py-4 text-slate-50">Verifique se há algum campo vazio!</p>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn">Fechar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
+
+                <button className="btn" onClick={() => document.getElementById('modalLoanSuccess').showModal()}>open modal</button>
+                <dialog id="modalLoanSuccess" className="modal ">
+                    <div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+
+                        <div>
+                            <h3 className="font-bold text-3xl ">Sucesso!</h3>
+                            <p className="py-4">Empréstimo realizado!</p>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    <button className="btn">Fechar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
 
             </>
         )
@@ -372,7 +486,6 @@ export default function LibrarianLoan() {
                             <p className="py-4">Devolução realizada!</p>
                             <div className="modal-action">
                                 <form method="dialog">
-                                    {/* if there is a button in form, it will close the modal */}
                                     <button className="btn">Fechar</button>
                                 </form>
                             </div>
