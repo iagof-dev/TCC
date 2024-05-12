@@ -63,5 +63,7 @@ INSERT INTO estado_emprestimos values
     (default, 'pendente'),
     (default, 'atrasado'),
     (default, 'restituido'),
-    (default, 'extraviado')
+    (default, 'perdido'),
+    (default, 'danificado'),
+    (default, 'renovado')
     ;
