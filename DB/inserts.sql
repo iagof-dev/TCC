@@ -58,3 +58,10 @@ INSERT INTO avaliacoes (id_livro, rm_aluno, avaliacao) VALUES
 (1, 2210001, 4.5),
 (1, 2210002, 5.0),
 (1, 2210002, 2.0);
+
+INSERT INTO estado_emprestimos values 
+    (default, 'pendente'),
+    (default, 'atrasado'),
+    (default, 'restituido'),
+    (default, 'extraviado')
+    ;
