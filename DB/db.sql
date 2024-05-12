@@ -69,7 +69,7 @@ CREATE TABLE
         id_livro INT NOT NULL REFERENCES livros (id),
         data_aluguel DATE NOT NULL,
         data_devolucao DATE NOT NULL,
-        id_status_livro INT(2) NOT NULL,
+        id_status INT(2) NOT NULL REFERENCES status(id),
         prazo INT NOT NULL
     );
 
@@ -119,7 +119,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    IF NOT EXISTS estado_emprestimos (
+    IF NOT EXISTS status (
     id INT AUTO_INCREMENT PRIMARY KEY, 
-    nome TINYTEXT
+    estado VARCHAR(120)
     );
