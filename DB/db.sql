@@ -69,7 +69,7 @@ CREATE TABLE
         id_livro INT NOT NULL REFERENCES livros (id),
         data_aluguel DATE NOT NULL,
         data_devolucao DATE NOT NULL,
-        id_status INT(2) NOT NULL REFERENCES status(id),
+        status_livro TINYTEXT NOT NULL,
         prazo INT NOT NULL
     );
 
@@ -118,8 +118,4 @@ CREATE TABLE
         avaliacao float NOT NULL
     );
 
-CREATE TABLE
-    IF NOT EXISTS status (
-    id INT AUTO_INCREMENT PRIMARY KEY, 
-    estado VARCHAR(120)
-    );
+
