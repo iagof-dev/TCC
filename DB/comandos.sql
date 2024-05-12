@@ -1,7 +1,3 @@
-----------------------------------------------------------------------------
--- INSERTS DE EXEMPLOS PARA TESTE DA API --
--- 100% ATUALIZADO, É RUIM DE ATURAR, VIROU MODA E TODO MUNDO QUER TESTAR --
-----------------------------------------------------------------------------
 
 -- ALUNOS
 SELECT
