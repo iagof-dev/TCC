@@ -123,10 +123,3 @@ CREATE TABLE
     id INT AUTO_INCREMENT PRIMARY KEY, 
     nome TINYTEXT
     );
-
-INSERT INTO estado_emprestimos values 
-    (default, 'pendente'),
-    (default, 'atrasado'),
-    (default, 'restituido'),
-    (default, 'extraviado')
-    ;
