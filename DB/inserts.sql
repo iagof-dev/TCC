@@ -12,9 +12,9 @@ INSERT INTO cursos (ano, curso, periodo) VALUES
 
 
 INSERT INTO alunos (rm, nome, id_curso, telefone) VALUES
-(2210001, 'João Silva', 1, '12345678901'),
-(2210002, 'Maria Santos', 2, '23456789012'),
-(2210003, 'Carlos Pereira', 3, '34567890123');
+(221001, 'João Silva', 1, '12345678901'),
+(221002, 'Maria Santos', 2, '23456789012'),
+(221003, 'Carlos Pereira', 3, '34567890123');
 
 INSERT INTO bibliotecarias (nome) VALUES
 ('Ana Beatriz'),
