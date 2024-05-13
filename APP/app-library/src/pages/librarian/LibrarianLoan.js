@@ -113,7 +113,7 @@ export default function LibrarianLoan() {
     function handleLoan(e) {
         setIsRequesting(true)
         e.preventDefault()
-        //API: post empréstimo
+        //Api: post empréstimo
     
         setTimeout(() => {
             

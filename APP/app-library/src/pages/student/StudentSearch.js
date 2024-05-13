@@ -47,7 +47,7 @@ export default function Search(props) {
 	function handleSearch(e) {
 		e.preventDefault()
 
-		//Busca dos livros pela API
+		//Busca dos livros pela Api
 
 		setFormData({ ...formData, tags: selectedCategories })
 

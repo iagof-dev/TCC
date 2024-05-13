@@ -16,7 +16,7 @@ import LibrarianLoan from "./pages/librarian/LibrarianLoan";
 
 function App() {
 	const [path, setPath] = useState('')
-	const [userInfo, setUserInfo] = useState({ name: "João Mais ou Menos", RM: "123455", course: "2º Mecatrônica" })
+	const [userInfo, setUserInfo] = useState({ name: "João Mais ou Menos", RM: 123455, course: "2º Mecatrônica" })
 	const [librarian, setLibrarian] = useState("")
 
 	//Student Application

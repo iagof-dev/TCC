@@ -67,12 +67,8 @@ export default function Book(props) {
 						{/* add "ver mais" */}
 						{synopsis.length >= 150 ? (
 							<>
-								{`${synopsis.slice(0, 150)}...`}
-
-								<a className="cursor-pointer">
-									ver mais
-								</a></>
-
+								{`${synopsis.slice(0, 180)}...`}
+							</>
 						) : synopsis}
 					</p>
 					<div className="flex flex-col justify-center">

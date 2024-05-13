@@ -28,7 +28,7 @@ export default function StudentLogin(props) {
 
 	}
 
-	async function testAPI() {
+	async function testApi() {
 
 		setIsSubmitting(true)
 
@@ -55,7 +55,7 @@ export default function StudentLogin(props) {
 		
 		e.preventDefault()
 
-		testAPI()
+		testApi()
 
 	}
 

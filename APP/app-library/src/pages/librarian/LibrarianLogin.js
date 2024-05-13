@@ -39,7 +39,7 @@ export default function LibrarianLogin(props) {
 
     function handleLoginSubmit(e) {
         e.preventDefault()
-        // testAPI()
+        // testApi()
     }
 
     useEffect(() => {

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
 import { json } from "react-router-dom"
+import {Api} from '../../Api'
 
 export default function List(props) {
 	const { setPath, path, userInfo } = { ...props }
 
 	//Após o fetch
-	const [booksHistory, setBookHistory] = useState([
+	const [booksHistory, setBookHistory] = useState()
 // 		{
 // 			titulo: "Quincas Borba",
 // 			code: "ABCD1234",
@@ -47,11 +48,10 @@ export default function List(props) {
 // 			situation: "Perdido"
 // 		},
 
-	])
 
 	let previousRatings = []
 
-	booksHistory.map((b) => {
+	if (Array.isArray(booksHistory)) booksHistory.map((b) => {
 		previousRatings.push(b.rating)
 	})
 
@@ -79,32 +79,19 @@ export default function List(props) {
 	}
 
 	useEffect(() => {
-		fetch("https://marciossupiais.shop/emprestimos/listar").then(res => res.json()).then(data => {
-			setBookHistory(data.DATA)
-			console.log(data);
-		})
+		getBooks()
 	}, [])
+
+	async function getBooks(){
+		console.log(Api);
+
+		const data = await Api.getBooksByRM(userInfo.RM)
+		setBookHistory(data)
+	}
 
 	useEffect(() => {
 		setHasRatingsBeenChanged(JSON.stringify(DOMRatingValues) != JSON.stringify(previousRatings))
 	}, [DOMRatingValues])
-
-	function dataConvert(dataString) {
-
-		if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(dataString)) {
-		  throw new Error('Data inválida no formato YYYY-MM-DD');
-		}
-	  
-		// Separa os componentes da data
-		const partes = dataString.split('-');
-		const ano = partes[0];
-		const mes = partes[1].padStart(2, '0'); // Preenche com zeros à esquerda se necessário
-		const dia = partes[2].padStart(2, '0');
-	  
-		return `${dia}/${mes}/${ano}`;
-	  }
-	  
-
 
 	return (
 
@@ -112,9 +99,7 @@ export default function List(props) {
 			<h1 className="pb-5 text-3xl">
 				Bem-vindo(a), {userInfo.name}!
 			</h1>
-
-			<input type="radio" className="mask mask-star"/>
-
+			
 			<span className="flex flex-nowrap w-full justify-between items-center mb-4">
 				<h2>
 					📚 Leituras anteriores, pendentes e atrasadas
@@ -129,7 +114,8 @@ export default function List(props) {
 					</button> : ""
 				}
 			</span>
-			<div className="table-wrapper overflow-x-auto overflow-y-scroll w-fit h-[20rem]">
+
+			{Array.isArray(booksHistory)? <div className="table-wrapper overflow-x-auto overflow-y-scroll w-fit h-[20rem]">
 				<table className="table w-fit">
 					{/* head */}
 					<thead>
@@ -148,20 +134,20 @@ export default function List(props) {
 							let situationColor = ""
 
 
-							switch (b.situation) {
-								case "Devolvido":
+							switch (b.estado) {
+								case "devolvido":
 									situationColor = "green"
 									break
 
-								case "Pendente":
+								case "pendente":
 									situationColor = "yellow"
 									break
 
-								case "Atrasado":
+								case "atrasado":
 									situationColor = "red"
 									break
 
-								case "Perdido":
+								case "perdido":
 									situationColor = "black"
 									break
 							}
@@ -172,7 +158,7 @@ export default function List(props) {
 									<td>{b.titulo}</td>
 									<td>{b.autor}</td>
 									<td>{b.data_aluguel}</td>
-									<td>{dataConvert(b.loanPeriod)}</td>
+									<td>{b.loanPeriod}</td>
 									<td>
 
 											<div className="rating">
@@ -196,14 +182,15 @@ export default function List(props) {
 									</td>
 									<td className={`td-situation td-situation-${situationColor} `
 										// + `${i == 0? "td-situation--first" : ""} ${i == booksHistory.length-1? "td-situation--last" : ""}`
-									}>{b.situation} </td>
+									}>{b.estado[0].toUpperCase() + b.estado.slice(1)} </td>
 								</tr>
 							)
 						})}
 
 					</tbody>
 				</table>
-			</div>
+			</div> : <span className="m-auto loading loading-spinner loading-xl"></span>}
+			
 
 		</>
 
