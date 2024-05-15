@@ -4,6 +4,7 @@ import { useState } from "react"
 import { LoginErrorDialog } from "../../components/LoginErrorDialog"
 import { onKeyDownRM } from "../miscellaneous"
 import { TextField, ThemeProvider, createTheme } from "@mui/material"
+import { Api } from "../../api"
 
 
 export default function StudentLogin(props) {
@@ -28,34 +29,24 @@ export default function StudentLogin(props) {
 
 	}
 
-	async function testApi() {
-
-		setIsSubmitting(true)
-
-		await fetch("https://jsonplaceholder.typicode.com/users").then(res => {
-			res.json()
-			
-			if(RM.length != 6) {
-				throw "não deu bom"
-			} else {
-				setUserInfo({...userInfo, RM: RM})
-				navigate('/studentMenu/studentList')
-			}
-			
-		}).catch(e => {
-			setLoginError(e)
-			setIsLoginOpen(true)
-			setIsSubmitting(false)
-		})
-
-
-	}
-
-	function handleLoginSubmit(e) {
+	async function handleLoginSubmit(e) {
 		
 		e.preventDefault()
+		setIsSubmitting(true)
 
-		testApi()
+		const [status, data] = await Api.getStudentByRM(RM)
+		const student = data[0]
+
+		if(status != "success") {
+			setIsLoginOpen(true)
+			setIsSubmitting(false)
+			return
+		}
+
+		setUserInfo(student)
+
+		navigate('/studentMenu/studentList')
+		
 
 	}
 
@@ -79,20 +70,20 @@ export default function StudentLogin(props) {
 					<span className="gap-5 flex items-center">
 						<label className="mr-10 text-lg">RM:</label>
 
-									<TextField
-                                        placeholder="RM"
-                                        value={RM}
-                                        inputProps={{ maxLength: 6 }}
-                                        onKeyDown={(e) => {
-                                            onKeyDownRM(e)
-                                        }} onChange={e => {
-                                            setRM(e.target.value)
-                                        }}
-                                        required
-                                        style={{ width: 200 }}
-                                        className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
+							<TextField
+								placeholder="RM"
+								value={RM}
+								inputProps={{ maxLength: 6 }}
+								onKeyDown={(e) => {
+									onKeyDownRM(e)
+								}} onChange={e => {
+									setRM(e.target.value)
+								}}
+								required
+								style={{ width: 200 }}
+								className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
 
-                                    />
+							/>
 					</span>
 
 					<button className="button no-wrap align-center mx-2 w-full py-2 px-4 rounded text-lg" type="submit">

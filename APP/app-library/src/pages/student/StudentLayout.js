@@ -1,5 +1,5 @@
 import { BrowserRouter, Outlet, Route, useLocation } from "react-router-dom";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Container from '../../components/Container'
 import MenuLink from "../../components/MenuLink";
 import QuitDialog from '../../components/QuitDialog'
@@ -24,11 +24,11 @@ export default function StudentLayout(props) {
 		<aside className="h-screen w-[18vw] flex flex-col p-6 gap-2 justify-between  rounded-r-xl">
 			<section className="flex flex-col mt-3">
 				<p className="menu__user-info font-bold text-2xl m-0 p-0">
-					{userInfo.name}
+					{userInfo.nome}
 				</p>
 				<p className="menu__user-info text-lg pb-4">
-					{userInfo.course} <br />
-					RM: {userInfo.RM}
+					{userInfo.curso} <br />
+					RM: {userInfo.rm}
 				</p>
 
 				<div className="menu flex flex-col flex-nowrap gap-5 m-0 p-0">

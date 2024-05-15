@@ -6,18 +6,20 @@ import { LoginErrorDialog } from "../../components/LoginErrorDialog"
 import Autocomplete from '@mui/material/Autocomplete';
 import Select from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem"
+import { Api } from "../../api"
 
 export default function LibrarianLogin(props) {
     const { setPath, librarian, setLibrarian } = { ...props }
 
     const [loginNames, setLoginNames] = useState(["Silvana", "Gil", "Maria Ivone"])
-    
+
     const [isSubmitting, setIsSubmitting] = useState(false)
 
     const [loginError, setLoginError] = useState("")
     const [isLoginOpen, setIsLoginOpen] = useState(false)
 
     const [loginInputValue, setLoginInputValue] = useState("")
+    const [showAddNewLibrarian, setShowAddNewLibrarian] = useState(false)
 
     const navigate = useNavigate()
 
@@ -26,14 +28,13 @@ export default function LibrarianLogin(props) {
     // Remover quando terminar
     // navigate("/menu")
 
-    function handleLogin(){
+    function handleLogin() {
         setLibrarian(loginInputValue)
-        if(loginInputValue == ''){
-			setIsLoginOpen(true)
-			setIsSubmitting(false)
+        if (loginInputValue == '') {
+            setIsLoginOpen(true)
+            setIsSubmitting(false)
             return
         }
-        console.log(`LOGIN: ${librarian}`);
         navigate("/librarianMenu/librarianLoan")
     }
 
@@ -42,8 +43,25 @@ export default function LibrarianLogin(props) {
         // testApi()
     }
 
+    function goToMenu(){
+        navigate("/librarianMenu/librarianLoan")
+    }
+
+    async function addNewLibrarian(){
+        await Api.addNewLibrarian(librarian)
+        goToMenu()
+    }
+
     useEffect(() => {
-        //buscar pelo nome de todos os bibliotecários
+        let librarians
+        async function getAllLibrarians() {
+            librarians = await Api.getAllLibrarians()
+            //iterar sobre librarians e settar só o nome
+        }
+
+        getAllLibrarians()
+       
+        
     }, [])
 
     return (
@@ -55,22 +73,53 @@ export default function LibrarianLogin(props) {
                     <span className="gap-5 flex items-center w-full">
                         <label className="mr-10 text-lg">Nome:</label>
                         <Select
-                                labelId="demo-simple-select-standard-label"
-                                id="demo-simple-select-standard"
-                                fullWidth
-                                value={loginInputValue}
-                                onChange={(v) => {
-                                    console.log(v);
-                                    setLoginInputValue(v.target.value)
-                                }}>
-                                {
-                                    loginNames.map(name => {
-                                        return <MenuItem value={name}>{name}</MenuItem>
-                                    })
-                                }</Select>
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard"
+                            fullWidth
+                            value={loginInputValue}
+                            onChange={(v) => {
+                                console.log(v);
+                                setLoginInputValue(v.target.value)
+                            }}>
+                            {
+                                loginNames.map(name => {
+                                    return <MenuItem value={name}>{name}</MenuItem>
+                                })
+                            }</Select>
 
-                       
+
                     </span>
+
+                    {
+                        showAddNewLibrarian == true ?
+
+                            <>
+                                <TextField
+                                    placeholder="Nome"
+                                    value={librarian}
+                                    onChange={e => {
+                                        setLibrarian(e.target.value)
+                                    }}
+                                    style={{ width: 350 }}
+                                    className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
+
+                                />
+
+                                <button className="button no-wrap align-center mx-2 w-full py-2 px-4 rounded marker:text-lg" onClick={() => addNewLibrarian()}>
+                                    Adicionar bibliotecário(a)
+                                </button>
+                                
+                                <hr/>
+
+                                </>
+
+                                
+
+
+                            : <a className="cursor-pointer underline" onClick={() => setShowAddNewLibrarian(true)}>
+                                É novo(a)? adicione seu nome aqui.
+                            </a>
+                    }
 
                     <button className="button no-wrap align-center mx-2 w-full py-2 px-4 rounded text-lg" type="submit" onClick={handleLogin}>
                         {!isSubmitting ? "Entrar" : <span className="loading loading-spinner loading-md"></span>}
