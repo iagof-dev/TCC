@@ -19,7 +19,7 @@ export default function LibrarianLogin(props) {
     const [isLoginOpen, setIsLoginOpen] = useState(false)
 
     const [loginInputValue, setLoginInputValue] = useState("")
-    const [showAddNewLibrarian, setShowAddNewLibrarian] = useState(false)
+    const [showLibrarians, setShowLibrarians] = useState(false)
 
     const navigate = useNavigate()
 
@@ -48,15 +48,16 @@ export default function LibrarianLogin(props) {
     }
 
     async function addNewLibrarian(){
-        await Api.addNewLibrarian(librarian)
+        await Api.librarians.addNewLibrarian(librarian)
         goToMenu()
     }
 
     useEffect(() => {
-        let librarians
+        let data
         async function getAllLibrarians() {
-            librarians = await Api.getAllLibrarians()
-            //iterar sobre librarians e settar só o nome
+            data = await Api.librarians.getAllLibrarians()
+            const librarians = data.map(l => l.nome)
+            setLoginNames(librarians)
         }
 
         getAllLibrarians()
@@ -91,7 +92,7 @@ export default function LibrarianLogin(props) {
                     </span>
 
                     {
-                        showAddNewLibrarian == true ?
+                        showLibrarians == true ?
 
                             <>
                                 <TextField
@@ -116,7 +117,7 @@ export default function LibrarianLogin(props) {
                                 
 
 
-                            : <a className="cursor-pointer underline" onClick={() => setShowAddNewLibrarian(true)}>
+                            : <a className="cursor-pointer underline" onClick={() => setShowLibrarians(true)}>
                                 É novo(a)? adicione seu nome aqui.
                             </a>
                     }

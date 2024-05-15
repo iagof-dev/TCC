@@ -1,8 +1,9 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { Api } from "../../api"
 
 export default function LibrarianList(){
 
-    const [allLectures, setAllLectures] = useState([
+    const [lectures, setLectures] = useState([
         {
             student: "Fulano",
             RM: 165423,
@@ -18,6 +19,28 @@ export default function LibrarianList(){
             situation: "Atrasado"
         },
     ])
+
+    useEffect(() => {
+
+        async function addStudentName(rm){
+            const [status, student] = await Api.students.getStudentByRM(rm)
+            console.log(student[0].nome);
+            //Iterar sobre allLectures adicionando o nome do aluno
+        }
+
+        async function setAllLectures(){
+            const data = await Api.loans.getAllLoans()
+            setLectures(data)
+
+            await addStudentName(221001)
+        }
+
+        setAllLectures()
+        // async function setStudentsNames() {
+        //     Api.students.getStudentByRM(rm)
+        // }
+
+    }, [])
 
     return(
         <>
@@ -36,7 +59,7 @@ export default function LibrarianList(){
             </tr>
         </thead>
         <tbody className="">
-            {allLectures.map((b, i) => {
+            {lectures.map((b, i) => {
                 let situationColor = ""
 
 
@@ -51,8 +74,8 @@ export default function LibrarianList(){
                 }
 
                 return (
-                    <tr className={` ${i == 0 ? "tr--first" : ""} ${i == allLectures.length - 1 ? "tr--last" : ""}`}>
-                        <th>{allLectures.length - i}</th>
+                    <tr className={` ${i == 0 ? "tr--first" : ""} ${i == lectures.length - 1 ? "tr--last" : ""}`}>
+                        <th>{lectures.length - i}</th>
                         <td>{b.student}</td>
                         <td>{b.RM}</td>
                         <td>{b.title}</td>

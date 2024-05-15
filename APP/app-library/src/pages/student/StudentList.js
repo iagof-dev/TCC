@@ -85,7 +85,7 @@ export default function List(props) {
 	async function getBooks(){
 		console.log(Api);
 
-		const data = await Api.getBooksByRM(userInfo.RM)
+		const data = await Api.books.getBooksByRM(userInfo.RM)
 		setBookHistory(data)
 	}
 

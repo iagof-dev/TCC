@@ -34,7 +34,7 @@ export default function StudentLogin(props) {
 		e.preventDefault()
 		setIsSubmitting(true)
 
-		const [status, data] = await Api.getStudentByRM(RM)
+		const [status, data] = await Api.students.getStudentByRM(RM)
 		const student = data[0]
 
 		if(status != "success") {
