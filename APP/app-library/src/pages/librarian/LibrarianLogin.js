@@ -6,7 +6,7 @@ import { LoginErrorDialog } from "../../components/LoginErrorDialog"
 import Autocomplete from '@mui/material/Autocomplete';
 import Select from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem"
-import { Api } from "../../api"
+import { Api } from "../../Api"
 
 export default function LibrarianLogin(props) {
     const { setPath, librarian, setLibrarian } = { ...props }

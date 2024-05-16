@@ -1,16 +1,26 @@
 import { Box, Divider } from "@mui/material"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { dateConverter } from "../miscellaneous"
 
 export default function DevolutionBooksContainer(props) {
     const { isRequesting, devolutionBooks } = { ...props }
-
+    const [selectedBook, setSelectedBook] = useState({})
+    const [doesStudentHaveLoanedBooks, setDoesStudentHaveLoanedBooks] = useState(true)
     
     function handleBookDevolution(code){
-        
+        devolutionBooks.forEach(book => {
+            
+        });
+        document.getElementById('devolutionModal').showModal()
     }
 
     function handleBookLost(code){
+        document.getElementById('lostModal').showModal()
+    }
 
+    if(devolutionBooks == "Nenhum dado registrado!"){
+        console.log("deu ruim")
+        setDoesStudentHaveLoanedBooks(false)
     }
 
     return <section className='results-container p-1 mt-2 w-full flex flex-col no-wrap justify-start gap-5 items-center rounded-md min-h-[20vh] max-h-[60vh] overflow-y-scroll'>
@@ -38,16 +48,18 @@ export default function DevolutionBooksContainer(props) {
             </tr>
         </thead>
         <tbody className="">
+            
+
             {devolutionBooks.map((b, i) => {
                 let situationColor = ""
 
 
-                switch (b.situation) {
-                    case "Pendente":
+                switch (b.estado) {
+                    case "pendente":
                         situationColor = "yellow"
                         break
 
-                    case "Atrasado":
+                    case "atrasado":
                         situationColor = "red"
                         break
                 }
@@ -55,13 +67,13 @@ export default function DevolutionBooksContainer(props) {
                 return (
                     <tr className={` ${i == 0 ? "tr--first" : ""} ${i == devolutionBooks.length - 1 ? "tr--last" : ""}`}>
                         <th>{devolutionBooks.length - i}</th>
-                        <td>{b.title}</td>
-                        <td>{b.author}</td>
-                        <td>{b.loanDate}</td>
+                        <td>{b.titulo}</td>
+                        <td>{b.autor}</td>
+                        <td>{dateConverter(b.data_aluguel)}</td>
                         <td>{b.loanPeriod}</td>
                         <td className={`td-situation`
                             // + `${i == 0? "td-situation--first" : ""} ${i == booksHistory.length-1? "td-situation--last" : ""}`
-                        }><span className={`p-3 rounded td-situation-${situationColor}`}>{b.situation}</span> </td>
+                        }><span className={`p-3 rounded td-situation-${situationColor}`}>{b.estado[0].toUpperCase() + b.estado.slice(1)}</span> </td>
                         <td>
                             <p className="bg-slate-300 w-[2px] h-[2rem] rounded">
                             ‎ 
@@ -82,10 +94,27 @@ export default function DevolutionBooksContainer(props) {
         </tbody>
     </table>}
 
-    <button className="btn" onClick={()=>document.getElementById('my_modal_1').showModal()}>open modal</button>
-    <dialog id="my_modal_1" className="modal">
+    <dialog id="devolutionModal" className="modal">
     <div className="modal-box  w-full max-w-5xl">
         <h3 className="font-bold text-lg">Confirmar devolução</h3>
+        <p className="py-4">
+            {selectedBook.titulo}
+        </p>
+
+        <img src=""/>
+    
+        <div className="modal-action">
+        
+        <form method="dialog">
+            <button className="btn">Close</button>
+        </form>
+        </div>
+    </div>
+    </dialog>
+
+    <dialog id="lostModal" className="modal">
+    <div className="modal-box  w-full max-w-5xl">
+        <h3 className="font-bold text-lg">Confirmar perda</h3>
         <p className="py-4">Press ESC key or click the button below to close</p>
 
         <img src=""/>
@@ -98,6 +127,8 @@ export default function DevolutionBooksContainer(props) {
         </div>
     </div>
     </dialog>
+
+
 
     </section>
 

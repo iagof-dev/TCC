@@ -4,7 +4,7 @@ import { TextField } from "@mui/material"
 import { onKeyDownRM } from "../miscellaneous"
 import Info from "../../components/Info"
 import DevolutionBooksContainer from "./DevolutionBooksContainer"
-import { Api } from "../../api"
+import { Api } from "../../Api"
 
 export default function LibrarianLoan() {
     const [loanOrDevolution, setLoanOrDevolution] = useState(0)
@@ -37,7 +37,7 @@ export default function LibrarianLoan() {
 
     let bookTitles = books.map(b => b.titulo)
 
-    const devolutionBooks = [
+    const [devolutionBooks, setDevolutionBooks] = useState([
         {
             code: 1,
             title: "O Pequeno Príncipe",
@@ -54,7 +54,7 @@ export default function LibrarianLoan() {
             loanPeriod: "15",
             situation: "Pendente"
         },
-    ]
+    ])
 
     function searchForBookByCode(code) {
         if (!code) return
@@ -62,7 +62,7 @@ export default function LibrarianLoan() {
         let hasFoundTheBook = false
 
         books.forEach(book => {
-            if (book.code == code) {
+            if (book.codigo == code) {
                 setFormData({ ...formData, title: book.titulo, code: book.codigo })
                 hasFoundTheBook = true
             }
@@ -150,10 +150,16 @@ export default function LibrarianLoan() {
         setIsRequesting(true)
 
         const loanedBooks = await Api.loans.getLoansByRM(formData.RM)
-        console.log(loanedBooks)
-
         setTimeout( () => {
-            setIsRequesting(false)
+
+            if (loanedBooks.length > 0) {
+                setDevolutionBooks(loanedBooks)
+
+                setIsRequesting(false)
+            } else {
+                console.log('sem livros');
+            }
+            
         },1000)
     }
 
