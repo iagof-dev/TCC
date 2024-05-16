@@ -527,7 +527,6 @@ export default function LibrarianLoan() {
                             <p className="py-4 text-slate-50">Devolução realizada!</p>
                             <div className="modal-action">
                                 <form method="dialog">
-                                    {/* if there is a button in form, it will close the modal */}
                                     <button className="btn">Fechar</button>
                                 </form>
                             </div>
