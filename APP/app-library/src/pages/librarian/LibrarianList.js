@@ -1,95 +1,93 @@
 import { useEffect, useState } from "react"
 import { Api } from "../../api"
+import { ThemeProvider, createTheme } from "@mui/material"
 
-export default function LibrarianList(){
+export default function LibrarianList() {
 
-    const [lectures, setLectures] = useState([
-        {
-            student: "Fulano",
-            RM: 165423,
-            loanDate: "02/03/2024",
-            title: "Quincas Borba",
-            situation: "Pendente"
-        }, 
-        {
-            student: "Fulano",
-            RM: 165423,
-            loanDate: "02/03/2024",
-            title: "Quincas Borba",
-            situation: "Atrasado"
-        },
-    ])
+    const [lectures, setLectures] = useState([])
 
     useEffect(() => {
-
-        async function addStudentName(rm){
-            const [status, student] = await Api.students.getStudentByRM(rm)
-            console.log(student[0].nome);
-            //Iterar sobre allLectures adicionando o nome do aluno
-        }
-
-        async function setAllLectures(){
+        async function setAllLectures() {
             const data = await Api.loans.getAllLoans()
-            setLectures(data)
 
-            await addStudentName(221001)
+            setLectures(data)
+            console.log(data);
         }
 
         setAllLectures()
-        // async function setStudentsNames() {
-        //     Api.students.getStudentByRM(rm)
-        // }
 
     }, [])
 
-    return(
+    const theme = createTheme({
+        typography: {
+            fontFamily: [
+                'Figtree',
+            ].join(','),
+        },
+
+
+    });
+
+    return (
         <>
-        <h1 className="pb-5 text-3xl">
-            Listagem de empréstimos
-        </h1>
-        <table className="table w-fit">
-            <thead>
-            <tr>
-                <th></th>
-                <th>Aluno</th>
-                <th>RM</th>
-                <th>Título</th>
-                <th>Data de <br/> Empréstimo</th>
-                <th>Situação</th>
-            </tr>
-        </thead>
-        <tbody className="">
-            {lectures.map((b, i) => {
-                let situationColor = ""
+            <ThemeProvider theme={theme}>
 
 
-                switch (b.situation) {
-                    case "Pendente":
-                        situationColor = "yellow"
-                        break
+                <h1 className="pb-5 text-3xl">
+                    Listagem de empréstimos
+                </h1>
 
-                    case "Atrasado":
-                        situationColor = "red"
-                        break
+                {
+                    lectures.length == 0 ? <span className="m-auto loading loading-spinner loading-3xl"></span> : <table className="table w-fit">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Aluno</th>
+                                <th>RM</th>
+                                <th>Título</th>
+                                <th>Data de <br /> Empréstimo</th>
+                                <th>Situação</th>
+                            </tr>
+                        </thead>
+                        <tbody className="">
+                            {lectures.map((b, i) => {
+                                let situationColor = ""
+
+
+                                switch (b.estado) {
+                                    case "pendente":
+                                        situationColor = "yellow"
+                                        break
+
+                                    case "atrasado":
+                                        situationColor = "red"
+                                        break
+                                }
+
+                                return (
+                                    <tr className={` ${i == 0 ? "tr--first" : ""} ${i == lectures.length - 1 ? "tr--last" : ""}`}>
+                                        <th>{lectures.length - i}</th>
+                                        <td>{b.nome}</td>
+                                        <td>{b.rm}</td>
+                                        <td>{b.titulo}</td>
+                                        <td>{b.data_aluguel}</td>
+                                        <td className={`td-situation`}>
+                                            {
+                                                b.estado ? <span className={`px-3 py-2 rounded td-situation-${situationColor}`}>{b.estado[0].toUpperCase() + b.estado.slice(1)}</span> : ''
+                                            }
+
+                                        </td>
+
+                                    </tr>
+                                )
+                            })}
+
+                        </tbody>
+                    </table>
                 }
 
-                return (
-                    <tr className={` ${i == 0 ? "tr--first" : ""} ${i == lectures.length - 1 ? "tr--last" : ""}`}>
-                        <th>{lectures.length - i}</th>
-                        <td>{b.student}</td>
-                        <td>{b.RM}</td>
-                        <td>{b.title}</td>
-                        <td>{b.loanDate}</td>
-                        <td className={`td-situation`
-                            // + `${i == 0? "td-situation--first" : ""} ${i == booksHistory.length-1? "td-situation--last" : ""}`
-                        }><span className={`px-3 py-2 rounded td-situation-${situationColor}`}>{b.situation}</span> </td>
-                        
-                    </tr>
-                )
-            })}
 
-        </tbody>
-    </table>
-    </>
+            </ThemeProvider>
+        </>
     )
 }

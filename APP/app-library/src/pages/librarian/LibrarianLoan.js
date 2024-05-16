@@ -4,6 +4,7 @@ import { TextField } from "@mui/material"
 import { onKeyDownRM } from "../miscellaneous"
 import Info from "../../components/Info"
 import DevolutionBooksContainer from "./DevolutionBooksContainer"
+import { Api } from "../../api"
 
 export default function LibrarianLoan() {
     const [loanOrDevolution, setLoanOrDevolution] = useState(0)
@@ -17,33 +18,24 @@ export default function LibrarianLoan() {
         time: 2
     })
 
-    const books = [
-        { code: 1, title: "O Senhor dos Anéis: A Sociedade do Anel" },
-        { code: 2, title: "O Senhor dos Anéis: As Duas Torres" },
-        { code: 3, title: "O Senhor dos Anéis: O Retorno do Rei" },
-        { code: 4, title: "O Hobbit" },
-        { code: 5, title: "Guia do Mochileiro das Galáxias" },
-        { code: 6, title: "Animal Farm" },
-        { code: 7, title: "1984" },
-        { code: 8, title: "Fahrenheit 451" },
-        { code: 9, title: "O Alquimista" },
-        { code: 10, title: "O Pequeno Príncipe" },
-    ];
+    // const [books, setBooks] = useState([
+    //     { code: 1, title: "O Senhor dos Anéis: A Sociedade do Anel" },
+    //     { code: 2, title: "O Senhor dos Anéis: As Duas Torres" },
+    //     { code: 3, title: "O Senhor dos Anéis: O Retorno do Rei" },
+    //     { code: 4, title: "O Hobbit" },
+    //     { code: 5, title: "Guia do Mochileiro das Galáxias" },
+    //     { code: 6, title: "Animal Farm" },
+    //     { code: 7, title: "1984" },
+    //     { code: 8, title: "Fahrenheit 451" },
+    //     { code: 9, title: "O Alquimista" },
+    //     { code: 10, title: "O Pequeno Príncipe" },
+    // ])
 
-    const students = [
-        {
-            id: 1,
-            RM: 123456,
-            name: "Fulano A"
-        },
-        {
-            id: 2,
-            RM: 654321,
-            name: "Fulano B"
-        }
-    ]
+    const [books, setBooks] = useState([])
 
-    const bookTitles = books.map(b => b.title)
+    const [students, setStudents] = useState([])
+
+    let bookTitles = books.map(b => b.titulo)
 
     const devolutionBooks = [
         {
@@ -71,7 +63,7 @@ export default function LibrarianLoan() {
 
         books.forEach(book => {
             if (book.code == code) {
-                setFormData({ ...formData, title: book.title, code: book.code })
+                setFormData({ ...formData, title: book.titulo, code: book.codigo })
                 hasFoundTheBook = true
             }
         })
@@ -99,8 +91,8 @@ export default function LibrarianLoan() {
         let studentFound = false
 
         students.forEach(student => {
-            if (student.RM == RM) {
-                setFormData({ ...formData, name: student.name })
+            if (student.rm == RM) {
+                setFormData({ ...formData, name: student.nome })
                 studentFound = true
             }
         });
@@ -133,11 +125,32 @@ export default function LibrarianLoan() {
 
     }
 
-    function handleDevolutionBooksRequest(e) {
+    useEffect(() => {
+        async function getAllStudents(){
+            const data = await Api.students.getAllStudents()
+            const allStudents = data[1]
+            setStudents(allStudents)
+        }
+
+        async function getAllBooks(){
+            const data = await Api.books.getAllBooks()
+            setBooks(data)
+            bookTitles = books.map(b => b.titulo)
+        }
+
+        getAllStudents()
+        getAllBooks()
+    }, [])
+
+
+    async function handleDevolutionBooksRequest(e) {
         e.preventDefault()
 
         setHasRequestedDevolution(true)
         setIsRequesting(true)
+
+        const loanedBooks = await Api.loans.getLoansByRM(formData.RM)
+        console.log(loanedBooks)
 
         setTimeout( () => {
             setIsRequesting(false)
@@ -205,7 +218,7 @@ export default function LibrarianLoan() {
 
                                 setFormData({ ...formData, title: newValue });
                                 books.forEach(book => {
-                                    if (book.title == newValue) setFormData({ ...formData, code: book.code, title: book.title })
+                                    if (book.titulo == newValue) setFormData({ ...formData, code: book.codigo, title: book.titulo })
                                 });
                             }}
                             id="controllable-states-demo"
@@ -410,7 +423,6 @@ export default function LibrarianLoan() {
                     Identifique o aluno
                 </p>
 
-
                 <form onSubmit={(e) => handleDevolutionBooksRequest(e)}>
                     <div className="flex flex-nowrap justify-between gap-5">
                         <div>
@@ -554,7 +566,7 @@ export default function LibrarianLoan() {
                         Empréstimo
                     </button>
                     <button className={`button button-loan${loanOrDevolution == 1 ? "--active" : ""} no-wrap items-center flex gap-3 align-center mx-2 w-fit py-2 px-4 rounded text-lg`} onClick={() => setLoanOrDevolution(1)}>
-                        Devolução
+                        Devolução/perda
                     </button>
                 </div>
 

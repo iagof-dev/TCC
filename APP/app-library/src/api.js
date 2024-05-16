@@ -6,6 +6,10 @@ const Api = {
         getStudentByRM: async function (rm) {
             return await fetch('https://marciossupiais.shop/alunos/rm/' + rm).then(res => res.json()).then(data => [data.status, data.DATA])
         },
+
+        getAllStudents: async function () {
+            return await fetch('https://marciossupiais.shop/alunos/').then(res => res.json()).then(data => [data.status, data.DATA])
+        },
     },
 
     books: {
@@ -24,6 +28,9 @@ const Api = {
             return await fetch('https://marciossupiais.shop/emprestimos/listar/').then(res => res.json()).then(data => data.DATA)
         },
 
+        getLoansByRM: async function (rm) {
+            return await fetch('https://marciossupiais.shop/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA)
+        },
     },
 
     librarians: {
@@ -31,6 +38,7 @@ const Api = {
         getAllLibrarians: async function () {
             return await fetch('https://marciossupiais.shop/bibliotecarias/').then(res => res.json()).then(data => data.DATA)
         },
+
         addNewLibrarian: async function (name) {
             console.log("Body" + JSON.stringify({ authpass: this.authpass, nome: name }))
             const formData = new FormData()

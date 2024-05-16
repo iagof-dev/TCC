@@ -95,6 +95,8 @@ export default function LibrarianLogin(props) {
                         showLibrarians == true ?
 
                             <>
+                                <hr/>
+
                                 <TextField
                                     placeholder="Nome"
                                     value={librarian}
@@ -112,7 +114,7 @@ export default function LibrarianLogin(props) {
                                 
                                 <hr/>
 
-                                </>
+                            </>
 
                                 
 
