@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { json } from "react-router-dom"
-import {Api} from '../../Api'
+import {Api} from '../../api'
 
 export default function List(props) {
 	const { setPath, path, userInfo } = { ...props }

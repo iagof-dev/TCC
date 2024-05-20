@@ -4,7 +4,7 @@ import { TextField } from "@mui/material"
 import { onKeyDownRM } from "../miscellaneous"
 import Info from "../../components/Info"
 import DevolutionBooksContainer from "./DevolutionBooksContainer"
-import { Api } from "../../Api"
+import { Api } from "../../api"
 
 export default function LibrarianLoan() {
     const [loanOrDevolution, setLoanOrDevolution] = useState(0)

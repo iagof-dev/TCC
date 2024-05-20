@@ -4,7 +4,7 @@ import { useState } from "react"
 import { LoginErrorDialog } from "../../components/LoginErrorDialog"
 import { onKeyDownRM } from "../miscellaneous"
 import { TextField, ThemeProvider, createTheme } from "@mui/material"
-import { Api } from "../../Api"
+import { Api } from "../../api"
 
 
 export default function StudentLogin(props) {
