@@ -1,52 +1,7 @@
 import { Autocomplete, Chip, TextField, ThemeProvider, createTheme } from "@mui/material"
 import { useState } from "react";
 import { onKeyDownRM } from "../miscellaneous";
-
-                    // SELECT q.texto, a.alternativa from questao as q inner join alternativa as a on a.id_questao = q.id_questao
-                    // questaoEAlternativa [1 a,
-                    // 1 b,
-                    //,
-                    //...,
-                    //,
-                    // 1 e]
-                    //
-
-                    const questaoEAlternativa = [
-                        {questao: "01", alternativa: "A - iadsnvjks"},
-                        {questao: "01", alternativa: "B - iadsnvjks"},
-                        {questao: "01", alternativa: "C - iadsnvjks"},
-
-                        {questao: "02 ", alternativa: "A - iadsnvjks"},
-                        {questao: "02", alternativa: "B - iadsnvjks"},
-                        {questao: "02", alternativa: "C - iadsnvjks"},
-                    ]
-
-                    let questoes = [
-                        {
-                            questao: "01",
-
-                            alternativas: [
-                                "A - iadsnvjks",
-                                "B - iadsnvjks",
-                                "C - iadsnvjks"
-                            ]
-                        }
-                    ]
-
-                    questoes = Object.groupBy()
-
-                    questaoEAlternativa.forEach(qe => {
-                        if(!questoes.includes(qe.questao)){
-                            questoes.push({
-                                questao: qe.questao
-                            })
-                        }
-                    });
-
-
-
-                    
-
+import BlankBookCover from '../../assets/img/book-cover.png'
 
 const theme = createTheme({
     typography: {
@@ -58,11 +13,31 @@ const theme = createTheme({
 
 });
 
-function handleBookAdd(){
+function handleBookAdd(e) {
+    e.preventDefault()
+    document.getElementById('bookCoverSelectionModal').showModal()
+}
 
+function coverOption(props) {
+    const {id, coverURL, selectedCoverID, setSelectedCoverID} = {...props}
+    return (
+        <div className="w-[18rem] relative" id={`cover-${id}`} onClick={() => {
+            setSelectedCoverID(id)
+            }}>
+            <img className={`rounded-2xl h-[100%] object-top bg-cover ${selectedCoverID == id? "brightness-75" : "hover:brightness-75"} duration-500`} src={coverURL? coverURL : BlankBookCover} />
+
+            {selectedCoverID == id? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#e7e7e7" className="w-32 h-32  absolute bottom-[7rem] left-[5rem]">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg> : "" }
+
+        </div>
+    )
 }
 
 export default function LibrarianAdd() {
+    const [hasRequestedAdd, setHasRequestedAdd] = useState(false)
+    const [isRequesting, setIsRequesting] = useState(false)
+    const [selectedCoverID, setSelectedCoverID] = useState(0)
 
     const [formData, setFormData] = useState({
         titulo: "",
@@ -83,7 +58,7 @@ export default function LibrarianAdd() {
                     Adicionar livro ao sistema
                 </h1>
 
-                <form className="flex flex-col gap-4">
+                <form className="flex flex-col gap-4" onSubmit={(e) => handleBookAdd(e)}>
                     <span class="flex gap-7 w-full items-center">
                         <label className="input-label w-[7rem]">
                             Título
@@ -129,30 +104,30 @@ export default function LibrarianAdd() {
 
                     </span>
 
-                        <span class="flex gap-7 w-full items-center">
-                            <label className="input-label w-[7rem]">
-                                Editora
-                            </label>
-                            <Autocomplete
+                    <span class="flex gap-7 w-full items-center">
+                        <label className="input-label w-[7rem]">
+                            Editora
+                        </label>
+                        <Autocomplete
 
-                                value={formData.editora}
-                                onChange={(event, newValue) => {
-                                    if (!newValue) return
+                            value={formData.editora}
+                            onChange={(event, newValue) => {
+                                if (!newValue) return
 
-                                    setFormData({ ...formData, editora: newValue });
-                                }}
-                                options={["Panini", "Companhia das Letras"]}
-                                id="controllable-states-demo"
-                                size="sm"
-                                required
-                                sx={{ width: 550 }}
-                                renderInput={(params) => <TextField {...params}
-                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                                />}
+                                setFormData({ ...formData, editora: newValue });
+                            }}
+                            options={["Panini", "Companhia das Letras"]}
+                            id="controllable-states-demo"
+                            size="sm"
+                            required
+                            sx={{ width: 550 }}
+                            renderInput={(params) => <TextField {...params}
+                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                            />}
 
-                            />
-                        </span>
-                        
+                        />
+                    </span>
+
 
                     <span class="flex gap-12 w-full items-center">
                         <label className="input-label w-[7rem]">
@@ -191,13 +166,13 @@ export default function LibrarianAdd() {
                                 if (Number.isInteger(e)) return e
                             }}
                             onChange={e => {
-                                if (e.target.value.match(/[^0-9]/)){
+                                if (e.target.value.match(/[^0-9]/)) {
                                     e.preventDefault();
                                     return
-                                } 
+                                }
 
                                 setFormData({ ...formData, volumes: e.target.value })
-                                
+
 
                             }}
                             required
@@ -206,31 +181,94 @@ export default function LibrarianAdd() {
                             className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
 
                         />
+                        <label className="input-label w-[10rem]">
+                            Código <p className="text-sm font-bold">(se o livro já tiver)</p>
+                        </label>
+                        <TextField
+                            value={formData.codigo}
+                            // onBlur={() => searchForBookByCode(formData.codigo)}
+                            onChange={e => setFormData({ ...formData, codigo: e.target.value })}
+                            placeholder="Código"
+                            style={{ width: 230 }}
+                            focused
+                            className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                        />
                     </span>
 
+                    <button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" type="submit">
 
-                    
-
-                            <label className="input-label w-[10rem]">
-                                Código <p className="text-sm font-bold">(se o livro já tiver)</p>
-                            </label>
-                            <TextField
-                                value={formData.codigo}
-                                // onBlur={() => searchForBookByCode(formData.codigo)}
-                                onChange={e => setFormData({ ...formData, codigo: e.target.value })}
-                                placeholder="Código"
-                                focused
-
-                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                            />
-
-
-
-                    <button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" type="submit" onSubmit={(e) => handleBookAdd(e)}>
-                        Adicionar livro
+                        {isRequesting ?
+                            <span className="loading m-auto loading-spinner loading-lg"></span>
+                            :
+                            "Adicionar livro"
+                        }
                     </button>
 
                 </form>
+
+                <dialog id="bookCoverSelectionModal" className="modal">
+                    <div className="modal-box bg-[#F8F8F8] flex w-fit max-w-none gap-12 items-center">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                        </svg> */}
+
+                        <div className=" w-fit">
+                            <div className="flex gap-4">
+                                {/* <div className="w-[18rem] relative" id="cover-0">
+                                    <img className="hover:brightness-75 duration-500" src={BlankBookCover} />
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#e7e7e7" className="w-32 h-32  absolute bottom-[7rem] left-[5rem]">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+
+                                </div> */}
+
+                                {coverOption({id: 0, coverURL: "https://marketplace.canva.com/EAE4oJOnMh0/1/0/1003w/canva-capa-de-livro-de-suspense-O7z4yw4a5k8.jpg", selectedCoverID: selectedCoverID, setSelectedCoverID: setSelectedCoverID})}
+                                {coverOption({id: 1, coverURL: "https://f.i.uol.com.br/fotografia/2023/04/13/16813903606437fb18c8902_1681390360_1x1_md.jpg", selectedCoverID: selectedCoverID, setSelectedCoverID: setSelectedCoverID})}
+
+                                {/* <img className="w-[18rem]" src={BlankBookCover} />
+                                <img className="w-[18rem]" src={BlankBookCover} />
+                                <img className="w-[18rem]" src={BlankBookCover} /> */}
+                            </div>
+                            <div>
+
+                                <h3 className="font-bold text-3xl">Confirmar adição de livro</h3>
+                                <p className="py-4">Verifique se o RM está preenchido corretamente!</p>
+                            </div>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn">Fechar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
+
+                <dialog id="bookConfirmationModal" className="modal">
+                    <div className="modal-box bg-[#F8F8F8] flex w-[50rem] max-w-none gap-12 items-center">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                        </svg> */}
+
+                        <div className=" w-[50rem]">
+                            <div className="flex">
+                                <div>
+
+                                    <h3 className="font-bold text-3xl">Confirmar adição de livro</h3>
+                                    <p className="py-4">Verifique se o RM está preenchido corretamente!</p>
+                                </div>
+                                <img className="w-[20rem]" src={BlankBookCover} />
+                            </div>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn">Fechar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
 
 
 
