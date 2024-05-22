@@ -2,6 +2,7 @@ import { Autocomplete, Chip, TextField, ThemeProvider, createTheme } from "@mui/
 import { useState } from "react";
 import { onKeyDownRM } from "../miscellaneous";
 import BlankBookCover from '../../assets/img/book-cover.png'
+import CoverOption from "../../components/CoverOption";
 
 const theme = createTheme({
     typography: {
@@ -18,20 +19,8 @@ function handleBookAdd(e) {
     document.getElementById('bookCoverSelectionModal').showModal()
 }
 
-function coverOption(props) {
-    const {id, coverURL, selectedCoverID, setSelectedCoverID} = {...props}
-    return (
-        <div className="w-[18rem] relative" id={`cover-${id}`} onClick={() => {
-            setSelectedCoverID(id)
-            }}>
-            <img className={`rounded-2xl h-[100%] object-top bg-cover ${selectedCoverID == id? "brightness-75" : "hover:brightness-75"} duration-500`} src={coverURL? coverURL : BlankBookCover} />
-
-            {selectedCoverID == id? <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#e7e7e7" className="w-32 h-32  absolute bottom-[7rem] left-[5rem]">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg> : "" }
-
-        </div>
-    )
+function searchBookWithExistingCode (code) {
+    //TODO
 }
 
 export default function LibrarianAdd() {
@@ -186,7 +175,7 @@ export default function LibrarianAdd() {
                         </label>
                         <TextField
                             value={formData.codigo}
-                            // onBlur={() => searchForBookByCode(formData.codigo)}
+                            onBlur={() => searchBookWithExistingCode(formData.codigo)}
                             onChange={e => setFormData({ ...formData, codigo: e.target.value })}
                             placeholder="Código"
                             style={{ width: 230 }}
@@ -208,36 +197,32 @@ export default function LibrarianAdd() {
 
                 <dialog id="bookCoverSelectionModal" className="modal">
                     <div className="modal-box bg-[#F8F8F8] flex w-fit max-w-none gap-12 items-center">
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-                        </svg> */}
-
                         <div className=" w-fit">
+                            <h3 className="font-bold text-3xl">Escolha de Capa do Livro</h3>
+                                <p className="py-4">Escolha a capa do livro entre as opções. Caso não haja, <br/>escolha a última (capa padrão) ou deixe em branco.</p>
                             <div className="flex gap-4">
-                                {/* <div className="w-[18rem] relative" id="cover-0">
-                                    <img className="hover:brightness-75 duration-500" src={BlankBookCover} />
 
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#e7e7e7" className="w-32 h-32  absolute bottom-[7rem] left-[5rem]">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                    </svg>
+                                <CoverOption id={0} 
+                                coverURL="https://marketplace.canva.com/EAD0UPCkitY/1/0/1024w/canva-capa-de-livro-de-suspense-monocrom%C3%A1tica-com-foto-de-floresta-U1dpnJ3bwKw.jpg" 
+                                selectedCoverID={selectedCoverID} setSelectedCoverID={setSelectedCoverID} />
 
-                                </div> */}
+                                <CoverOption id={1} 
+                                coverURL="https://static.wixstatic.com/media/31a549_7dffb191bffa440686e5a148b8e042d9~mv2.jpg/v1/fill/w_480,h_768,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/31a549_7dffb191bffa440686e5a148b8e042d9~mv2.jpg" 
+                                selectedCoverID={selectedCoverID} setSelectedCoverID={setSelectedCoverID} />
 
-                                {coverOption({id: 0, coverURL: "https://marketplace.canva.com/EAE4oJOnMh0/1/0/1003w/canva-capa-de-livro-de-suspense-O7z4yw4a5k8.jpg", selectedCoverID: selectedCoverID, setSelectedCoverID: setSelectedCoverID})}
-                                {coverOption({id: 1, coverURL: "https://f.i.uol.com.br/fotografia/2023/04/13/16813903606437fb18c8902_1681390360_1x1_md.jpg", selectedCoverID: selectedCoverID, setSelectedCoverID: setSelectedCoverID})}
+                                <CoverOption id={2} 
+                                coverURL="" 
+                                selectedCoverID={selectedCoverID} setSelectedCoverID={setSelectedCoverID} />
 
-                                {/* <img className="w-[18rem]" src={BlankBookCover} />
-                                <img className="w-[18rem]" src={BlankBookCover} />
-                                <img className="w-[18rem]" src={BlankBookCover} /> */}
                             </div>
                             <div>
 
-                                <h3 className="font-bold text-3xl">Confirmar adição de livro</h3>
-                                <p className="py-4">Verifique se o RM está preenchido corretamente!</p>
+                                
                             </div>
                             <div className="modal-action">
-                                <form method="dialog">
+                                <form method="dialog flex w-[40rem]">
                                     {/* if there is a button in form, it will close the modal */}
+                                    <button className="btn button button-search no-wrap items-center flex gap-3 align-center mx-2 w-fit py-2 px-4 rounded-xl text-lg">Confirmar</button>
                                     <button className="btn">Fechar</button>
                                 </form>
                             </div>
@@ -263,6 +248,7 @@ export default function LibrarianAdd() {
                             <div className="modal-action">
                                 <form method="dialog">
                                     {/* if there is a button in form, it will close the modal */}
+                                    
                                     <button className="btn">Fechar</button>
                                 </form>
                             </div>
