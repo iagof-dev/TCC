@@ -6,6 +6,14 @@ export default function LibrarianList() {
 
     const [lectures, setLectures] = useState([])
 
+    function goToDevolution(code){
+
+    }
+
+    function goToLost(code){
+
+    }
+
     useEffect(() => {
         async function setAllLectures() {
             const data = await Api.loans.getAllLoans()
@@ -47,6 +55,7 @@ export default function LibrarianList() {
                                 <th>Título</th>
                                 <th>Data de <br /> Empréstimo</th>
                                 <th>Situação</th>
+                                <th>Registrar</th>
                             </tr>
                         </thead>
                         <tbody className="">
@@ -76,6 +85,14 @@ export default function LibrarianList() {
                                                 b.estado ? <span className={`px-3 py-2 rounded td-situation-${situationColor}`}>{b.estado[0].toUpperCase() + b.estado.slice(1)}</span> : ''
                                             }
 
+                                        </td>
+                                        <td className="flex no-wrap">
+                                            <button className="btn button no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-md">
+                                                Devolução
+                                            </button>
+                                            <button className="btn button button-lost no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-md ">
+                                                Perda
+                                            </button>
                                         </td>
 
                                     </tr>

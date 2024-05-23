@@ -110,6 +110,10 @@ a.menu__item:hover {
   color: var(--white-bg);
 }
 
+.button-lost {
+  background-color: #242424;
+}
+
 button.exit-button {
 	background-color: var(--main-red);
 }

@@ -49,8 +49,6 @@ export default function LibrarianAdd() {
         }
     ]
 
-    useEffect(() => console.log(formData.generos_cursos), [formData])
-
     return (
         <>
             <ThemeProvider theme={theme}>
@@ -139,8 +137,8 @@ export default function LibrarianAdd() {
                             multiple
                             id="tags-filled"
                             fullWidth
-                            options={["Nutrição"]}
-                            onChange={(event, values) => setFormData({...formData, generos_cursos: values})}
+                            options={["Nutrição", "Administração"]}
+                            onChange={(event, values) => setFormData({ ...formData, generos_cursos: values })}
                             freeSolo
                             renderTags={(value, getTagProps) =>
                                 value.map((option, index) => (
@@ -232,8 +230,8 @@ export default function LibrarianAdd() {
                                     <div className=" flex no-wrap gap-4">
                                         {/* if there is a button in form, it will close the modal */}
                                         <button onClick={(e) => {
-                                            e.preventDefault()
                                             document.getElementById('bookConfirmationModal').showModal()
+
                                         }} className="btn button button-search no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">Confirmar</button>
                                         <button className="btn">Fechar</button>
                                     </div>
@@ -244,13 +242,13 @@ export default function LibrarianAdd() {
                 </dialog>
 
                 <dialog id="bookConfirmationModal" className="modal">
-                    <div className="modal-box bg-[#F8F8F8] flex w-[50rem] max-w-none gap-12 items-center">
+                    <div className="modal-box bg-[#F8F8F8] flex w-[60rem] max-w-none gap-12 items-center">
                         {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                         </svg> */}
 
-                        <div className=" w-[50rem]">
-                            <div className="flex gap-3">
+                        <div className=" w-full">
+                            <div className="flex gap-3 justify-between">
                                 <div>
 
                                     <h3 className="font-bold text-3xl">Confirmar adição de livro</h3>
@@ -264,7 +262,7 @@ export default function LibrarianAdd() {
                                                 value={formData.titulo}
                                                 onChange={e => setFormData({ ...formData, titulo: e.target.value })}
                                                 placeholder="Título"
-                                                style={{ width: 250 }}
+                                                style={{ width: 450 }}
                                                 focused
                                                 disabled
                                                 required
@@ -284,85 +282,113 @@ export default function LibrarianAdd() {
                                                 options={["Machado de Assis"]}
                                                 id="controllable-states-demo"
                                                 size="sm"
+                                                disabled
                                                 required
                                                 fullWidth
                                                 placeholder="Autor"
-                                                sx={{ width: 250 }}
+                                                sx={{ width: 450 }}
                                                 renderInput={(params) => <TextField  {...params}
                                                     className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
                                                 />}
                                             />
                                         </span>
+                                        <span class="flex gap-7 w-full items-center">
+                                            <label className="input-label w-[7rem]">
+                                                Editora
+                                            </label>
+                                            <Autocomplete
+
+                                                value={formData.editora}
+                                                onChange={(event, newValue) => {
+                                                    if (!newValue) return
+
+                                                    setFormData({ ...formData, editora: newValue });
+                                                }}
+                                                options={["Panini", "Companhia das Letras"]}
+                                                id="controllable-states-demo"
+                                                size="sm"
+                                                required
+                                                disabled
+                                                sx={{ width: 450 }}
+                                                renderInput={(params) => <TextField {...params}
+                                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                                                />}
+
+                                            />
+                                        </span>
                                         <span class="flex gap-12 w-full items-center">
-                        <label className="input-label w-[5.8rem]">
-                            Gêneros e cursos
-                        </label>
+                                            <label className="input-label w-[5.8rem]">
+                                                Gêneros e cursos
+                                            </label>
 
-                        <Autocomplete
-                            multiple
-                            id="tags-filled"
-                            fullWidth
-                            value={formData.generos_cursos}
-                            // options={["Nutrição"]}
-                            // onChange={(event, values) => setSelectedCategories(values)}
-                            freeSolo
-                            sx={{ width: 250 }}
-                            renderTags={(value, getTagProps) =>
-                                value.map((option, index) => (
-                                    <Chip variant="outlined" className='text-lg' label={option} {...getTagProps({ index })} />
+                                            <Autocomplete
+                                                multiple
+                                                id="tags-filled"
+                                                fullWidth
+                                                value={formData.generos_cursos}
+                                                // options={["Nutrição"]}
+                                                // onChange={(event, values) => setSelectedCategories(values)}
+                                                freeSolo
+                                                disabled
+                                                sx={{ width: 450 }}
+                                                renderTags={(value, getTagProps) =>
+                                                    value.map((option, index) => (
+                                                        <Chip variant="outlined" className='text-lg' label={option} {...getTagProps({ index })} />
 
-                                ))
-                            }
-                            renderInput={(params) => <TextField {...params}
-                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                            />}
-                        />
-                    </span>
-
-
-                    <span class="flex gap-7 w-full items-center">
-                        <label className="input-label w-[7rem]">
-                            Número de volumes
-                        </label>
-
-                        <TextField
-                            placeholder="0"
-                            value={formData.volumes}
-                            onKeyDown={(e) => {
-                                if (Number.isInteger(e)) return e
-                            }}
-                            onChange={e => {
-                                if (e.target.value.match(/[^0-9]/)) {
-                                    e.preventDefault();
-                                    return
-                                }
-
-                                setFormData({ ...formData, volumes: e.target.value })
+                                                    ))
+                                                }
+                                                renderInput={(params) => <TextField {...params}
+                                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                                                />}
+                                            />
+                                        </span>
 
 
-                            }}
-                            required
-                            inputProps={{ inputMode: 'numeric' }}
-                            style={{ width: 100 }}
-                            className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
+                                        <span class="flex gap-7 w-full items-center">
+                                            <label className="input-label w-[7rem]">
+                                                Número de volumes
+                                            </label>
 
-                        />
-                        
-                    </span>
+                                            <TextField
+                                                placeholder="0"
+                                                value={formData.volumes}
+                                                onKeyDown={(e) => {
+                                                    if (Number.isInteger(e)) return e
+                                                }}
+                                                onChange={e => {
+                                                    if (e.target.value.match(/[^0-9]/)) {
+                                                        e.preventDefault();
+                                                        return
+                                                    }
 
-                    <span class="flex gap-7 w-full items-center">
-                        <label className="input-label w-[7rem]">
-                            Código <p className="text-sm font-bold">(gerado)</p>
-                        </label>
-                        <TextField
-                            value={formData.codigo}
-                            onBlur={() => searchBookWithExistingCode(formData.codigo)}
-                            onChange={e => setFormData({ ...formData, codigo: e.target.value })}
-                            placeholder="Código"
-                            style={{ width: 230 }}
-                            focused
-                            className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                        /></span>
+                                                    setFormData({ ...formData, volumes: e.target.value })
+
+
+                                                }}
+                                                disabled
+                                                required
+                                                inputProps={{ inputMode: 'numeric' }}
+                                                style={{ width: 100 }}
+                                                className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
+
+                                            />
+
+                                        </span>
+
+                                        <span class="flex gap-7 w-full items-center">
+                                            <label className="input-label w-[7rem]">
+                                                Código <p className="text-sm font-bold">(gerado)</p>
+                                            </label>
+                                            <TextField
+                                                value={formData.codigo}
+                                                onBlur={() => searchBookWithExistingCode(formData.codigo)}
+                                                onChange={e => setFormData({ ...formData, codigo: e.target.value })}
+                                                placeholder="Código"
+                                                style={{ width: 230 }}
+                                                disabled
+                                                focused
+                                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                                            /></span>
 
                                     </div>
                                 </div>
@@ -373,9 +399,22 @@ export default function LibrarianAdd() {
                             </div>
                             <div className="modal-action">
                                 <form method="dialog">
-                                    {/* if there is a button in form, it will close the modal */}
+                                    <div className=" flex no-wrap gap-4">
+                                        {/* if there is a button in form, it will close the modal */}
+                                        <button onClick={(e) => {
+                                            e.preventDefault()
+                                        }} className="btn button button-search no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
 
-                                    <button className="btn">Fechar</button>
+                                            {isRequesting ?
+                                                <span className="loading m-auto loading-spinner loading-lg"></span>
+                                                :
+                                                "Confirmar"
+                                            }
+
+
+                                            <span className="loading m-auto loading-spinner loading-lg"></span> </button>
+                                        <button className="btn" >Voltar e editar</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>

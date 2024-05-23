@@ -47,10 +47,10 @@ export default function DevolutionBooksContainer(props) {
                     </thead>
 
                     {/* TODO: Fazer com que o tbody não seja carregado no caso de nao ter devoluções */}
-                    
+
                     <tbody className="">
                         {
-                            Array.isArray(devolutionBooks)? devolutionBooks.map((b, i) => {
+                            Array.isArray(devolutionBooks) ? devolutionBooks.map((b, i) => {
                                 let situationColor = ""
 
 
@@ -92,10 +92,10 @@ export default function DevolutionBooksContainer(props) {
                             }) : <div className="w-full px-10 flex justify-center">
                                 <p>Esse aluno não fez empréstimos!</p>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
-</svg>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
+                                </svg>
 
-                                
+
                             </div>
                         }
 
