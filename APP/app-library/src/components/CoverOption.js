@@ -4,7 +4,7 @@ import BlankBookCover from '../assets/img/book-cover.png'
 export default function CoverOption(props) {
     const {id, coverURL, selectedCoverID, setSelectedCoverID} = {...props}
     return (
-        <div className="w-[18rem] relative" id={`cover-${id}`} onClick={() => {
+        <div className="w-[18rem] h-[28rem] relative" id={`cover-${id}`} onClick={() => {
             setSelectedCoverID(id)
             }}>
             <img className={`rounded-2xl h-[100%] object-top bg-cover ${selectedCoverID == id? "brightness-75" : "hover:brightness-75"} duration-500`} src={coverURL? coverURL : BlankBookCover} />
