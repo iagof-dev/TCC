@@ -63,14 +63,23 @@ export default function LibrarianAdd() {
                             Título
                         </label>
 
-                        <TextField
+                        <Autocomplete
                             value={formData.titulo}
-                            onChange={e => setFormData({ ...formData, titulo: e.target.value })}
-                            placeholder="Título"
-                            style={{ width: 550 }}
-                            focused
+                            onChange={(event, newValue) => {
+                                if (!newValue) return
+                                setFormData({ ...formData, autor: newValue });
+                            }}
+                            options={["Machado de Assis"]}
+                            id="controllable-states-demo"
+                            size="sm"
+                            disabled
                             required
-                            className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                            fullWidth
+                            placeholder="Titulo"
+                            sx={{ width: 450 }}
+                            renderInput={(params) => <TextField  {...params}
+                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                            />}
                         />
 
                     </span>

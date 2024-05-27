@@ -144,6 +144,10 @@ table {
   background-color: var(--white-bg);
 }
 
+button.button-remove {
+  background-color: var(--main-font-color);
+}
+
 div.table-wrapper {
   background-color: var(--input-font-color--opaque);
   padding: 0.071rem;

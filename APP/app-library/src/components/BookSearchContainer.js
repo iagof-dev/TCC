@@ -1,8 +1,9 @@
 import Book from "./Book";
 import { useState, useEffect } from "react";
+import EditingPageBook from "./EditingPageBook";
 
 export default function BookSearchContainer(props) {
-	const { hasSearchBeenMade, resultBooks } = { ...props };
+	const { hasSearchBeenMade, resultBooks, isEditingPage } = { ...props };
 
 	
 	const [isLoading, setIsLoading] = useState(hasSearchBeenMade); 
@@ -15,6 +16,27 @@ export default function BookSearchContainer(props) {
 			}, 1500); 
 		}
 	}, [hasSearchBeenMade]);
+
+	if(isEditingPage) return (
+		<section className='results-container p-1 w-full flex flex-col no-wrap justify-start gap-5 items-center rounded-md min-h-[20vh] max-h-[60vh] overflow-y-scroll'>
+			{isLoading ? (
+				<span className="loading m-auto loading-spinner loading-lg"></span>
+			) : (
+				resultBooks.map((book) => (
+					<EditingPageBook
+						id={book.id}
+						code={book.code}
+						author={book.author}
+						title={book.title}
+						rating={book.rating}
+						status={book.status}
+						synopsis={book.synopsis}
+						coverURL={book.coverURL}
+					/>
+				))
+			)}
+		</section>
+	);
 
 	return (
 		<section className='results-container p-1 w-full flex flex-col no-wrap justify-start gap-5 items-center rounded-md min-h-[20vh] max-h-[60vh] overflow-y-scroll'>

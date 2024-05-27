@@ -7,7 +7,7 @@ export default function Book(props) {
 	return (
 		<section className="book flex no-wrap w-full gap-3 rounded-lg max-w-[50vw] max-h-[30vh]">
 
-			<img className="w-[12vw] rounded" src={coverURL} alt="" />
+			<img className="w-[12vw] rounded object-cover" src={coverURL} alt="" />
 
 
 			<div className="flex flex-col justify-between w-full">
@@ -21,7 +21,7 @@ export default function Book(props) {
 							{
 								tags.map(tag => {
 									return (
-										<p className="px-2 h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
+										<p className="px-2 r h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
 											{tag}
 										</p>
 									)

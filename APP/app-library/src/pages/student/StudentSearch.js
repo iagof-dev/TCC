@@ -166,7 +166,7 @@ export default function Search(props) {
 			</form>
 			</ThemeProvider>
 
-			{hasSearchBeenMade ? <BookSearchContainer hasSearchBeenMade={hasSearchBeenMade} resultBooks={resultBooks} /> : ""}
+			{hasSearchBeenMade ? <BookSearchContainer hasSearchBeenMade={hasSearchBeenMade} resultBooks={resultBooks} isEditingPage={false} /> : ""}
 
 
 
