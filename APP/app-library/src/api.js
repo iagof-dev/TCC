@@ -8,18 +8,62 @@ const Api = {
         },
 
         getAllStudents: async function () {
-            return await fetch('https://marciossupiais.shop/alunos/').then(res => res.json()).then(data => [data.status, data.DATA])
+            try {
+                return await fetch('https://marciossupiais.shop/alunos/').then(res => res.json()).then(data => data.DATA)
+            } catch {
+                return [
+                    {
+                        nome: "Joao",
+                        rm: 221001
+
+                    },
+                    {
+                        nome: "Maria",
+                        rm: 221002
+                    },
+                ]
+            }
+
         },
     },
 
     books: {
         //Books
         getBooksByRM: async function (rm) {
+
             return await fetch('https://marciossupiais.shop/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA)
+
+
         },
+
+
         getAllBooks: async function () {
-            return await fetch('https://marciossupiais.shop/livros/listar/').then(res => res.json()).then(data => data.DATA)
+            try {
+                return await fetch('https://marciossupiais.shop/livros/listar/').then(res => res.json()).then(data => data.DATA)
+
+            } catch {
+                return [
+                    {
+                        code: 1,
+                        title: "O Pequeno Príncipe",
+                        author: "Antoine de Saint-Exupéry",
+                        loanDate: "14/02/24",
+                        loanPeriod: "15",
+                        situation: "Atrasado"
+                    },
+                    {
+                        code: 1,
+                        title: "O Pequeno Príncipe",
+                        author: "Antoine de Saint-Exupéry",
+                        loanDate: "14/02/24",
+                        loanPeriod: "15",
+                        situation: "Pendente"
+                    },
+                ]
+            }
         },
+
+
 
     },
 
@@ -36,7 +80,16 @@ const Api = {
     librarians: {
         //Librarian
         getAllLibrarians: async function () {
-            return await fetch('https://marciossupiais.shop/bibliotecarias/').then(res => res.json()).then(data => data.DATA)
+            try {
+                return await fetch('https://marciossupiais.shop/bibliotecarias/').then(res => res.json()).then(data => data.DATA)
+            } catch (e) {
+                return [
+                    { nome: 'João' },
+                    { nome: 'Kleber' },
+                    { nome: 'Maria' },
+                ]
+            }
+
         },
 
         addNewLibrarian: async function (name) {

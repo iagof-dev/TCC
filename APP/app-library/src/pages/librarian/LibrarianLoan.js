@@ -128,7 +128,7 @@ export default function LibrarianLoan() {
     useEffect(() => {
         async function getAllStudents(){
             const data = await Api.students.getAllStudents()
-            const allStudents = data[1]
+            const allStudents = data
             setStudents(allStudents)
         }
 
@@ -136,6 +136,7 @@ export default function LibrarianLoan() {
             const data = await Api.books.getAllBooks()
             setBooks(data)
             bookTitles = books.map(b => b.titulo)
+           
         }
 
         getAllStudents()

@@ -19,7 +19,6 @@ export default function LibrarianList() {
             const data = await Api.loans.getAllLoans()
 
             setLectures(data)
-            console.log(data);
         }
 
         setAllLectures()

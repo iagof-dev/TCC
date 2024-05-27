@@ -35,7 +35,7 @@ export default function LibrarianLogin(props) {
             setIsSubmitting(false)
             return
         }
-        navigate("/librarianMenu/librarianLoan")
+        navigate("/librarianMenu/librarianEdit")
     }
 
     function handleLoginSubmit(e) {
