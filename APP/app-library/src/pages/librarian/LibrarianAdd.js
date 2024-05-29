@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { onKeyDownRM } from "../miscellaneous";
 import BlankBookCover from '../../assets/img/book-cover.png'
 import CoverOption from "../../components/CoverOption";
+import { Api } from "../../api";
 
 const theme = createTheme({
     typography: {
@@ -14,9 +15,13 @@ const theme = createTheme({
 
 });
 
-function handleBookAdd(e) {
+function handleBookAddModal(e) {
     e.preventDefault()
     document.getElementById('bookCoverSelectionModal').showModal()
+}
+
+function addBook() {
+
 }
 
 function searchBookWithExistingCode(code) {
@@ -28,6 +33,8 @@ export default function LibrarianAdd() {
     const [isRequesting, setIsRequesting] = useState(false)
     const [selectedCoverID, setSelectedCoverID] = useState(0)
 
+    const [allGenres, setAllGenres] = useState(["a", "b"])
+
     const [formData, setFormData] = useState({
         titulo: "",
         autor: "",
@@ -35,6 +42,7 @@ export default function LibrarianAdd() {
         url_capa: "",
         codigo: "",
         generos_cursos: "",
+        generos_cursos_ids: "",
         volumes: "",
         sinopse: ""
     })
@@ -49,37 +57,50 @@ export default function LibrarianAdd() {
         }
     ]
 
+    useEffect(() => {
+        console.log(formData);
+    }, [formData])
+
+    useEffect(() => {
+
+        (async () => {
+            const genres = await Api.genres.getAllGenres()
+            setAllGenres(genres.map(g => g.genero))
+            console.log("GENEROS-----------------------");
+            console.log(allGenres);
+        })()
+
+
+    }, [])
+
     return (
         <>
             <ThemeProvider theme={theme}>
 
-                <h1 className="pb-5 text-3xl">
+                <h1 className="text-3xl">
                     Adicionar livro ao sistema
-                </h1>
 
-                <form className="flex flex-col gap-4" onSubmit={(e) => handleBookAdd(e)}>
+                </h1>
+                <p className="text-[1rem] text-gray-500 mb-4">
+                    Caso não haja autor ou editora preexistentes, preencha os campos <br /> normalmente pois esses dados também serão adicionados no sistema.
+                </p>
+
+                <form className="flex flex-col gap-4" onSubmit={(e) => handleBookAddModal(e)}>
                     <span class="flex gap-7 w-full items-center">
                         <label className="input-label w-[7rem]">
                             Título
                         </label>
 
-                        <Autocomplete
+                        <TextField
+                            placeholder="Título"
                             value={formData.titulo}
-                            onChange={(event, newValue) => {
-                                if (!newValue) return
-                                setFormData({ ...formData, autor: newValue });
+                            onChange={e => {
+                                setFormData({ ...formData, titulo: e.target.value })
                             }}
-                            options={["Machado de Assis"]}
-                            id="controllable-states-demo"
-                            size="sm"
-                            disabled
                             required
-                            fullWidth
-                            placeholder="Titulo"
-                            sx={{ width: 450 }}
-                            renderInput={(params) => <TextField  {...params}
-                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                            />}
+                            style={{ width: 550 }}
+                            className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
+
                         />
 
                     </span>
@@ -96,6 +117,9 @@ export default function LibrarianAdd() {
                                 if (!newValue) return
 
                                 setFormData({ ...formData, autor: newValue });
+                            }}
+                            onBlur={(e) => {
+                                setFormData({ ...formData, autor: e.target.value })
                             }}
                             options={["Machado de Assis"]}
                             id="controllable-states-demo"
@@ -124,6 +148,9 @@ export default function LibrarianAdd() {
 
                                 setFormData({ ...formData, editora: newValue });
                             }}
+                            onBlur={(e) => {
+                                setFormData({ ...formData, editora: e.target.value })
+                            }}
                             options={["Panini", "Companhia das Letras"]}
                             id="controllable-states-demo"
                             size="sm"
@@ -142,13 +169,17 @@ export default function LibrarianAdd() {
                             Gêneros e cursos
                         </label>
 
+
+
                         <Autocomplete
                             multiple
                             id="tags-filled"
                             fullWidth
-                            options={["Nutrição", "Administração"]}
-                            onChange={(event, values) => setFormData({ ...formData, generos_cursos: values })}
+                            // value={formData.generos_cursos}
+                            options={allGenres}
                             freeSolo
+                            onChange={(event, values) => setFormData({ ...formData, generos_cursos: values })}
+                            sx={{ width: 450 }}
                             renderTags={(value, getTagProps) =>
                                 value.map((option, index) => (
                                     <Chip variant="outlined" className='text-lg' label={option} {...getTagProps({ index })} />
@@ -330,26 +361,28 @@ export default function LibrarianAdd() {
                                                 Gêneros e cursos
                                             </label>
 
-                                            <Autocomplete
-                                                multiple
-                                                id="tags-filled"
-                                                fullWidth
-                                                value={formData.generos_cursos}
-                                                // options={["Nutrição"]}
-                                                // onChange={(event, values) => setSelectedCategories(values)}
-                                                freeSolo
-                                                disabled
-                                                sx={{ width: 450 }}
-                                                renderTags={(value, getTagProps) =>
-                                                    value.map((option, index) => (
-                                                        <Chip variant="outlined" className='text-lg' label={option} {...getTagProps({ index })} />
 
-                                                    ))
-                                                }
-                                                renderInput={(params) => <TextField {...params}
-                                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                                                />}
-                                            />
+                                             <Autocomplete
+                                             multiple
+                                             id="tags-filled"
+                                             fullWidth
+                                             value={formData.generos_cursos}
+                                             // options={["Nutrição"]}
+                                             // onChange={(event, values) => setSelectedCategories(values)}
+                                             freeSolo
+                                             disabled
+                                             sx={{ width: 450 }}
+                                             renderTags={(value, getTagProps) =>
+                                                 value.map((option, index) => (
+                                                     <Chip variant="outlined" className='text-lg' label={option} {...getTagProps({ index })} />
+
+                                                 ))
+                                             }
+                                             renderInput={(params) => <TextField {...params}
+                                                 className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                                             />}
+                                         />
+
                                         </span>
 
 
@@ -409,20 +442,20 @@ export default function LibrarianAdd() {
                             <div className="modal-action">
                                 <form method="dialog">
                                     <div className=" flex no-wrap gap-4">
-                                        {/* if there is a button in form, it will close the modal */}
                                         <button onClick={(e) => {
                                             e.preventDefault()
+                                            setIsRequesting(true)
                                         }} className="btn button button-search no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
 
                                             {isRequesting ?
-                                                <span className="loading m-auto loading-spinner loading-lg"></span>
+                                                <span className="loading loading-spinner loading-lg"></span>
                                                 :
                                                 "Confirmar"
                                             }
 
 
-                                            <span className="loading m-auto loading-spinner loading-lg"></span> </button>
-                                        <button className="btn" >Voltar e editar</button>
+                                        </button>
+                                        <button onClick={e => setIsRequesting(false)} className="btn" >Voltar e editar</button>
                                     </div>
                                 </form>
                             </div>

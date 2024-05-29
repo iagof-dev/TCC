@@ -63,7 +63,32 @@ const Api = {
             }
         },
 
+        addNewBook: async function (pageData) {
+            // console.log("Body" + JSON.stringify({ authpass: this.authpass, titulo: pageData.titulo, }))
+            const formData = new FormData()
 
+            formData.append("authpass", this.authpass)
+            formData.append("titulo", pageData.titulo)
+            formData.append("id_autor", pageData.id_autor)
+            formData.append("id_editora", pageData.id_editora)
+            formData.append("capa", pageData.capa)
+            formData.append("volumes", pageData.volumes)
+            formData.append("sinopse", pageData.sinopse)
+
+            //[ID, CODIGO*, TITULO*, ID_AUTOR*, ID_EDITORA*, CAPA*, VOLUMES*, SINOPSE*]
+
+            return await fetch('https://marciossupiais.shop/livros/criar/', {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Authorization": this.authpass,
+                    "Access-Control-Allow-Origin": "*",
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: formData
+            }).then(res => console.log(res))
+        },
 
     },
 
@@ -93,17 +118,15 @@ const Api = {
         },
 
         addNewLibrarian: async function (name) {
-            console.log("Body" + JSON.stringify({ authpass: this.authpass, nome: name }))
             const formData = new FormData()
 
-            formData.append("authpass", this.authpass)
+            formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
             formData.append("nome", name)
 
             return await fetch('https://marciossupiais.shop/bibliotecarias/criar/', {
                 method: "POST",
                 mode: "no-cors",
                 headers: {
-                    "Authorization": this.authpass,
                     "Access-Control-Allow-Origin": "*",
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -111,9 +134,11 @@ const Api = {
                 body: formData
             }).then(res => console.log(res))
         },
+    },
+
+    genres: {
+        getAllGenres: async function () {return await fetch('https://marciossupiais.shop/generos/listar/').then(res => res.json()).then(data => data.DATA)}
     }
-
-
 
 
 
