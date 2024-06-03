@@ -154,6 +154,12 @@ const Api = {
 
     },
 
+    publishers: {
+        getAllPublishers: async function () {
+            return await fetch('https://marciossupiais.shop/editoras/listar/').then(res => res.json()).then(data => data.DATA)
+        }
+    },
+
     generateSynopsis: async function (book) {
         const formData = new FormData()
             formData.append("livro", book.titulo)
@@ -167,11 +173,7 @@ const Api = {
 
     return await fetch('https://marciossupiais.shop/sinopse/gerar/', {
         method: "POST",
-        mode: "no-cors",
         headers: {
-            "Access-Control-Allow-Origin": "*",
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
         },
         body: formData
     })

@@ -4,6 +4,7 @@ import { onKeyDownRM } from "../miscellaneous";
 import BlankBookCover from '../../assets/img/book-cover.png'
 import CoverOption from "../../components/CoverOption";
 import { Api } from "../../api";
+import { Textarea } from "@material-tailwind/react";
 
 const theme = createTheme({
     typography: {
@@ -15,14 +16,8 @@ const theme = createTheme({
 
 });
 
-function handleBookAddModal(e) {
-    e.preventDefault()
-    document.getElementById('bookCoverSelectionModal').showModal()
-}
 
-function addBook() {
 
-}
 
 function searchBookWithExistingCode(code) {
     //TODO
@@ -33,21 +28,40 @@ export default function LibrarianAdd() {
     const [isRequesting, setIsRequesting] = useState(false)
     const [selectedCoverID, setSelectedCoverID] = useState(0)
 
+    const [dataWithId, setDataWithId] = useState()
+
+
     const [allGenres, setAllGenres] = useState(["a", "b"])
+    const [allAuthors, setAllAuthors] = useState([""])
+
+    const [allPublishers, setAllPublishers] = useState([""])
 
     const [sinopse, setSinopse] = useState("")
 
     const [formData, setFormData] = useState({
         titulo: "",
-        autor: "",
-        editora: "",
+        autor: {
+            id: "",
+            autor: ""
+        },
+        editora: {
+            id: "", 
+            editora: ""
+        },
         url_capa: "",
         codigo: "",
-        generos_cursos: "",
-        generos_cursos_ids: "",
+        generos: {
+            ids: [],
+            generos: []
+        },
         volumes: "",
         sinopse: ""
     })
+
+    function addBook(e) {
+        e.preventDefault()
+        setIsRequesting(true)
+    }
 
     const bookCovers = [
         {
@@ -59,20 +73,32 @@ export default function LibrarianAdd() {
         }
     ]
 
-    useEffect(() => {
-        console.log(formData);
-    }, [formData])
+    async function handleBookAddModal(e) {
+        e.preventDefault()
+        document.getElementById('bookCoverSelectionModal').showModal()
+        // const synopsisResponse = await (await Api.generateSynopsis({titulo: formData.titulo, autor: formData.autor})).json()
+        // console.log(synopsisResponse);
+        // setFormData({...formData, sinopse: synopsisResponse.message})
+
+        // console.log(synopsisResponse.message);
+    }
+    
 
     useEffect(() => {
 
         (async () => {
             const genres = await Api.genres.getAllGenres()
-            const synopsis = await (await Api.generateSynopsis({titulo: "Quincas Borba", autor: "Machado de Assis"})).json()
+            const authors = await Api.authors.getAllAuthors()
+            const publishers = await Api.publishers.getAllPublishers()
 
-            console.log("SINOSPSe-----------------------------------------------------------")
-            console.log(synopsis);
+            console.log(publishers);
 
             setAllGenres(genres.map(g => g.genero))
+            setAllAuthors(authors.map(a => a.autor))
+            setAllPublishers(publishers.map(p => p.editora))
+
+            setDataWithId({genres: genres, authors, authors, publishers: publishers})
+
         })()
 
 
@@ -90,7 +116,7 @@ export default function LibrarianAdd() {
                     Caso não haja autor ou editora preexistentes, preencha os campos <br /> normalmente pois esses dados também serão adicionados no sistema.
                 </p>
 
-                <form className="flex flex-col gap-4" onSubmit={(e) => handleBookAddModal(e)}>
+                <form className="flex flex-col gap-4" onSubmit={async (e) => await handleBookAddModal(e)}>
                     <span class="flex gap-7 w-full items-center">
                         <label className="input-label w-[7rem]">
                             Título
@@ -117,16 +143,33 @@ export default function LibrarianAdd() {
 
                         <Autocomplete
 
-                            value={formData.autor}
+                            value={formData.autor.autor}
                             onChange={(event, newValue) => {
                                 if (!newValue) return
 
-                                setFormData({ ...formData, autor: newValue });
+                                console.log(newValue);
+
+                                setFormData({ ...formData, autor: {...formData.autor, autor: newValue} });
+
+                                let id = dataWithId.authors.findIndex(a => a.autor == newValue)
+                                let autorId = -1
+
+                                if(id != -1) autorId = dataWithId.authors[id].id
+
+                                console.log(autorId);
+
+                                setFormData({ ...formData, autor: {...formData.autor, autor: newValue, id: autorId}})
+
+                                console.log("____________________________________________")
+                                console.log(dataWithId.authors);
+                                console.log(formData);
+
+
                             }}
                             onBlur={(e) => {
-                                setFormData({ ...formData, autor: e.target.value })
+                                
                             }}
-                            options={["Machado de Assis"]}
+                            options={allAuthors}
                             id="controllable-states-demo"
                             size="sm"
                             required
@@ -147,16 +190,16 @@ export default function LibrarianAdd() {
                         </label>
                         <Autocomplete
 
-                            value={formData.editora}
+                            value={formData.editora.editora}
                             onChange={(event, newValue) => {
                                 if (!newValue) return
 
-                                setFormData({ ...formData, editora: newValue });
+                                setFormData({ ...formData, editora: {...formData.editora.editora, editora: newValue} });
                             }}
                             onBlur={(e) => {
-                                setFormData({ ...formData, editora: e.target.value })
+                                setFormData({ ...formData, editora: {...formData.editora.editora, editora: e.target.value}  })
                             }}
-                            options={["Panini", "Companhia das Letras"]}
+                            options={allPublishers}
                             id="controllable-states-demo"
                             size="sm"
                             required
@@ -169,7 +212,7 @@ export default function LibrarianAdd() {
                     </span>
 
 
-                    <span class="flex gap-12 w-full items-center">
+                    <span class="flex gap-7 w-full items-center">
                         <label className="input-label w-[7rem]">
                             Gêneros e cursos
                         </label>
@@ -180,11 +223,16 @@ export default function LibrarianAdd() {
                             multiple
                             id="tags-filled"
                             fullWidth
-                            // value={formData.generos_cursos}
+                            // value={formData.generos}
                             options={allGenres}
                             freeSolo
-                            onChange={(event, values) => setFormData({ ...formData, generos_cursos: values })}
-                            sx={{ width: 450 }}
+                            onChange={(event, values) => {
+                                allGenres.forEach(g => {
+
+                                })
+                                setFormData({ ...formData, generos: {...formData.generos, generos: values} })}
+                            }
+                            sx={{ width: 550 }}
                             renderTags={(value, getTagProps) =>
                                 value.map((option, index) => (
                                     <Chip variant="outlined" className='text-lg' label={option} {...getTagProps({ index })} />
@@ -371,7 +419,7 @@ export default function LibrarianAdd() {
                                              multiple
                                              id="tags-filled"
                                              fullWidth
-                                             value={formData.generos_cursos}
+                                             value={formData.generos}
                                              // options={["Nutrição"]}
                                              // onChange={(event, values) => setSelectedCategories(values)}
                                              freeSolo
@@ -390,6 +438,28 @@ export default function LibrarianAdd() {
 
                                         </span>
 
+                                        <span class="flex gap-7 w-full items-center">
+                                            <label className="input-label w-[7rem]">
+                                                Sinopse (gerada por IA)
+                                            </label>
+
+                                            {
+                                                formData.sinopse.length > 2? <TextField
+                                                value={formData.sinopse}
+                                                onChange={e => setFormData({ ...formData, titulo: e.target.value })}
+                                                placeholder="Título"
+                                                style={{ width: 450 }}
+                                                focused
+                                                disabled
+                                                multiline
+                                                rows={4}
+                                                required
+                                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                                            /> : <span className="loading loading-spinner loading-lg"></span>
+                                            }
+
+                                            
+                                        </span>
 
                                         <span class="flex gap-7 w-full items-center">
                                             <label className="input-label w-[7rem]">
@@ -448,8 +518,8 @@ export default function LibrarianAdd() {
                                 <form method="dialog">
                                     <div className=" flex no-wrap gap-4">
                                         <button onClick={(e) => {
-                                            e.preventDefault()
-                                            setIsRequesting(true)
+                                            
+                                            addBook(e)
                                         }} className="btn button button-search no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
 
                                             {isRequesting ?
