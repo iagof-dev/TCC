@@ -25,13 +25,14 @@ export default function BookSearchContainer(props) {
 				resultBooks.map((book) => (
 					<EditingPageBook
 						id={book.id}
-						code={book.code}
-						author={book.author}
-						title={book.title}
-						rating={book.rating}
+						code={book.codigo}
+						author={book.autor}
+						publisher={book.editora}
+						title={book.titulo}
+						rating={book.avaliacao}
 						status={book.status}
-						synopsis={book.synopsis}
-						coverURL={book.coverURL}
+						synopsis={""}
+						coverURL={book.capa}
 					/>
 				))
 			)}

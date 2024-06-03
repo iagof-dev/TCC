@@ -5,6 +5,7 @@ import Chip from '@mui/material/Chip';
 import Info from '../../components/Info';
 import Book from '../../components/Book'
 import BookSearchContainer from '../../components/BookSearchContainer';
+import { Api } from '../../api';
 
 export default function Search(props) {
     const { setPath, path } = { ...props }
@@ -14,6 +15,8 @@ export default function Search(props) {
         titulo: "",
         autor: "",
     })
+
+    const [authors, setAuthors] = useState(["Machado de Assis"])
     const [hasSearchBeenMade, setHasSearchBeenMade] = useState(false)
     const [resultBooks, setResultBooks] = useState([
         {
@@ -56,7 +59,6 @@ export default function Search(props) {
             return
         }
         setHasSearchBeenMade(true)
-        console.log(formData);
     }
 
     const theme = createTheme({
@@ -66,6 +68,17 @@ export default function Search(props) {
             ].join(','),
         },
     });
+
+    useEffect(() => {
+        (async () => {
+            const data = await Api.authors.getAllAuthors()
+            setAuthors(data.map(a => a.autor))
+
+            const books = await Api.books.getAllBooks()
+            console.log(books);
+            setResultBooks(books)
+        })()
+    }, [])
 
     return (
         <>
@@ -116,7 +129,7 @@ export default function Search(props) {
                                 if (!newValue) return
                                 setFormData({ ...formData, autor: newValue });
                             }}
-                            options={["Machado de Assis"]}
+                            options={authors}
                             id="controllable-states-demo"
                             size="sm"
                             required

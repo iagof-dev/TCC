@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import "../App.css"
 
 export default function EditingPageBook(props) {
-    const { id, code, author, title, rating, status, synopsis, coverURL, tags } = { ...props }
+    const { id, code, author, title, rating, status, synopsis, publisher, coverURL, tags } = { ...props }
 
     return (
         <section className="book flex no-wrap w-full gap-3 rounded-lg max-w-[50vw] max-h-[30vh]">
@@ -19,6 +19,9 @@ export default function EditingPageBook(props) {
                     </span>
                     <p className="text-lg">
                         {author}
+                    </p>
+                    <p className="text-lg">
+                        {publisher}
                     </p>
 
                 </span>

@@ -35,6 +35,8 @@ export default function LibrarianAdd() {
 
     const [allGenres, setAllGenres] = useState(["a", "b"])
 
+    const [sinopse, setSinopse] = useState("")
+
     const [formData, setFormData] = useState({
         titulo: "",
         autor: "",
@@ -65,9 +67,12 @@ export default function LibrarianAdd() {
 
         (async () => {
             const genres = await Api.genres.getAllGenres()
+            const synopsis = await (await Api.generateSynopsis({titulo: "Quincas Borba", autor: "Machado de Assis"})).json()
+
+            console.log("SINOSPSe-----------------------------------------------------------")
+            console.log(synopsis);
+
             setAllGenres(genres.map(g => g.genero))
-            console.log("GENEROS-----------------------");
-            console.log(allGenres);
         })()
 
 

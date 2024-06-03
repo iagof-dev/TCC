@@ -1,3 +1,21 @@
+async function post(url, formData) {
+
+    formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
+
+
+    return await fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: formData
+    }).then(res => res)
+
+}
+
 const Api = {
     authpass: "c38a7e02bfca0da201015ce51931b09d462080b7",
 
@@ -119,28 +137,45 @@ const Api = {
 
         addNewLibrarian: async function (name) {
             const formData = new FormData()
-
-            formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
             formData.append("nome", name)
 
-            return await fetch('https://marciossupiais.shop/bibliotecarias/criar/', {
-                method: "POST",
-                mode: "no-cors",
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: formData
-            }).then(res => console.log(res))
+            return await post('https://marciossupiais.shop/bibliotecarias/criar/', formData)
         },
     },
 
     genres: {
-        getAllGenres: async function () {return await fetch('https://marciossupiais.shop/generos/listar/').then(res => res.json()).then(data => data.DATA)}
+        getAllGenres: async function () { return await fetch('https://marciossupiais.shop/generos/listar/').then(res => res.json()).then(data => data.DATA) }
+    },
+
+    authors: {
+        getAllAuthors: async function () {
+            return await fetch('https://marciossupiais.shop/autores/listar/').then(res => res.json()).then(data => data.DATA)
+        }
+
+    },
+
+    generateSynopsis: async function (book) {
+        const formData = new FormData()
+            formData.append("livro", book.titulo)
+            formData.append("autor", book.autor)
+            formData.append("caracteres", "150")
+
+            // return await post('https://marciossupiais.shop/sinopse/gerar/', formData)
+
+            formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
+
+
+    return await fetch('https://marciossupiais.shop/sinopse/gerar/', {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: formData
+    })
     }
-
-
 
 }
 
