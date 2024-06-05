@@ -155,8 +155,8 @@ export default function Search(props) {
             </ThemeProvider>
 
             {hasSearchBeenMade ? <BookSearchContainer hasSearchBeenMade={hasSearchBeenMade} resultBooks={resultBooks} isEditingPage={true} /> : ""}
-
-            {/* <dialog id="bookConfirmationModal" className="modal">
+{/* 
+        <dialog id="bookConfirmationModal" className="modal">
                 <div className="modal-box bg-[#F8F8F8] flex w-[60rem] max-w-none gap-12 items-center">
 
 

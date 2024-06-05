@@ -26,7 +26,7 @@ function searchBookWithExistingCode(code) {
 export default function LibrarianAdd() {
     const [hasRequestedAdd, setHasRequestedAdd] = useState(false)
     const [isRequesting, setIsRequesting] = useState(false)
-    const [selectedCoverID, setSelectedCoverID] = useState(0)
+    const [selectedCoverURL, setselectedCoverURL] = useState(0)
 
     const [dataWithId, setDataWithId] = useState()
 
@@ -45,7 +45,7 @@ export default function LibrarianAdd() {
             autor: ""
         },
         editora: {
-            id: "", 
+            id: "",
             editora: ""
         },
         url_capa: "",
@@ -55,12 +55,13 @@ export default function LibrarianAdd() {
             generos: []
         },
         volumes: "",
-        sinopse: ""
+        sinopse: "ab"
     })
 
     function addBook(e) {
         e.preventDefault()
         setIsRequesting(true)
+        console.log(formData);
     }
 
     const bookCovers = [
@@ -76,13 +77,13 @@ export default function LibrarianAdd() {
     async function handleBookAddModal(e) {
         e.preventDefault()
         document.getElementById('bookCoverSelectionModal').showModal()
-        // const synopsisResponse = await (await Api.generateSynopsis({titulo: formData.titulo, autor: formData.autor})).json()
+        // const synopsisResponse = await (await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor })).json()
         // console.log(synopsisResponse);
-        // setFormData({...formData, sinopse: synopsisResponse.message})
+        // setFormData({ ...formData, sinopse: synopsisResponse.message })
 
         // console.log(synopsisResponse.message);
     }
-    
+
 
     useEffect(() => {
 
@@ -97,7 +98,7 @@ export default function LibrarianAdd() {
             setAllAuthors(authors.map(a => a.autor))
             setAllPublishers(publishers.map(p => p.editora))
 
-            setDataWithId({genres: genres, authors, authors, publishers: publishers})
+            setDataWithId({ genres: genres, authors, authors, publishers: publishers })
 
         })()
 
@@ -147,27 +148,21 @@ export default function LibrarianAdd() {
                             onChange={(event, newValue) => {
                                 if (!newValue) return
 
-                                console.log(newValue);
-
-                                setFormData({ ...formData, autor: {...formData.autor, autor: newValue} });
+                                setFormData({ ...formData, autor: { ...formData.autor, autor: newValue } });
 
                                 let id = dataWithId.authors.findIndex(a => a.autor == newValue)
                                 let autorId = -1
 
-                                if(id != -1) autorId = dataWithId.authors[id].id
+                                if (id != -1) autorId = dataWithId.authors[id].id
 
-                                console.log(autorId);
-
-                                setFormData({ ...formData, autor: {...formData.autor, autor: newValue, id: autorId}})
-
-                                console.log("____________________________________________")
-                                console.log(dataWithId.authors);
-                                console.log(formData);
+                                setFormData({ ...formData, autor: { ...formData.autor, autor: newValue, id: autorId } })
 
 
                             }}
                             onBlur={(e) => {
-                                
+                                if (allAuthors.includes(e.target.value)) return setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value } })
+
+                                setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value, id: -1 } })
                             }}
                             options={allAuthors}
                             id="controllable-states-demo"
@@ -194,10 +189,26 @@ export default function LibrarianAdd() {
                             onChange={(event, newValue) => {
                                 if (!newValue) return
 
-                                setFormData({ ...formData, editora: {...formData.editora.editora, editora: newValue} });
+                                setFormData({ ...formData, editora: { ...formData.editora, editora: newValue } });
+
+
+                                let id = dataWithId.publishers.findIndex(a => a.editora == newValue)
+                                let editoraId = -1
+
+                                if (id != -1) editoraId = dataWithId.publishers[id].id
+
+
+                                setFormData({ ...formData, editora: { ...formData.editora, editora: newValue, id: editoraId } });
+
                             }}
                             onBlur={(e) => {
-                                setFormData({ ...formData, editora: {...formData.editora.editora, editora: e.target.value}  })
+                                console.log(e.target.value);
+
+                                if (allPublishers.includes(e.target.value)) return setFormData({ ...formData, editora: { ...formData.editora, editora: e.target.value } });
+
+                                setFormData({ ...formData, editora: { ...formData.editora, editora: e.target.value, id: -1 } });
+
+                                console.log(formData.editora);
                             }}
                             options={allPublishers}
                             id="controllable-states-demo"
@@ -226,11 +237,29 @@ export default function LibrarianAdd() {
                             // value={formData.generos}
                             options={allGenres}
                             freeSolo
-                            onChange={(event, values) => {
-                                allGenres.forEach(g => {
+                            onChange={(event, generos) => {
+                                let chosenGenres = []
+                                generos.forEach(g => {
+
+                                    chosenGenres.push(g)
+
+                                    setFormData({ ...formData, generos: chosenGenres });
+
+                                    let id = dataWithId.genres.findIndex(a => a.genero == g)
+
+                                    console.log(`id genero no dataWithId : ${id}`);
+
+                                    let generoId = -1
+
+                                    if (id != -1) generoId = dataWithId.genres[id].id
+
+                                    console.log(generoId);
+
+                                    setFormData({ ...formData, generos: chosenGenres });
 
                                 })
-                                setFormData({ ...formData, generos: {...formData.generos, generos: values} })}
+                                setFormData({ ...formData, generos: { ...formData.generos, generos: generos } })
+                            }
                             }
                             sx={{ width: 550 }}
                             renderTags={(value, getTagProps) =>
@@ -282,7 +311,7 @@ export default function LibrarianAdd() {
                             onChange={e => setFormData({ ...formData, codigo: e.target.value })}
                             placeholder="Código"
                             style={{ width: 230 }}
-                            focused
+                            
                             className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
                         />
                     </span>
@@ -309,7 +338,7 @@ export default function LibrarianAdd() {
                                     bookCovers.map((b, i) => {
                                         return <CoverOption id={i}
                                             coverURL={b.cover_url}
-                                            selectedCoverID={selectedCoverID} setSelectedCoverID={setSelectedCoverID} />
+                                            selectedCoverURL={selectedCoverURL} setselectedCoverURL={setselectedCoverURL} />
                                     })
                                 }
 
@@ -324,6 +353,8 @@ export default function LibrarianAdd() {
                                         {/* if there is a button in form, it will close the modal */}
                                         <button onClick={(e) => {
                                             document.getElementById('bookConfirmationModal').showModal()
+
+                                            console.log(`url: ${selectedCoverURL}`);
 
                                         }} className="btn button button-search no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">Confirmar</button>
                                         <button className="btn">Fechar</button>
@@ -356,7 +387,6 @@ export default function LibrarianAdd() {
                                                 onChange={e => setFormData({ ...formData, titulo: e.target.value })}
                                                 placeholder="Título"
                                                 style={{ width: 450 }}
-                                                focused
                                                 disabled
                                                 required
                                                 className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
@@ -367,11 +397,8 @@ export default function LibrarianAdd() {
                                                 Autor
                                             </label>
                                             <Autocomplete
-                                                value={formData.autor}
-                                                onChange={(event, newValue) => {
-                                                    if (!newValue) return
-                                                    setFormData({ ...formData, autor: newValue });
-                                                }}
+                                                value={formData.autor.autor}
+
                                                 options={["Machado de Assis"]}
                                                 id="controllable-states-demo"
                                                 size="sm"
@@ -389,15 +416,9 @@ export default function LibrarianAdd() {
                                             <label className="input-label w-[7rem]">
                                                 Editora
                                             </label>
-                                            <Autocomplete
+                                            <TextField
 
-                                                value={formData.editora}
-                                                onChange={(event, newValue) => {
-                                                    if (!newValue) return
-
-                                                    setFormData({ ...formData, editora: newValue });
-                                                }}
-                                                options={["Panini", "Companhia das Letras"]}
+                                                value={formData.editora.editora}
                                                 id="controllable-states-demo"
                                                 size="sm"
                                                 required
@@ -415,26 +436,26 @@ export default function LibrarianAdd() {
                                             </label>
 
 
-                                             <Autocomplete
-                                             multiple
-                                             id="tags-filled"
-                                             fullWidth
-                                             value={formData.generos}
-                                             // options={["Nutrição"]}
-                                             // onChange={(event, values) => setSelectedCategories(values)}
-                                             freeSolo
-                                             disabled
-                                             sx={{ width: 450 }}
-                                             renderTags={(value, getTagProps) =>
-                                                 value.map((option, index) => (
-                                                     <Chip variant="outlined" className='text-lg' label={option} {...getTagProps({ index })} />
+                                            <Autocomplete
+                                                multiple
+                                                id="tags-filled"
+                                                fullWidth
+                                                value={formData.generos.generos}
+                                                // options={["Nutrição"]}
+                                                // onChange={(event, values) => setSelectedCategories(values)}
+                                                freeSolo
+                                                disabled
+                                                sx={{ width: 450 }}
+                                                renderTags={(value, getTagProps) =>
+                                                    value.map((option, index) => (
+                                                        <Chip variant="outlined" className='text-lg' label={option}/>
 
-                                                 ))
-                                             }
-                                             renderInput={(params) => <TextField {...params}
-                                                 className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                                             />}
-                                         />
+                                                    ))
+                                                }
+                                                renderInput={(params) => <TextField {...params}
+                                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                                                />}
+                                            />
 
                                         </span>
 
@@ -444,21 +465,27 @@ export default function LibrarianAdd() {
                                             </label>
 
                                             {
-                                                formData.sinopse.length > 2? <TextField
+                                                formData.sinopse.length > 2?  <TextField
                                                 value={formData.sinopse}
                                                 onChange={e => setFormData({ ...formData, titulo: e.target.value })}
                                                 placeholder="Título"
                                                 style={{ width: 450 }}
-                                                focused
+                                                
                                                 disabled
                                                 multiline
                                                 rows={4}
                                                 required
                                                 className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                                            /> : <span className="loading loading-spinner loading-lg"></span>
+                                            /> : 
+                                            <span className="loading loading-spinner loading-lg"></span>
                                             }
 
+
+
                                             
+
+
+
                                         </span>
 
                                         <span class="flex gap-7 w-full items-center">
@@ -503,14 +530,14 @@ export default function LibrarianAdd() {
                                                 placeholder="Código"
                                                 style={{ width: 230 }}
                                                 disabled
-                                                focused
+                                                
                                                 className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
                                             /></span>
 
                                     </div>
                                 </div>
                                 <div className="w-[18rem] h-[28rem] relative">
-                                    <img className="rounded-2xl h-[100%] object-top bg-cover duration-500" src={bookCovers[selectedCoverID].cover_url} />
+                                    <img className="rounded-2xl h-[100%] object-top bg-cover duration-500" src={bookCovers[selectedCoverURL].cover_url} />
                                 </div>
 
                             </div>
@@ -518,7 +545,7 @@ export default function LibrarianAdd() {
                                 <form method="dialog">
                                     <div className=" flex no-wrap gap-4">
                                         <button onClick={(e) => {
-                                            
+
                                             addBook(e)
                                         }} className="btn button button-search no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
 
