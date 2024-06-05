@@ -66,15 +66,6 @@ export default function LibrarianAdd() {
         console.log(formData);
     }
 
-    const bookCovers = [
-        {
-            cover_url: "https://marketplace.canva.com/EAD0UPCkitY/1/0/1024w/canva-capa-de-livro-de-suspense-monocrom%C3%A1tica-com-foto-de-floresta-U1dpnJ3bwKw.jpg"
-        }, {
-            cover_url: "https://static.wixstatic.com/media/31a549_7dffb191bffa440686e5a148b8e042d9~mv2.jpg/v1/fill/w_480,h_768,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/31a549_7dffb191bffa440686e5a148b8e042d9~mv2.jpg"
-        }, {
-            cover_url: "https://martinsfontespaulista.vteximg.com.br/arquivos/ids/1544022-400-400/1043085.jpg?v=638163248182070000"
-        }
-    ]
 
     async function handleBookAddModal(e) {
         e.preventDefault()
@@ -97,8 +88,6 @@ export default function LibrarianAdd() {
             const genres = await Api.genres.getAllGenres()
             const authors = await Api.authors.getAllAuthors()
             const publishers = await Api.publishers.getAllPublishers()
-
-            // const coverURLs = await Api.getCoverURLs({"title": "Quincas Borba"})
 
             setAllGenres(genres.map(g => g.genero))
             setAllAuthors(authors.map(a => a.autor))

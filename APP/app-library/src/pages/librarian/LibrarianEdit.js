@@ -12,35 +12,30 @@ export default function Search(props) {
 
     const [selectedCategories, setSelectedCategories] = useState([])
     const [formData, setFormData] = useState({
-        titulo: "",
-        autor: "",
+            "code": "",
+            "author": "Machado de Assis",
+            "title": "",
+            "status": "",
+            "synopsis": "",
+            "coverURL": "",
+            "tags": ['']
     })
 
     const [authors, setAuthors] = useState(["Machado de Assis"])
     const [hasSearchBeenMade, setHasSearchBeenMade] = useState(false)
     const [resultBooks, setResultBooks] = useState([
+
         {
-            "id": 0,
-            "code": "SDGJ8416",
-            "author": "Machado de Assis",
-            "title": "Quincas Borba",
-            "rating": 2,
-            "status": "Disponível",
-            "synopsis": "O romance a ascensão social de Rubião que, após receber toda a herança do filósofo louco Quincas Borba - criador da filosofia 'Humanitas' e muda-se para a Corte no final do século XlX...",
-            "coverURL": "https://cdn.awsli.com.br/2500x2500/2419/2419289/produto/20280348554e2f54b5b.jpg",
-            "tags": ["Naturalista", "Romance"]
-        },
-        {
-            "id": 0,
-            "code": "HJKL3490",
-            "author": "Clarice Lispector",
-            "title": "Perto do Coração Selvagem",
-            "rating": 3,
-            "status": "Indisponível",
-            "synopsis": "Publicado em 1943, Perto do Coração Selvagem marca a estreia literária da renomada escritora brasileira Clarice Lispector. O romance, aclamado pela crítica e público, apresenta uma narrativa inovadora e introspectiva, mergulhando nas profundezas da alma humana e explorando temas como identidade, amor, solidão e a busca pelo sentido da vida.",
-            "coverURL": "https://images-americanas.b2w.io/produtos/01/00/img/1227806/7/1227806762_1GG.jpg",
-            "tags": ["Naturalista", "Romance"]
-        },
+            titulo: "Quincas Borba",
+            autor: "Machado de Assis",
+            editora: "AAAAAAA",
+            url_capa: "https://cdn.awsli.com.br/2500x2500/2419/2419289/produto/20280348554e2f54b5b.jpg",
+            codigo: "SDGJ8416",
+            generos: ["Naturalista", "Romance"],
+            volumes: 70,
+            sinopse: "O romance a ascensão social de Rubião que, após receber toda a herança do filósofo louco Quincas Borba - criador da filosofia 'Humanitas' e muda-se para a Corte no final do século XlX..."
+        
+        }
     ]
     )
 
@@ -49,7 +44,7 @@ export default function Search(props) {
 
         //Busca dos livros pela Api
 
-        setFormData({ ...formData, tags: selectedCategories })
+        setFormData({ ...formData, generos: selectedCategories })
 
         if (hasSearchBeenMade) {
             setHasSearchBeenMade(false)
@@ -155,7 +150,7 @@ export default function Search(props) {
             </ThemeProvider>
 
             {hasSearchBeenMade ? <BookSearchContainer hasSearchBeenMade={hasSearchBeenMade} resultBooks={resultBooks} isEditingPage={true} /> : ""}
-{/* 
+
         <dialog id="bookConfirmationModal" className="modal">
                 <div className="modal-box bg-[#F8F8F8] flex w-[60rem] max-w-none gap-12 items-center">
 
@@ -292,7 +287,6 @@ export default function Search(props) {
                                         </label>
                                         <TextField
                                             value={formData.codigo}
-                                            onBlur={() => searchBookWithExistingCode(formData.codigo)}
                                             onChange={e => setFormData({ ...formData, codigo: e.target.value })}
                                             placeholder="Código"
                                             style={{ width: 230 }}
@@ -329,7 +323,7 @@ export default function Search(props) {
                         </div>
                     </div>
                 </div>
-            </dialog> */}
+            </dialog>
 
 
         </>
