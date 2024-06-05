@@ -28,6 +28,8 @@ export default function LibrarianAdd() {
     const [isRequesting, setIsRequesting] = useState(false)
     const [selectedCoverURL, setselectedCoverURL] = useState(0)
 
+    const [coverURLs, setCoverURLs] = useState([])
+
     const [dataWithId, setDataWithId] = useState()
 
 
@@ -77,11 +79,15 @@ export default function LibrarianAdd() {
     async function handleBookAddModal(e) {
         e.preventDefault()
         document.getElementById('bookCoverSelectionModal').showModal()
-        // const synopsisResponse = await (await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor })).json()
-        // console.log(synopsisResponse);
-        // setFormData({ ...formData, sinopse: synopsisResponse.message })
+        const urls = await Api.getCoverURLs({ title: formData.titulo })
+        console.log(urls.message.imagens);
+        setCoverURLs(urls.message.imagens)
+        
+        const synopsisResponse = await (await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor })).json()
+        console.log(synopsisResponse);
+        setFormData({ ...formData, sinopse: synopsisResponse.message })
 
-        // console.log(synopsisResponse.message);
+        console.log(synopsisResponse.message);
     }
 
 
@@ -92,7 +98,7 @@ export default function LibrarianAdd() {
             const authors = await Api.authors.getAllAuthors()
             const publishers = await Api.publishers.getAllPublishers()
 
-            console.log(publishers);
+            // const coverURLs = await Api.getCoverURLs({"title": "Quincas Borba"})
 
             setAllGenres(genres.map(g => g.genero))
             setAllAuthors(authors.map(a => a.autor))
@@ -311,7 +317,7 @@ export default function LibrarianAdd() {
                             onChange={e => setFormData({ ...formData, codigo: e.target.value })}
                             placeholder="Código"
                             style={{ width: 230 }}
-                            
+
                             className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
                         />
                     </span>
@@ -335,13 +341,18 @@ export default function LibrarianAdd() {
                             <div className="flex gap-4">
 
                                 {
-                                    bookCovers.map((b, i) => {
+                                    coverURLs.length > 1 ? (
+                                        
+                                        
+                                        coverURLs.map((b, i) => {
+                                            console.log(b)
                                         return <CoverOption id={i}
-                                            coverURL={b.cover_url}
+                                            coverURL={b}
                                             selectedCoverURL={selectedCoverURL} setselectedCoverURL={setselectedCoverURL} />
-                                    })
-                                }
+                                    }))
+                                        : <span className="loading loading-spinner loading-lg"></span>
 
+                                }
                             </div>
                             <div>
 
@@ -448,7 +459,7 @@ export default function LibrarianAdd() {
                                                 sx={{ width: 450 }}
                                                 renderTags={(value, getTagProps) =>
                                                     value.map((option, index) => (
-                                                        <Chip variant="outlined" className='text-lg' label={option}/>
+                                                        <Chip variant="outlined" className='text-lg' label={option} />
 
                                                     ))
                                                 }
@@ -465,24 +476,24 @@ export default function LibrarianAdd() {
                                             </label>
 
                                             {
-                                                formData.sinopse.length > 2?  <TextField
-                                                value={formData.sinopse}
-                                                onChange={e => setFormData({ ...formData, titulo: e.target.value })}
-                                                placeholder="Título"
-                                                style={{ width: 450 }}
-                                                
-                                                disabled
-                                                multiline
-                                                rows={4}
-                                                required
-                                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                                            /> : 
-                                            <span className="loading loading-spinner loading-lg"></span>
+                                                formData.sinopse.length > 2 ? <TextField
+                                                    value={formData.sinopse}
+                                                    onChange={e => setFormData({ ...formData, titulo: e.target.value })}
+                                                    placeholder="Título"
+                                                    style={{ width: 450 }}
+
+                                                    disabled
+                                                    multiline
+                                                    rows={4}
+                                                    required
+                                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+                                                /> :
+                                                    <span className="loading loading-spinner loading-lg"></span>
                                             }
 
 
 
-                                            
+
 
 
 
@@ -530,14 +541,14 @@ export default function LibrarianAdd() {
                                                 placeholder="Código"
                                                 style={{ width: 230 }}
                                                 disabled
-                                                
+
                                                 className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
                                             /></span>
 
                                     </div>
                                 </div>
                                 <div className="w-[18rem] h-[28rem] relative">
-                                    <img className="rounded-2xl h-[100%] object-top bg-cover duration-500" src={bookCovers[selectedCoverURL].cover_url} />
+                                    <img className="rounded-2xl h-[100%] object-top bg-cover duration-500" src={coverURLs[selectedCoverURL]} />
                                 </div>
 
                             </div>

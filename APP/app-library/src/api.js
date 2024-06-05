@@ -1,3 +1,7 @@
+function encodeURLParam(param) {
+    return encodeURIComponent(param).replace(/%20/g, '+');
+}
+
 async function post(url, formData) {
 
     formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
@@ -162,23 +166,30 @@ const Api = {
 
     generateSynopsis: async function (book) {
         const formData = new FormData()
-            formData.append("livro", book.titulo)
-            formData.append("autor", book.autor)
-            formData.append("caracteres", "150")
+        formData.append("livro", book.titulo)
+        formData.append("autor", book.autor)
+        formData.append("caracteres", "200")
 
-            // return await post('https://marciossupiais.shop/sinopse/gerar/', formData)
+        // return await post('https://marciossupiais.shop/sinopse/gerar/', formData)
 
-            formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
+        formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
 
 
-    return await fetch('https://marciossupiais.shop/sinopse/gerar/', {
-        method: "POST",
-        headers: {
-        },
-        body: formData
-    })
+        return await fetch('https://marciossupiais.shop/sinopse/gerar/', {
+            method: "POST",
+            headers: {
+            },
+            body: formData
+        })
+    },
+
+
+    getCoverURLs: async function ({title, author, publisher}) {
+        return await fetch('https://marciossupiais.shop/imagens/buscar/' + encodeURLParam(title), {
+
+        })
+        .then(res => res.json())
     }
-
 }
 
 export { Api }
