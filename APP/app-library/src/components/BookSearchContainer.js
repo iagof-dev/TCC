@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import EditingPageBook from "./EditingPageBook";
 
 export default function BookSearchContainer(props) {
-	const { hasSearchBeenMade, setSelectedBook, resultBooks, isEditingPage } = { ...props };
+	
+	const {setEditOrRemove, hasSearchBeenMade, setSelectedBook, resultBooks, isEditingPage } = { ...props };
 
 	
 	const [isLoading, setIsLoading] = useState(hasSearchBeenMade); 
@@ -35,7 +36,9 @@ export default function BookSearchContainer(props) {
 						volumes={book.volumes}
 						synopsis={book.sinopse? book.sinopse : ""}
 						coverURL={book.capa}
+
 						setSelectedBook={setSelectedBook}
+						setEditOrRemove={setEditOrRemove}
 						
 					/>
 				})
