@@ -60,6 +60,10 @@ aside {
   opacity: var(--general-opacity);
 }
 
+aside * {
+	zoom: 0.96;
+}
+
 aside ul li a {
   display: flex;
   flex-wrap: nowrap;

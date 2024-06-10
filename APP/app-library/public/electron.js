@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, dialog } = require('electron');
+const { app, BrowserWindow, dialog, webFrame } = require('electron');
 const path = require('path');
 const serve = require('electron-serve');
 const { ipcMain } = require('electron/main');
@@ -38,6 +38,8 @@ function createWindow() {
 
 	mainWindow.webContents.openDevTools()
 
+	mainWindow.webContents.setZoomFactor(0.3)
+
 	mainWindow.webContents.on('before-input-event', (_, input) => {
 		if (input.type === 'keyDown' && input.key === 'Alt') {
 		  mainWindow.webContents.toggleDevTools();
@@ -55,6 +57,7 @@ function createWindow() {
     } else {
         loadURL(mainWindow);
     }
+
     
     // Uncomment the following line of code when app is ready to be packaged.
     // loadURL(mainWindow);

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import EditingPageBook from "./EditingPageBook";
 
 export default function BookSearchContainer(props) {
-	const { hasSearchBeenMade, resultBooks, isEditingPage } = { ...props };
+	const { hasSearchBeenMade, setSelectedBook, resultBooks, isEditingPage } = { ...props };
 
 	
 	const [isLoading, setIsLoading] = useState(hasSearchBeenMade); 
@@ -22,8 +22,8 @@ export default function BookSearchContainer(props) {
 			{isLoading ? (
 				<span className="loading m-auto loading-spinner loading-lg"></span>
 			) : (
-				resultBooks.map((book) => (
-					<EditingPageBook
+				resultBooks.map((book) => {
+					return <EditingPageBook
 						id={book.id}
 						code={book.codigo}
 						author={book.autor}
@@ -31,10 +31,14 @@ export default function BookSearchContainer(props) {
 						title={book.titulo}
 						rating={book.avaliacao}
 						status={book.status}
-						synopsis={""}
+						generos={book.genero}
+						volumes={book.volumes}
+						synopsis={book.sinopse? book.sinopse : ""}
 						coverURL={book.capa}
+						setSelectedBook={setSelectedBook}
+						
 					/>
-				))
+				})
 			)}
 		</section>
 	);
