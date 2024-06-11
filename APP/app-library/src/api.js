@@ -35,7 +35,7 @@ const Api = {
 
         getAllStudents: async function () {
             try {
-                return await fetch(url + '/alunos/').then(res => res.json()).then(data => data.DATA)
+                return await fetch(url + '/alunos/listar').then(res => res.json()).then(data => data.DATA)
             } catch {
                 return [
                     {
