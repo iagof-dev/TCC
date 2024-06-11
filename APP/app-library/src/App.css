@@ -186,7 +186,7 @@ td {
 
 .td-situation-green {
   border: solid 1px var(--main-green);
-  color: var(--white-bg);
+  color: var(--main-green);
 }
 
 .td-situation-yellow {

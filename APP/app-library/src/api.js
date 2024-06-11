@@ -20,18 +20,22 @@ async function post(url, formData) {
 
 }
 
+const url = "https://marciossupiais.shop"
+
 const Api = {
     authpass: "c38a7e02bfca0da201015ce51931b09d462080b7",
+
+    
 
     students: {
         //Student
         getStudentByRM: async function (rm) {
-            return await fetch('https://marciossupiais.shop/alunos/rm/' + rm).then(res => res.json()).then(data => [data.status, data.DATA])
+            return await fetch(url + '/alunos/rm/' + rm).then(res => res.json()).then(data => [data.status, data.DATA])
         },
 
         getAllStudents: async function () {
             try {
-                return await fetch('https://marciossupiais.shop/alunos/').then(res => res.json()).then(data => data.DATA)
+                return await fetch(url + '/alunos/').then(res => res.json()).then(data => data.DATA)
             } catch {
                 return [
                     {
@@ -53,7 +57,7 @@ const Api = {
         //Books
         getBooksByRM: async function (rm) {
 
-            return await fetch('https://marciossupiais.shop/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA)
+            return await fetch(url + '/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA)
 
 
         },
@@ -61,7 +65,7 @@ const Api = {
 
         getAllBooks: async function () {
             try {
-                return await fetch('https://marciossupiais.shop/livros/listar/').then(res => res.json()).then(data => data.DATA)
+                return await fetch(url + '/livros/').then(res => res.json()).then(data => data.DATA)
 
             } catch {
                 return [
@@ -86,28 +90,51 @@ const Api = {
         },
 
         addNewBook: async function (pageData) {
-            // console.log("Body" + JSON.stringify({ authpass: this.authpass, titulo: pageData.titulo, }))
+            
+
+            // const [formData, setFormData] = useState({
+            //     titulo: "",
+            //     autor: {
+            //         id: "",
+            //         autor: ""
+            //     },
+            //     editora: {
+            //         id: "",
+            //         editora: ""
+            //     },
+            //     url_capa: "",
+            //     codigo: "",
+            //     generos: {
+            //         ids: [],
+            //         generos: []
+            //     },
+            //     volumes: "",
+            //     sinopse: "ab"
+            // })
+
             const formData = new FormData()
 
+            // formData.append("authpass", this.authpass)
+            // formData.append("titulo", pageData.titulo)
+            // formData.append("id_autor", pageData.autor.id)
+            // formData.append("id_editora", pageData.editora.id)
+            // formData.append("capa", pageData.url_capa)
+            // formData.append("volumes", pageData.volumes)
+            // formData.append("sinopse", pageData.sinopse)
+
             formData.append("authpass", this.authpass)
-            formData.append("titulo", pageData.titulo)
-            formData.append("id_autor", pageData.id_autor)
-            formData.append("id_editora", pageData.id_editora)
-            formData.append("capa", pageData.capa)
-            formData.append("volumes", pageData.volumes)
-            formData.append("sinopse", pageData.sinopse)
+            formData.append("codigo", "pageData.codigo")
+            formData.append("titulo", "pageData.titulo")
+            formData.append("id_autor", "pageData.autor.id")
+            formData.append("id_editora", "pageData.editora.id")
+            formData.append("capa", "pageData.url_capa")
+            formData.append("volumes", "pageData.volumes")
+            formData.append("sinopse", "pageData.sinops")
 
             //[ID, CODIGO*, TITULO*, ID_AUTOR*, ID_EDITORA*, CAPA*, VOLUMES*, SINOPSE*]
 
-            return await fetch('https://marciossupiais.shop/livros/criar/', {
+            return await fetch(url + '/livros/criar/', {
                 method: "POST",
-                mode: "no-cors",
-                headers: {
-                    "Authorization": this.authpass,
-                    "Access-Control-Allow-Origin": "*",
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
                 body: formData
             }).then(res => console.log(res))
         },
@@ -116,11 +143,11 @@ const Api = {
 
     loans: {
         getAllLoans: async function () {
-            return await fetch('https://marciossupiais.shop/emprestimos/listar/').then(res => res.json()).then(data => data.DATA)
+            return await fetch(url + '/emprestimos/listar/').then(res => res.json()).then(data => data.DATA)
         },
 
         getLoansByRM: async function (rm) {
-            return await fetch('https://marciossupiais.shop/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA)
+            return await fetch(url + '/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA)
         },
     },
 
@@ -128,13 +155,15 @@ const Api = {
         //Librarian
         getAllLibrarians: async function () {
             try {
-                return await fetch('https://marciossupiais.shop/bibliotecarias/').then(res => res.json()).then(data => data.DATA)
+                return await fetch(url + '/bibliotecarias/').then(res => res.json()).then(data => data.DATA)
             } catch (e) {
-                return [
+                return {
+                    status: "erro",
+                    data: [
                     { nome: 'João' },
                     { nome: 'Kleber' },
                     { nome: 'Maria' },
-                ]
+                ]}
             }
 
         },
@@ -143,24 +172,24 @@ const Api = {
             const formData = new FormData()
             formData.append("nome", name)
 
-            return await post('https://marciossupiais.shop/bibliotecarias/criar/', formData)
+            return await post(url + '/bibliotecarias/criar/', formData)
         },
     },
 
     genres: {
-        getAllGenres: async function () { return await fetch('https://marciossupiais.shop/generos/listar/').then(res => res.json()).then(data => data.DATA) }
+        getAllGenres: async function () { return await fetch(url + '/generos/listar/').then(res => res.json()).then(data => data.DATA) }
     },
 
     authors: {
         getAllAuthors: async function () {
-            return await fetch('https://marciossupiais.shop/autores/listar/').then(res => res.json()).then(data => data.DATA)
+            return await fetch(url + '/autores/listar/').then(res => res.json()).then(data => data.DATA)
         }
 
     },
 
     publishers: {
         getAllPublishers: async function () {
-            return await fetch('https://marciossupiais.shop/editoras/listar/').then(res => res.json()).then(data => data.DATA)
+            return await fetch(url + '/editoras/listar/').then(res => res.json()).then(data => data.DATA)
         }
     },
 
@@ -170,12 +199,12 @@ const Api = {
         formData.append("autor", book.autor)
         formData.append("caracteres", "200")
 
-        // return await post('https://marciossupiais.shop/sinopse/gerar/', formData)
+        // return await post(url + '/sinopse/gerar/', formData)
 
         formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
 
 
-        return await fetch('https://marciossupiais.shop/sinopse/gerar/', {
+        return await fetch(url + '/sinopse/gerar/', {
             method: "POST",
             headers: {
             },
@@ -185,7 +214,7 @@ const Api = {
 
 
     getCoverURLs: async function ({title, author, publisher}) {
-        return await fetch('https://marciossupiais.shop/imagens/buscar/' + encodeURLParam(title), {
+        return await fetch(url + '/imagens/buscar/' + encodeURLParam(title), {
 
         })
         .then(res => res.json())

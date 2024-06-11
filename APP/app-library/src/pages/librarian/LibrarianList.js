@@ -54,7 +54,7 @@ export default function LibrarianList() {
                                 <th>Título</th>
                                 <th>Data de <br /> Empréstimo</th>
                                 <th>Situação</th>
-                                <th>Registrar</th>
+                                {/* <th>Registrar</th> */}
                             </tr>
                         </thead>
                         <tbody className="">
@@ -63,12 +63,21 @@ export default function LibrarianList() {
 
 
                                 switch (b.estado) {
+
+                                    case "devolvido":
+                                        situationColor = "green"
+                                        break
+
                                     case "pendente":
                                         situationColor = "yellow"
                                         break
 
                                     case "atrasado":
                                         situationColor = "red"
+                                        break
+
+                                    case "perdido":
+                                        situationColor = "black"
                                         break
                                 }
 
@@ -85,14 +94,14 @@ export default function LibrarianList() {
                                             }
 
                                         </td>
-                                        <td className="flex no-wrap">
+                                        {/* <td className="flex no-wrap">
                                             <button className="btn button no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-md">
                                                 Devolução
                                             </button>
                                             <button className="btn button button-lost no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-md ">
                                                 Perda
                                             </button>
-                                        </td>
+                                        </td> */}
 
                                     </tr>
                                 )

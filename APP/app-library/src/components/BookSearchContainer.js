@@ -24,6 +24,8 @@ export default function BookSearchContainer(props) {
 				<span className="loading m-auto loading-spinner loading-lg"></span>
 			) : (
 				resultBooks.map((book) => {
+					console.log(book);
+
 					return <EditingPageBook
 						id={book.id}
 						code={book.codigo}

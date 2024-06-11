@@ -53,6 +53,7 @@ export default function LibrarianLogin(props) {
     }
 
     useEffect(() => {
+        let error = false
         let data
         async function getAllLibrarians() {
             data = await Api.librarians.getAllLibrarians()

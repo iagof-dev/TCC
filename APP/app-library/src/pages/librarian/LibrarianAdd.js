@@ -24,7 +24,6 @@ function searchBookWithExistingCode(code) {
 }
 
 export default function LibrarianAdd() {
-    const [hasRequestedAdd, setHasRequestedAdd] = useState(false)
     const [isRequesting, setIsRequesting] = useState(false)
     const [selectedCoverURL, setselectedCoverURL] = useState(0)
 
@@ -35,6 +34,7 @@ export default function LibrarianAdd() {
 
     const [allGenres, setAllGenres] = useState(["a", "b"])
     const [allAuthors, setAllAuthors] = useState([""])
+    const [allCodes, setAllCodes] = useState([""])
 
     const [allPublishers, setAllPublishers] = useState([""])
 
@@ -60,10 +60,15 @@ export default function LibrarianAdd() {
         sinopse: "ab"
     })
 
-    function addBook(e) {
+    async function addBook(e) {
         e.preventDefault()
         setIsRequesting(true)
         console.log(formData);
+
+        await Api.books.addNewBook(formData)
+
+
+        document.getElementById("modalAddSuccess").showModal()
     }
 
 
@@ -73,14 +78,54 @@ export default function LibrarianAdd() {
         const urls = await Api.getCoverURLs({ title: formData.titulo })
         console.log(urls.message.imagens);
         setCoverURLs(urls.message.imagens)
-        
+
+        const uniqueCode = generateUniqueCodeAndCheck();
+        setFormData({...formData, codigo: uniqueCode})
+
+
+
         const synopsisResponse = await (await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor })).json()
         console.log(synopsisResponse);
-        setFormData({ ...formData, sinopse: synopsisResponse.message })
+         
+        setFormData({ ...formData, sinopse: synopsisResponse? synopsisResponse.message : "Não foi possível gerar a sinopse." })
 
         console.log(synopsisResponse.message);
     }
 
+    function generateUniqueCode() {
+        const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const numeric = "0123456789";
+
+        let code = "";
+
+        // Generate the alphabetic part
+        for (let i = 0; i < 3; i++) {
+            code += alpha[Math.floor(Math.random() * alpha.length)];
+        }
+
+        // Generate the numeric part
+        for (let i = 0; i < 4; i++) {
+            code += numeric[Math.floor(Math.random() * numeric.length)];
+        }
+
+        return code;
+    }
+
+    function checkCodeUniqueness(code) {
+        // Simulate checking against a database or API
+        // Replace this with your actual checking logic
+        const existingCodes = ["AAA-1234", "BBB-5678", "CCC-9012"];
+        return !existingCodes.includes(code);
+    }
+
+    function generateUniqueCodeAndCheck() {
+        let code;
+        do {
+            code = generateUniqueCode();
+        } while (!checkCodeUniqueness(code));
+
+        return code;
+    }
 
     useEffect(() => {
 
@@ -331,14 +376,14 @@ export default function LibrarianAdd() {
 
                                 {
                                     coverURLs.length > 1 ? (
-                                        
-                                        
+
+
                                         coverURLs.map((b, i) => {
                                             console.log(b)
-                                        return <CoverOption id={i}
-                                            coverURL={b}
-                                            selectedCoverURL={selectedCoverURL} setselectedCoverURL={setselectedCoverURL} />
-                                    }))
+                                            return <CoverOption id={i}
+                                                coverURL={b}
+                                                selectedCoverURL={selectedCoverURL} setselectedCoverURL={setselectedCoverURL} />
+                                        }))
                                         : <span className="loading loading-spinner loading-lg"></span>
 
                                 }
@@ -465,6 +510,7 @@ export default function LibrarianAdd() {
                                             </label>
 
                                             {
+
                                                 formData.sinopse.length > 2 ? <TextField
                                                     value={formData.sinopse}
                                                     onChange={e => setFormData({ ...formData, titulo: e.target.value })}
@@ -559,6 +605,24 @@ export default function LibrarianAdd() {
                                         </button>
                                         <button onClick={e => setIsRequesting(false)} className="btn" >Voltar e editar</button>
                                     </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
+
+                <dialog id="modalAddSuccess" className="modal">
+                    <div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+
+                        <div>
+                            <h3 className="font-bold text-3xl ">Sucesso!</h3>
+                            <p className="py-4">Livro adicionado ao sistema!</p>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    <button className="btn">Fechar</button>
                                 </form>
                             </div>
                         </div>
