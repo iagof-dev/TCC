@@ -17,8 +17,6 @@ const theme = createTheme({
 });
 
 
-
-
 function searchBookWithExistingCode(code) {
     //TODO
 }
@@ -31,10 +29,8 @@ export default function LibrarianAdd() {
 
     const [dataWithId, setDataWithId] = useState()
 
-
     const [allGenres, setAllGenres] = useState(["a", "b"])
     const [allAuthors, setAllAuthors] = useState([""])
-    const [allCodes, setAllCodes] = useState([""])
 
     const [allPublishers, setAllPublishers] = useState([""])
 
@@ -58,17 +54,33 @@ export default function LibrarianAdd() {
         sinopse: "ab"
     })
 
-    let requestedCoverSelectionWithTheseValues = false
+    const [requestedCoverSelectionWithTheseValues, setRequestedCoverSelectionWithTheseValues] = useState(false)
 
     const [formDataTempValues, setFormDataTempValues] = useState()
+
+    const [tempGenres, setTempGenres] = useState([])
+
+    useEffect(() => {
+        setFormData({...formData, url_capa: coverURLs[selectedCoverURL]})
+    }, [selectedCoverURL])
 
     async function addBook(e) {
         e.preventDefault()
         setIsRequesting(true)
-        console.log(formData);
 
+        console.log(formData.autor.id);
+
+        if(formData.autor.id == -1){ 
+            console.log("TA AQUI");
+            await Api.authors.addAuthor(formData.autor)
+            const newAuthors = await Api.authors.getAllAuthors()
+
+            console.log(newAuthors);
+            const newAuthorId = newAuthors.find(a => a.nome == formData.autor.autor).id
+            setFormData({...formData, autor:{...formData.autor, id: newAuthorId}})
+        }
+        
         await Api.books.addNewBook(formData)
-
 
         document.getElementById("modalAddSuccess").showModal()
     }
@@ -77,26 +89,37 @@ export default function LibrarianAdd() {
     async function handleBookAddModal(e) {
         e.preventDefault()
 
+        console.log(formData);
+
 
         document.getElementById('bookCoverSelectionModal').showModal()
 
-        if(requestedCoverSelectionWithTheseValues) return
+        if(requestedCoverSelectionWithTheseValues) {
+            console.log("NAO CAIU NA API");
+        } else {
+            console.log("CAIU NA API");
 
-        requestedCoverSelectionWithTheseValues = true
+            setCoverURLs([])
 
-        const urls = await Api.getCoverURLs({ title: formData.titulo })
-        setCoverURLs(urls.message.imagens)
+            setRequestedCoverSelectionWithTheseValues(true)
+
+            const urls = await Api.getCoverURLs({ title: formData.titulo })
+            setCoverURLs(urls.message.imagens)
 
 
-        const uniqueCode = generateUniqueCodeAndCheck();
-        setFormData({...formData, codigo: uniqueCode})
+            const uniqueCode = generateUniqueCodeAndCheck();
+            setFormData({...formData, codigo: uniqueCode})
 
-        const synopsisResponse = await (await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor })).json()
-        console.log(synopsisResponse);
-         
-        setFormData({ ...formData, sinopse: synopsisResponse? synopsisResponse.message : "Não foi possível gerar a sinopse." })
+            const synopsisResponse = await (await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor })).json()
+            console.log(synopsisResponse);
+            
+            setFormData({ ...formData, sinopse: synopsisResponse? synopsisResponse.message : "Não foi possível gerar a sinopse." })
+            setRequestedCoverSelectionWithTheseValues(true)
 
-        console.log(synopsisResponse.message);
+            console.log(synopsisResponse.message);
+        }
+
+        
     }
 
 
@@ -148,16 +171,14 @@ export default function LibrarianAdd() {
 
             setDataWithId({ genres: genres, authors, authors, publishers: publishers })
 
-            const res = await Api.books.addNewBook()
-
         })()
 
 
     }, [])
 
     useEffect(() => {
-        requestedCoverSelectionWithTheseValues = false
-    }, [formData])
+        setRequestedCoverSelectionWithTheseValues(false)
+    }, [formData.autor])
 
     return (
         <>
@@ -290,31 +311,40 @@ export default function LibrarianAdd() {
                             multiple
                             id="tags-filled"
                             fullWidth
-                            // value={formData.generos}
+                            value={tempGenres}
                             options={allGenres}
                             freeSolo
                             onChange={(event, generos) => {
-                                let chosenGenres = []
+                                let chosenGenresWithId = []
+
+                                console.log("----------formData.generos.generos");
+                                console.log(formData.generos.genero);
+
+                                setTempGenres(generos)
+
                                 generos.forEach(g => {
-
-                                    chosenGenres.push(g)
-
-                                    setFormData({ ...formData, generos: chosenGenres });
 
                                     let id = dataWithId.genres.findIndex(a => a.genero == g)
 
                                     console.log(`id genero no dataWithId : ${id}`);
 
-                                    let generoId = -1
+                                    let generoId = dataWithId.genres[id].id
 
-                                    if (id != -1) generoId = dataWithId.genres[id].id
-
+                                    console.log("--------- generoID");
                                     console.log(generoId);
 
-                                    setFormData({ ...formData, generos: chosenGenres });
+                                    console.log("--------- g");
+                                    console.log(g);
 
+                                    const generoComId = {id: generoId, genero: g}
+
+                                    console.log(generoComId);
+
+                                    chosenGenresWithId.push(generoComId)
                                 })
-                                setFormData({ ...formData, generos: { ...formData.generos, generos: generos } })
+
+                                setFormData({ ...formData, generos: chosenGenresWithId })
+                                console.log(formData);
                             }
                             }
                             sx={{ width: 550 }}
@@ -501,7 +531,7 @@ export default function LibrarianAdd() {
                                                 multiple
                                                 id="tags-filled"
                                                 fullWidth
-                                                value={formData.generos.generos}
+                                                value={tempGenres}
                                                 // options={["Nutrição"]}
                                                 // onChange={(event, values) => setSelectedCategories(values)}
                                                 freeSolo

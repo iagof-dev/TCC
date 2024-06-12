@@ -9,11 +9,13 @@ import MenuItem from "@mui/material/MenuItem"
 import { Api } from "../../api"
 
 export default function LibrarianLogin(props) {
-    const { setPath, librarian, setLibrarian } = { ...props }
+    const { setPath, librarian, setLibrarian, setLibrarianId } = { ...props }
 
     const [loginNames, setLoginNames] = useState(["Silvana", "Gil", "Maria Ivone"])
 
     const [isSubmitting, setIsSubmitting] = useState(false)
+
+    const [LibrarianTemp, setLibrarianTemp] = useState('')
 
     const [loginError, setLoginError] = useState("")
     const [isLoginOpen, setIsLoginOpen] = useState(false)
@@ -29,8 +31,8 @@ export default function LibrarianLogin(props) {
     // navigate("/menu")
 
     function handleLogin() {
-        setLibrarian(loginInputValue)
-        if (loginInputValue == '') {
+        setLibrarian(LibrarianTemp)
+        if (LibrarianTemp == '') {
             setIsLoginOpen(true)
             setIsSubmitting(false)
             return
@@ -53,11 +55,12 @@ export default function LibrarianLogin(props) {
     }
 
     useEffect(() => {
-        let error = false
         let data
         async function getAllLibrarians() {
             data = await Api.librarians.getAllLibrarians()
-            const librarians = data.map(l => l.nome)
+
+            const librarians = data.map(l => {return {nome: l.nome, id: l.id}})
+
             setLoginNames(librarians)
         }
 
@@ -78,14 +81,19 @@ export default function LibrarianLogin(props) {
                             labelId="demo-simple-select-standard-label"
                             id="demo-simple-select-standard"
                             fullWidth
-                            value={loginInputValue}
+                            value={LibrarianTemp}
                             onChange={(v) => {
-                                console.log(v);
-                                setLoginInputValue(v.target.value)
+                                console.log("-----------lib id");
+                                setLibrarianId(v.target.value)
+                                console.log("-----------l => l.nome == v.target.value)");
+                                console.log(loginNames.find(l => l.nome == v.target.value));
+                                setLibrarianTemp(loginNames.find(l => l.nome == v.target.value).nome)
+
+                                setLibrarianId(loginNames.find(l => l.nome == v.target.value).id)
                             }}>
                             {
-                                loginNames.map(name => {
-                                    return <MenuItem value={name}>{name}</MenuItem>
+                                loginNames.map(librarian => {
+                                    return <MenuItem value={librarian.nome}>{librarian.nome}</MenuItem>
                                 })
                             }</Select>
 

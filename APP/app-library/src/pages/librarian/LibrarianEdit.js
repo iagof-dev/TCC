@@ -8,7 +8,7 @@ import BookSearchContainer from '../../components/BookSearchContainer';
 import { Api } from '../../api';
 
 export default function Search(props) {
-	const { setPath, path } = { ...props }
+	const { setPath, path, librarianId } = { ...props }
 
 	const [editOrRemove, setEditOrRemove] = useState("remove")
 

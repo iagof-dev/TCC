@@ -18,6 +18,7 @@ function App() {
 	const [path, setPath] = useState('')
 	const [userInfo, setUserInfo] = useState({})
 	const [librarian, setLibrarian] = useState("")
+	const [librarianId, setLibrarianId] = useState(-1)
 
 	//Student Application
 	// return (
@@ -47,30 +48,30 @@ function App() {
 
 			<Routes>
 
-				<Route path="/" element={<LibrarianLogin setPath={setPath} librarian={librarian} setLibrarian={setLibrarian} />} />
+				<Route path="/" element={<LibrarianLogin setPath={setPath} librarian={librarian} setLibrarian={setLibrarian} setLibrarianId={setLibrarianId} />} />
 
 				<Route path="/librarianMenu" element={<LibrarianMenu setPath={setPath} librarian={librarian} />}  >
 
 					{/* Empréstimo/devolução */}
 
 					<Route path="/librarianMenu/librarianLoan"
-						element={<LibrarianLoan />} />
+						element={<LibrarianLoan librarianId={librarianId} />} />
 
 					{/* Listar leituras dos alunos */}
 
 					< Route path="/librarianMenu/librarianList"
-						element={<LibrarianList />} />
+						element={<LibrarianList librarianId={librarianId} />} />
 
 
 					{/* Adicionar livro ao sistema */}
 
 					<Route path="/librarianMenu/librarianAdd"
-						element={<LibrarianAdd />} />
+						element={<LibrarianAdd librarianId={librarianId} />} />
 
 					{/* Editar/remover livro do sistema */}
 
 					<Route path="/librarianMenu/librarianEdit"
-						element={<LibrarianEdit />} />
+						element={<LibrarianEdit librarianId={librarianId} />} />
 
 				</Route>
 

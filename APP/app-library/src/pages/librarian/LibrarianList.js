@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Api } from "../../api"
 import { ThemeProvider, createTheme } from "@mui/material"
 
-export default function LibrarianList() {
+export default function LibrarianList(props) {
 
     const [lectures, setLectures] = useState([])
 

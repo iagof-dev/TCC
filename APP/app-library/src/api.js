@@ -6,7 +6,6 @@ async function post(url, formData) {
 
     formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
 
-
     return await fetch(url, {
         method: "POST",
         mode: "no-cors",
@@ -113,22 +112,25 @@ const Api = {
 
             const formData = new FormData()
 
-            // formData.append("authpass", this.authpass)
-            // formData.append("titulo", pageData.titulo)
-            // formData.append("id_autor", pageData.autor.id)
-            // formData.append("id_editora", pageData.editora.id)
-            // formData.append("capa", pageData.url_capa)
-            // formData.append("volumes", pageData.volumes)
-            // formData.append("sinopse", pageData.sinopse)
+            console.log("------------ API pageData");
+            console.log(pageData);
 
             formData.append("authpass", authpass)
-            formData.append("codigo", "pageData.codigo")
-            formData.append("titulo", "pageData.titulo")
-            formData.append("id_autor", "pageData.autor.id")
-            formData.append("id_editora", "pageData.editora.id")
-            formData.append("capa", "pageData.url_capa")
-            formData.append("volumes", "pageData.volumes")
-            formData.append("sinopse", "pageData.sinops")
+            formData.append("codigo", pageData.codigo)
+            formData.append("titulo", pageData.titulo)
+            formData.append("id_autor", pageData.autor.id)
+            formData.append("id_editora", pageData.editora.id)
+            formData.append("capa", pageData.url_capa)
+            formData.append("volumes", pageData.volumes)
+            formData.append("sinopse", pageData.sinopse)
+
+            // formData.append("codigo", "pageData.codigo")
+            // formData.append("titulo", "pageData.titulo")
+            // formData.append("id_autor", "pageData.autor.id")
+            // formData.append("id_editora", "pageData.editora.id")
+            // formData.append("capa", "pageData.url_capa")
+            // formData.append("volumes", "pageData.volumes")
+            // formData.append("sinopse", "pageData.sinops")
 
             //[ID, CODIGO*, TITULO*, ID_AUTOR*, ID_EDITORA*, CAPA*, VOLUMES*, SINOPSE*]
 
@@ -180,6 +182,27 @@ const Api = {
     },
 
     authors: {
+        addAuthor: async function(autor) {
+
+            const formData = new FormData()
+
+            console.log("API ----------- add author");
+
+            formData.append("nome", autor.autor)
+            formData.append("authpass", authpass)
+
+            return await fetch(url + '/autores/adicionar', {
+                method: "POST",
+                body: formData
+            }).then(res => res.json())
+
+            // return await fetch(url + '/livros/criar/', {
+            //     method: "POST",
+            //     body: formData
+            // }).then(res => console.log(res))
+        },
+
+
         getAllAuthors: async function () {
             return await fetch(url + '/autores/listar/').then(res => res.json()).then(data => data.DATA)
         }
@@ -189,7 +212,26 @@ const Api = {
     publishers: {
         getAllPublishers: async function () {
             return await fetch(url + '/editoras/listar/').then(res => res.json()).then(data => data.DATA)
-        }
+        },
+
+        addPublisher: async function(editora) {
+
+            const formData = new FormData()
+
+
+            formData.append("nome", editora.editora)
+            formData.append("authpass", authpass)
+
+            return await fetch(url + '/autores/adicionar', {
+                method: "POST",
+                body: formData
+            }).then(res => res.json())
+
+            // return await fetch(url + '/livros/criar/', {
+            //     method: "POST",
+            //     body: formData
+            // }).then(res => console.log(res))
+        },
     },
 
     generateSynopsis: async function (book) {
