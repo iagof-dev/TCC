@@ -38,8 +38,6 @@ export default function LibrarianAdd() {
 
     const [allPublishers, setAllPublishers] = useState([""])
 
-    const [sinopse, setSinopse] = useState("")
-
     const [formData, setFormData] = useState({
         titulo: "",
         autor: {
@@ -60,6 +58,10 @@ export default function LibrarianAdd() {
         sinopse: "ab"
     })
 
+    let requestedCoverSelectionWithTheseValues = false
+
+    const [formDataTempValues, setFormDataTempValues] = useState()
+
     async function addBook(e) {
         e.preventDefault()
         setIsRequesting(true)
@@ -74,15 +76,20 @@ export default function LibrarianAdd() {
 
     async function handleBookAddModal(e) {
         e.preventDefault()
+
+
         document.getElementById('bookCoverSelectionModal').showModal()
+
+        if(requestedCoverSelectionWithTheseValues) return
+
+        requestedCoverSelectionWithTheseValues = true
+
         const urls = await Api.getCoverURLs({ title: formData.titulo })
-        console.log(urls.message.imagens);
         setCoverURLs(urls.message.imagens)
+
 
         const uniqueCode = generateUniqueCodeAndCheck();
         setFormData({...formData, codigo: uniqueCode})
-
-
 
         const synopsisResponse = await (await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor })).json()
         console.log(synopsisResponse);
@@ -91,6 +98,7 @@ export default function LibrarianAdd() {
 
         console.log(synopsisResponse.message);
     }
+
 
     function generateUniqueCode() {
         const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -140,10 +148,16 @@ export default function LibrarianAdd() {
 
             setDataWithId({ genres: genres, authors, authors, publishers: publishers })
 
+            const res = await Api.books.addNewBook()
+
         })()
 
 
     }, [])
+
+    useEffect(() => {
+        requestedCoverSelectionWithTheseValues = false
+    }, [formData])
 
     return (
         <>
@@ -168,6 +182,7 @@ export default function LibrarianAdd() {
                             value={formData.titulo}
                             onChange={e => {
                                 setFormData({ ...formData, titulo: e.target.value })
+                                setFormDataTempValues()
                             }}
                             required
                             style={{ width: 550 }}
@@ -189,6 +204,7 @@ export default function LibrarianAdd() {
                                 if (!newValue) return
 
                                 setFormData({ ...formData, autor: { ...formData.autor, autor: newValue } });
+
 
                                 let id = dataWithId.authors.findIndex(a => a.autor == newValue)
                                 let autorId = -1

@@ -21,10 +21,9 @@ async function post(url, formData) {
 }
 
 const url = "https://marciossupiais.shop"
+const authpass= "c38a7e02bfca0da201015ce51931b09d462080b7"
 
 const Api = {
-    authpass: "c38a7e02bfca0da201015ce51931b09d462080b7",
-
     
 
     students: {
@@ -122,7 +121,7 @@ const Api = {
             // formData.append("volumes", pageData.volumes)
             // formData.append("sinopse", pageData.sinopse)
 
-            formData.append("authpass", this.authpass)
+            formData.append("authpass", authpass)
             formData.append("codigo", "pageData.codigo")
             formData.append("titulo", "pageData.titulo")
             formData.append("id_autor", "pageData.autor.id")

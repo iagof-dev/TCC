@@ -73,6 +73,8 @@ export default function Search(props) {
 
 
 	useEffect(() => {
+		
+
 		(async () => {
 			const data = await Api.authors.getAllAuthors()
 			setAuthors(data.map(a => a.autor))
@@ -109,6 +111,8 @@ export default function Search(props) {
 		console.log(editOrRemove);
 	}, [editOrRemove])
 
+	
+
 	if (selectedBook.titulo) {
 
 		if (editOrRemove == "edit") {
@@ -128,9 +132,14 @@ export default function Search(props) {
 									</label>
 									<TextField
 										value={formData.titulo}
-										onChange={e => setFormData({ ...formData, titulo: e.target.value })}
+										onChange={e => {
+											setFormData({ ...formData, titulo: e.target.value })
+											
+											setSelectedBook({...selectedBook, titulo: e.target.value})
+
+										}}
 										placeholder="Título"
-										style={{ width: 450 }}
+										style={{ width: 550 }}
 										required
 										className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
 									/>
@@ -146,6 +155,7 @@ export default function Search(props) {
 										onChange={(event, newValue) => {
 											if (!newValue) return
 											setFormData({ ...formData, autor: newValue });
+											setSelectedBook({...selectedBook, autor: newValue})
 										}}
 										options={authors}
 										id="controllable-states-demo"
@@ -153,7 +163,7 @@ export default function Search(props) {
 										required
 										fullWidth
 										placeholder="Autor"
-										sx={{ width: 450 }}
+										sx={{ width: 550 }}
 										renderInput={(params) => <TextField  {...params}
 											className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
 										/>}
@@ -174,12 +184,14 @@ export default function Search(props) {
 												if (!newValue) return
 
 												setFormData({ ...formData, editora: newValue });
+												setSelectedBook({...selectedBook, editora: newValue})
 											}}
+
 											options={publishers}
 											id="controllable-states-demo"
 											size="sm"
 											required
-											sx={{ width: 450 }}
+											sx={{ width: 550 }}
 											renderInput={(params) => <TextField  {...params}
 												className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
 											/>}
@@ -227,7 +239,7 @@ export default function Search(props) {
 											}
 											options={generos}
 											freeSolo
-											sx={{ width: 450 }}
+											sx={{ width: 550 }}
 											renderTags={(value, getTagProps) =>
 												value.map((option, index) => (
 													<Chip variant="outlined" className='text-lg' label={option} {...getTagProps({ index })} />
@@ -249,9 +261,12 @@ export default function Search(props) {
 									</label>
 									<TextField
 										value={formData.sinopse}
-										onChange={e => setFormData({ ...formData, sinopse: e.target.value })}
+										onChange={e => {
+											setFormData({ ...formData, sinopse: e.target.value })
+											setSelectedBook({ ...selectedBook, sinopse: e.target.value });
+										}}
 										placeholder="Título"
-										style={{ width: 450 }}
+										style={{ width: 550 }}
 										multiline
 										rows={4}
 										required
@@ -280,6 +295,7 @@ export default function Search(props) {
 											}
 
 											setFormData({ ...formData, volumes: e.target.value })
+											setSelectedBook({...selectedBook, volumes: e.target.value})
 
 
 										}}
@@ -298,7 +314,11 @@ export default function Search(props) {
 									</label>
 									<TextField
 										value={formData.codigo}
-										onChange={e => setFormData({ ...formData, codigo: e.target.value })}
+										onChange={e => {
+											setFormData({ ...formData, codigo: e.target.value })
+											setSelectedBook({...selectedBook, codigo: e.target.value})
+										}
+										}
 										placeholder="Código"
 										style={{ width: 230 }}
 										className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
@@ -306,13 +326,10 @@ export default function Search(props) {
 
 							</div>
 						</div>
-						<div className="w-[18rem] h-[28rem] relative">
-							<img className="rounded-2xl h-[100%] object-top bg-cover duration-500" src={formData.coverURL} />
-						</div>
 
 					</div>
 
-					<div className=" flex no-wrap gap-4">
+					<div className=" flex no-wrap gap-4 mt-3">
 						<button onClick={(e) => {
 							e.preventDefault()
 						}} className="button no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
@@ -532,9 +549,6 @@ export default function Search(props) {
 									/></span>
 
 							</div>
-						</div>
-						<div className="w-[18rem] h-[28rem] relative flex flex-col no-wrap">
-							<img className="rounded-2xl h-[100%] mt-[4rem] object-top bg-cover duration-500" src={selectedBook.url_capa} />
 						</div>
 					</div>
 
