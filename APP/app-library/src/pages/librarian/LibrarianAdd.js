@@ -70,6 +70,9 @@ export default function LibrarianAdd() {
         e.preventDefault()
         setIsRequesting(true)
 
+        console.log("codigo livro -----------");
+        console.log(formData.codigo);
+
         if (formData.autor.id == -1) {
             if (allAuthors.find(a => a.autor == formData.autor.autor)) return
 
@@ -97,12 +100,42 @@ export default function LibrarianAdd() {
             setFormData({ ...formData, editora: { ...formData.editora, id: newPublisherId } })
         }
 
+        const idGenerosASeremAdicionados = formData.generos.map(g => g.id)
+
+        // idGenerosASeremAdicionados.forEach(g => {
+        //     await Api.books.
+        // });
+
+        console.log("---------- formData.generos");
+        console.log(formData.generos);
+
+        console.log('formData.codigo');
+        console.log(formData.codigo);
+
         await Api.books.addNewBook(formData)
+
+        // const allBooks = await Api.books.getAllBooks()
+
+        // console.log('------- allBooks');
+        // console.log(allBooks);
+
+
+        const addedBook = await Api.books.getBookByCode(formData.codigo)
+        
+        
+
+
+        console.log('------- addedBook');
+        console.log(addedBook);
+
+        idGenerosASeremAdicionados.forEach( async g => {
+            await Api.books.addNewBookGenre(addedBook[0].id, g)
+        });
 
         document.getElementById("modalAddSuccess").showModal()
     }
 
-    async function getCoversAndSynopsis() {
+    async function getCoversAndSynopsis(code) {
         setCoverURLs([])
 
         setRequestedCoverSelectionWithTheseValues(true)
@@ -110,11 +143,10 @@ export default function LibrarianAdd() {
         const urls = await Api.getCoverURLs({ title: formData.titulo })
         setCoverURLs(urls.message.imagens)
 
-
         const synopsisResponse = await (await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor })).json()
         console.log(synopsisResponse);
 
-        setFormData({ ...formData, sinopse: synopsisResponse ? synopsisResponse.message : "Não foi possível gerar a sinopse." })
+        setFormData({ ...formData, codigo: code, sinopse: synopsisResponse ? synopsisResponse.message : "Não foi possível gerar a sinopse." })
         setRequestedCoverSelectionWithTheseValues(true)
 
         console.log(synopsisResponse.message);
@@ -126,11 +158,20 @@ export default function LibrarianAdd() {
 
         console.log(formData);
 
+        console.log("----------- formData.autor");
+        console.log(formData.autor);
 
         document.getElementById('bookCoverSelectionModal').showModal()
 
 
+        
+
         const uniqueCode = generateUniqueCodeAndCheck();
+        
+        console.log("uniqueCode");
+        console.log(uniqueCode);
+
+        
         setFormData({ ...formData, codigo: uniqueCode })
 
 
@@ -139,7 +180,7 @@ export default function LibrarianAdd() {
         } else {
             console.log("CAIU NA API");
 
-            // getCoversAndSynopsis()
+            getCoversAndSynopsis(uniqueCode)
 
         }
 
@@ -188,8 +229,12 @@ export default function LibrarianAdd() {
             console.log("-------------- existingCodesData");
             console.log(existingCodesData);
 
+            console.log("-------------- publishers");
+            console.log(publishers);
+
             setAllGenres(genres.map(g => g.genero))
             setAllAuthors(authors.map(a => a.nome))
+            setAllPublishers(publishers.map(p => p.editora))
             setExistingCodes(existingCodesData.map(c => c.codigo))
 
             setDataWithId({ genres: genres, authors, authors, publishers: publishers })
@@ -248,19 +293,41 @@ export default function LibrarianAdd() {
                                 setFormData({ ...formData, autor: { ...formData.autor, autor: newValue } });
 
 
-                                let id = dataWithId.authors.findIndex(a => a.autor == newValue)
-                                let autorId = -1
+                                // let id = dataWithId.authors.findIndex(a => a.autor == newValue)
+                                // let autorId = -1
 
-                                if (id != -1) autorId = dataWithId.authors[id].id
+                                // if (id != -1) autorId = dataWithId.authors[id].id
 
-                                setFormData({ ...formData, autor: { ...formData.autor, autor: newValue, id: autorId } })
+                                // setFormData({ ...formData, autor: { ...formData.autor, autor: newValue, id: autorId } })
 
 
                             }}
                             onBlur={(e) => {
-                                if (allAuthors.includes(e.target.value)) return setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value } })
 
-                                setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value, id: -1 } })
+                                setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value } });
+
+
+                                let id = dataWithId.authors.find(a => a.nome == e.target.value)
+
+                                console.log('-------------- id');
+                                console.log(id);
+
+                                let autorId
+
+                                if(id == undefined){
+                                    autorId = -1
+                                } else {
+                                    autorId = id.id
+                                }
+
+                                console.log('-------------- autorId');
+                                console.log(autorId);
+
+                                setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value, id: autorId } })
+
+                                // if (allAuthors.includes(e.target.value)) return setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value } })
+
+                                // setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value, id: -1 } })
                             }}
                             options={allAuthors}
                             id="controllable-states-demo"
@@ -643,8 +710,6 @@ export default function LibrarianAdd() {
                                             </label>
                                             <TextField
                                                 value={formData.codigo}
-                                                onBlur={() => searchBookWithExistingCode(formData.codigo)}
-                                                onChange={e => setFormData({ ...formData, codigo: e.target.value })}
                                                 placeholder="Código"
                                                 style={{ width: 230 }}
                                                 disabled

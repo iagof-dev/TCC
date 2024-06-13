@@ -60,10 +60,17 @@ const Api = {
 
         },
 
+        getBookByCode: async function (code) {
+
+            return await fetch(url + '/livros/listar/codigo/' + code).then(res => res.json()).then(data => data.DATA)
+
+
+        },
+
 
         getAllBooks: async function () {
             try {
-                return await fetch(url + '/livros/').then(res => res.json()).then(data => data.DATA)
+                return await fetch(url + '/livros/listar').then(res => res.json()).then(data => data.DATA)
 
             } catch {
                 return [
@@ -110,6 +117,9 @@ const Api = {
             //     sinopse: "ab"
             // })
 
+            console.log("---------------- pageData.codigo");
+            console.log(pageData.codigo);
+
             const formData = new FormData()
 
             console.log("------------ API pageData");
@@ -140,9 +150,18 @@ const Api = {
             }).then(res => console.log(res))
         },
 
-        // addNewBookGenre: async function () {
+        addNewBookGenre: async function (idLivro, idGenero) {
+            const formData = new FormData()
 
-        // }
+            formData.append("authpass", authpass)
+            formData.append("id_genero", idGenero)
+            formData.append("id_livro", idLivro)
+
+            return await fetch(url + '/generos_livros/inserir/', {
+                method: "POST",
+                body: formData
+            }).then(res => console.log(res))
+        },
 
         getAllCodes: async function () {
 
