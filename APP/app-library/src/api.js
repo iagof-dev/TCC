@@ -140,6 +140,17 @@ const Api = {
             }).then(res => console.log(res))
         },
 
+        // addNewBookGenre: async function () {
+
+        // }
+
+        getAllCodes: async function () {
+
+            return await fetch(url + '/livros/codigos').then(res => res.json()).then(data => data.DATA)
+
+
+        },
+
     },
 
     loans: {
@@ -218,16 +229,13 @@ const Api = {
 
             const formData = new FormData()
 
-
-            formData.append("nome", editora.editora)
+            formData.append("editora", editora)
             formData.append("authpass", authpass)
 
-            console.log();
-
-            return await fetch(url + '/editora/adicionar', {
+            return await fetch(url + '/editoras/adicionar', {
                 method: "POST",
                 body: formData
-            })
+            }).then(res => console.log(res))
         },
     },
 
