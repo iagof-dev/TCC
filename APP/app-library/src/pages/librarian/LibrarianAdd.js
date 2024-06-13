@@ -70,14 +70,28 @@ export default function LibrarianAdd() {
 
         console.log(formData.autor.id);
 
-        if(formData.autor.id == -1){ 
-            console.log("TA AQUI");
+        if(formData.autor.id == -1){  
+            if(allAuthors.find(a => a.autor == formData.autor.autor)) return
+
+            console.log("NOVO AUTOR");
             await Api.authors.addAuthor(formData.autor)
             const newAuthors = await Api.authors.getAllAuthors()
 
-            console.log(newAuthors);
             const newAuthorId = newAuthors.find(a => a.nome == formData.autor.autor).id
             setFormData({...formData, autor:{...formData.autor, id: newAuthorId}})
+        }
+
+        if(formData.editora.id == -1){ 
+            const res = await Api.publishers.addPublisher(formData.editora)
+            console.log("NOVA EDITORA");
+            console.log("--------- res");
+            console.log(res);
+            const newPublishers = await Api.publishers.getAllPublishers()
+
+            console.log(newPublishers.find(p => p.editora == formData.editora.editora));
+
+            const newPublisherId = newPublishers.find(p => p.editora == formData.editora.editora)
+            setFormData({...formData, editora:{...formData.editora, id: newPublisherId}})
         }
         
         await Api.books.addNewBook(formData)
@@ -85,21 +99,8 @@ export default function LibrarianAdd() {
         document.getElementById("modalAddSuccess").showModal()
     }
 
-
-    async function handleBookAddModal(e) {
-        e.preventDefault()
-
-        console.log(formData);
-
-
-        document.getElementById('bookCoverSelectionModal').showModal()
-
-        if(requestedCoverSelectionWithTheseValues) {
-            console.log("NAO CAIU NA API");
-        } else {
-            console.log("CAIU NA API");
-
-            setCoverURLs([])
+    async function getCoversAndSynopsis(){
+        setCoverURLs([])
 
             setRequestedCoverSelectionWithTheseValues(true)
 
@@ -117,6 +118,24 @@ export default function LibrarianAdd() {
             setRequestedCoverSelectionWithTheseValues(true)
 
             console.log(synopsisResponse.message);
+    }
+
+
+    async function handleBookAddModal(e) {
+        e.preventDefault()
+
+        console.log(formData);
+
+
+        document.getElementById('bookCoverSelectionModal').showModal()
+
+        if(requestedCoverSelectionWithTheseValues) {
+            console.log("NAO CAIU NA API");
+        } else {
+            console.log("CAIU NA API");
+
+            // getCoversAndSynopsis()
+            
         }
 
         

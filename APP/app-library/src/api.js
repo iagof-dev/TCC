@@ -222,15 +222,12 @@ const Api = {
             formData.append("nome", editora.editora)
             formData.append("authpass", authpass)
 
-            return await fetch(url + '/autores/adicionar', {
+            console.log();
+
+            return await fetch(url + '/editora/adicionar', {
                 method: "POST",
                 body: formData
-            }).then(res => res.json())
-
-            // return await fetch(url + '/livros/criar/', {
-            //     method: "POST",
-            //     body: formData
-            // }).then(res => console.log(res))
+            })
         },
     },
 

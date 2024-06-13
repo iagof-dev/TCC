@@ -18,6 +18,9 @@ export default function LibrarianList(props) {
         async function setAllLectures() {
             const data = await Api.loans.getAllLoans()
 
+            console.log("--------------- loans");
+            console.log(data);
+
             setLectures(data)
         }
 
