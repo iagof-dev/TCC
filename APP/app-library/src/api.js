@@ -20,10 +20,10 @@ async function post(url, formData) {
 }
 
 const url = "https://marciossupiais.shop"
-const authpass= "c38a7e02bfca0da201015ce51931b09d462080b7"
+const authpass = "c38a7e02bfca0da201015ce51931b09d462080b7"
 
 const Api = {
-    
+
 
     students: {
         //Student
@@ -95,7 +95,7 @@ const Api = {
         },
 
         addNewBook: async function (pageData) {
-            
+
 
             // const [formData, setFormData] = useState({
             //     titulo: "",
@@ -180,6 +180,28 @@ const Api = {
         getLoansByRM: async function (rm) {
             return await fetch(url + '/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA)
         },
+
+        //[RM*, id_bibliotecaria*, id_livro*, data_aluguel*, id_status_emprestimo*, prazo*]
+
+        makeLoan: async function (data) {
+            const formData = new FormData()
+
+
+            formData.append("rm", data.RM)
+            formData.append("id_bibliotecaria", data.librarianId)
+            formData.append("id_livro", data.idLivro)
+            formData.append("data_aluguel", data.dataAluguel)
+            formData.append("id_status_emprestimo", 1)
+            formData.append("prazo", data.time)
+
+
+            formData.append("authpass", authpass)
+
+            return await fetch(url + '/autores/adicionar', {
+                method: "POST",
+                body: formData
+            }).then(res => res.json())
+        }
     },
 
     librarians: {
@@ -191,10 +213,11 @@ const Api = {
                 return {
                     status: "erro",
                     data: [
-                    { nome: 'João' },
-                    { nome: 'Kleber' },
-                    { nome: 'Maria' },
-                ]}
+                        { nome: 'João' },
+                        { nome: 'Kleber' },
+                        { nome: 'Maria' },
+                    ]
+                }
             }
 
         },
@@ -212,7 +235,7 @@ const Api = {
     },
 
     authors: {
-        addAuthor: async function(autor) {
+        addAuthor: async function (autor) {
 
             const formData = new FormData()
 
@@ -244,7 +267,7 @@ const Api = {
             return await fetch(url + '/editoras/listar/').then(res => res.json()).then(data => data.DATA)
         },
 
-        addPublisher: async function(editora) {
+        addPublisher: async function (editora) {
 
             const formData = new FormData()
 
@@ -278,11 +301,11 @@ const Api = {
     },
 
 
-    getCoverURLs: async function ({title, author, publisher}) {
+    getCoverURLs: async function ({ title, author, publisher }) {
         return await fetch(url + '/imagens/buscar/' + encodeURLParam(title), {
 
         })
-        .then(res => res.json())
+            .then(res => res.json())
     }
 }
 

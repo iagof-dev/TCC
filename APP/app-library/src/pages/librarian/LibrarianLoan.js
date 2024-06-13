@@ -6,14 +6,19 @@ import Info from "../../components/Info"
 import DevolutionBooksContainer from "./DevolutionBooksContainer"
 import { Api } from "../../api"
 
-export default function LibrarianLoan() {
+export default function LibrarianLoan(props) {
+    const {librarianId} = {...props}
     const [loanOrDevolution, setLoanOrDevolution] = useState(0)
     const [hasRequestedDevolution, setHasRequestedDevolution] = useState(false)
+    const [booksData, setBooksData] = useState([])
     const [isRequesting, setIsRequesting] = useState(false)
     const [formData, setFormData] = useState({
         code: 0,
         title: "",
+        librarianId: librarianId,
+        bookId:0 ,
         RM: "",
+        loanDate: '',
         name: "",
         time: 2
     })
@@ -102,13 +107,31 @@ export default function LibrarianLoan() {
         
     }
 
-    function handleLoan(e) {
+    async function handleLoan(e) {
         setIsRequesting(true)
         e.preventDefault()
-        //Api: post empréstimo
+
+        const tempbookId = booksData.find(b => b.titulo == formData.title && b.codigo == formData.code)
+        setFormData({...formData, bookId: tempbookId.id})
+
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        setFormData({...formData, loanDate: formattedDate})
+
+        const res = await Api.loans.makeLoan(formData)
+
+        console.log("-------- res");
+        console.log(res);
+
+        // Api: post empréstimo
     
         setTimeout(() => {
-            
+            console.log("--------- formData");
+            console.log(formData);
 
             document.getElementById('modalLoanSuccess').showModal()
             setFormData({
@@ -136,6 +159,8 @@ export default function LibrarianLoan() {
             const data = await Api.books.getAllBooks()
             setBooks(data)
             bookTitles = books.map(b => b.titulo)
+            setBooksData(books)
+            console.log(booksData);
            
         }
 
