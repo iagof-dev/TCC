@@ -166,7 +166,7 @@ export default function LibrarianAdd() {
             const publishers = await Api.publishers.getAllPublishers()
 
             setAllGenres(genres.map(g => g.genero))
-            setAllAuthors(authors.map(a => a.autor))
+            setAllAuthors(authors.map(a => a.nome))
             setAllPublishers(publishers.map(p => p.editora))
 
             setDataWithId({ genres: genres, authors, authors, publishers: publishers })
