@@ -186,11 +186,17 @@ const Api = {
         makeLoan: async function (data) {
             const formData = new FormData()
 
+			// /registrar/ - Criar um emprestimo [RM*, id_bibliotecaria*, id_livro*, data_aluguel*, id_status_emprestimo*, prazo*]
+
+			console.log('aPI DATA TO BE SENT ====================================');
+			console.log(data);
+			console.log('====================================');
+
 
             formData.append("rm", data.RM)
             formData.append("id_bibliotecaria", data.librarianId)
-            formData.append("id_livro", data.idLivro)
-            formData.append("data_aluguel", data.dataAluguel)
+            formData.append("id_livro", data.bookId)
+            formData.append("data_aluguel", data.loanDate)
             formData.append("id_status_emprestimo", 1)
             formData.append("prazo", data.time)
 

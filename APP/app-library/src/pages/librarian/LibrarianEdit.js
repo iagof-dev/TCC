@@ -77,7 +77,7 @@ export default function Search(props) {
 
 		(async () => {
 			const data = await Api.authors.getAllAuthors()
-			setAuthors(data.map(a => a.autor))
+			setAuthors(data.map(a => a.nome))
 			console.log(
 				'AUTORES=========== ' + authors
 			);

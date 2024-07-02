@@ -111,8 +111,20 @@ export default function LibrarianLoan(props) {
         setIsRequesting(true)
         e.preventDefault()
 
-        const tempbookId = booksData.find(b => b.titulo == formData.title && b.codigo == formData.code)
-        setFormData({...formData, bookId: tempbookId.id})
+        // const tempbookId = booksData.find(b => b.titulo == formData.title && b.codigo == formData.code)
+		// console.log('booksData ====================================');
+		// console.log(booksData);
+		// console.log('====================================');
+
+        // if (!tempbookId) return
+		// setFormData({...formData, bookId: tempbookId.id})
+
+		const bookId = booksData.find(b => b.titulo == formData.title && b.codigo == formData.code).id
+
+		setFormData({...formData, bookId: bookId, librarianId: librarianId})
+		console.log('librarianID ====================================');
+		console.log(librarianId);
+		console.log('====================================');
 
         const today = new Date();
         const year = today.getFullYear();
@@ -122,6 +134,10 @@ export default function LibrarianLoan(props) {
 
         setFormData({...formData, loanDate: formattedDate})
 
+		console.log('FormData antes da API ====================================');
+		console.log(formData);
+		console.log('====================================');
+
         const res = await Api.loans.makeLoan(formData)
 
         console.log("-------- res");
@@ -130,9 +146,6 @@ export default function LibrarianLoan(props) {
         // Api: post empréstimo
     
         setTimeout(() => {
-            console.log("--------- formData");
-            console.log(formData);
-
             document.getElementById('modalLoanSuccess').showModal()
             setFormData({
                 code: 0,
@@ -159,7 +172,7 @@ export default function LibrarianLoan(props) {
             const data = await Api.books.getAllBooks()
             setBooks(data)
             bookTitles = books.map(b => b.titulo)
-            setBooksData(books)
+            setBooksData(data)
             console.log(booksData);
            
         }
