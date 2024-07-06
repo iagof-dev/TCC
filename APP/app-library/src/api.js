@@ -19,7 +19,7 @@ async function post(url, formData) {
 
 }
 
-const url = "https://marciossupiais.shop"
+const url = "https://marciossupiais.shop/tcc"
 const authpass = "c38a7e02bfca0da201015ce51931b09d462080b7"
 
 const Api = {
@@ -188,25 +188,31 @@ const Api = {
 
 			// /registrar/ - Criar um emprestimo [RM*, id_bibliotecaria*, id_livro*, data_aluguel*, id_status_emprestimo*, prazo*]
 
-			console.log('aPI DATA TO BE SENT ====================================');
+            // formData.append("rm", data.RM)
+            // formData.append("id_bibliotecaria", data.idLibrarian)
+            // formData.append("id_livro", data.bookId)
+            // formData.append("data_aluguel", data.loanDate)
+            // formData.append("id_status_emprestimo", 1)
+            // formData.append("prazo", data.time)
+
+			console.log('DATA na API ====================================');
 			console.log(data);
 			console.log('====================================');
 
-
-            formData.append("rm", data.RM)
+			formData.append("rm", data.RM)
             formData.append("id_bibliotecaria", data.librarianId)
             formData.append("id_livro", data.bookId)
             formData.append("data_aluguel", data.loanDate)
-            formData.append("id_status_emprestimo", 1)
+            formData.append("id_status_emprestimo", "1")
             formData.append("prazo", data.time)
 
 
             formData.append("authpass", authpass)
 
-            return await fetch(url + '/autores/adicionar', {
+            return await fetch(url + '/emprestimos/registrar/', {
                 method: "POST",
                 body: formData
-            }).then(res => res.json())
+            }).then(res => res.json()).then(res => console.log(res))
         }
     },
 

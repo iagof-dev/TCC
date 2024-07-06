@@ -119,49 +119,55 @@ export default function LibrarianLoan(props) {
         // if (!tempbookId) return
 		// setFormData({...formData, bookId: tempbookId.id})
 
-		const bookId = booksData.find(b => b.titulo == formData.title && b.codigo == formData.code).id
+		
 
-		setFormData({...formData, bookId: bookId, librarianId: librarianId})
-		console.log('librarianID ====================================');
-		console.log(librarianId);
-		console.log('====================================');
+		// setFormData({...formData, bookId: bookId, librarianId: librarianId})
 
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        const formattedDate = `${year}-${month}-${day}`;
-
-        setFormData({...formData, loanDate: formattedDate})
-
-		console.log('FormData antes da API ====================================');
+		console.log('Form data ====================================');
 		console.log(formData);
 		console.log('====================================');
 
+		// console.log('ACTUAl Form data===================================');
+		// console.log(`${bookId}, ${librarianId}, ${formData.RM}`);
+		// console.log('====================================');
+
         const res = await Api.loans.makeLoan(formData)
 
-        console.log("-------- res");
-        console.log(res);
 
         // Api: post empréstimo
-    
-        setTimeout(() => {
-            document.getElementById('modalLoanSuccess').showModal()
-            setFormData({
-                code: 0,
-                title: "",
-                RM: "",
-                name: "",
-                time: 2
-            })
+
+		document.getElementById('modalLoanSuccess').showModal()
+            // setFormData({
+            //     code: "",
+            //     title: "",
+            //     RM: "",
+			// 	loanDate :"",
+			// 	librarianId: "",
+			// 	bookId: "",
+            //     name: "",
+            //     time: 2
+            // })
             setIsRequesting(false)
-        },1000)
 
         
 
     }
 
     useEffect(() => {
+		console.log('librarianId ====================================');
+		console.log(librarianId);
+		console.log('====================================');
+
+		const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+
+		setFormData({...formData, loanDate: formattedDate})
+
+
         async function getAllStudents(){
             const data = await Api.students.getAllStudents()
             const allStudents = data
@@ -214,6 +220,14 @@ export default function LibrarianLoan(props) {
 
 
     function loanContent() {
+		function setBookId() {
+			const bookId = booksData.find(book => book.codigo == formData.code).id
+			if(!bookId) return
+			
+			setFormData({...formData, bookId: bookId})
+			
+		}
+
         return (
             <>
 
@@ -231,8 +245,10 @@ export default function LibrarianLoan(props) {
 
                         <TextField
                             value={formData.code}
-                            onBlur={() => searchForBookByCode(formData.code)}
-                            onChange={e => setFormData({ ...formData, code: e.target.value })}
+                            onBlur={() => setBookId()}
+                            onChange={e => {
+								setFormData({ ...formData, code: e.target.value })
+							}}
                             placeholder="Código"
                             focused
                             required
@@ -266,6 +282,9 @@ export default function LibrarianLoan(props) {
                                     if (book.titulo == newValue) setFormData({ ...formData, code: book.codigo, title: book.titulo })
                                 });
                             }}
+							onBlur={() => {
+								setBookId()
+							}}
                             id="controllable-states-demo"
                             options={bookTitles}
                             size="sm"

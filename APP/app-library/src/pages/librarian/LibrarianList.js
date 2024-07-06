@@ -14,6 +14,12 @@ export default function LibrarianList(props) {
 
     }
 
+	function dateConvert(dataStr) {
+		const date = new Date(dataStr);
+		const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+		return `${date.getDate()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
+	  }
+
     useEffect(() => {
         async function setAllLectures() {
             const data = await Api.loans.getAllLoans()
@@ -37,6 +43,8 @@ export default function LibrarianList(props) {
 
 
     });
+
+	
 
     return (
         <>
@@ -87,10 +95,10 @@ export default function LibrarianList(props) {
                                 return (
                                     <tr className={` ${i == 0 ? "tr--first" : ""} ${i == lectures.length - 1 ? "tr--last" : ""}`}>
                                         <th>{lectures.length - i}</th>
-                                        <td>{b.nome}</td>
-                                        <td>{b.rm}</td>
+                                        <td>{b.aluno_nome}</td>
+                                        <td>{b.aluno_rm}</td>
                                         <td>{b.titulo}</td>
-                                        <td>{b.data_aluguel}</td>
+                                        <td>{dateConvert(b.data_aluguel)}</td>
                                         <td className={`td-situation`}>
                                             {
                                                 b.estado ? <span className={`px-3 py-2 rounded td-situation-${situationColor}`}>{b.estado[0].toUpperCase() + b.estado.slice(1)}</span> : ''
