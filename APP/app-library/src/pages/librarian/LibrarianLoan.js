@@ -6,6 +6,7 @@ import Info from "../../components/Info"
 import DevolutionBooksContainer from "./DevolutionBooksContainer"
 import { Api } from "../../api"
 
+import { dateConvert } from "../miscellaneous"
 export default function LibrarianLoan(props) {
     const {librarianId} = {...props}
     const [loanOrDevolution, setLoanOrDevolution] = useState(0)
@@ -195,17 +196,15 @@ export default function LibrarianLoan(props) {
         setIsRequesting(true)
 
         const loanedBooks = await Api.loans.getLoansByRM(formData.RM)
-        setTimeout( () => {
 
-            if (loanedBooks.length > 0) {
-                setDevolutionBooks(loanedBooks)
+		if (loanedBooks.length > 0) {
+			setDevolutionBooks(loanedBooks)
 
-                setIsRequesting(false)
-            } else {
-                console.log('sem livros');
-            }
-            
-        },1000)
+			setIsRequesting(false)
+		} else {
+			console.log('sem livros');
+		}
+
     }
 
     const theme = createTheme({
@@ -479,8 +478,6 @@ export default function LibrarianLoan(props) {
     function devolutionContent() {
         return (
             <>
-
-
                 <hr />
 
                 <p className="p-hint">
