@@ -14,12 +14,17 @@ export default function Search(props) {
 
 	const [formData, setFormData] = useState({
 		"codigo": "",
-		"autor": "Machado de Assis",
+		"autor": "",
+		"autor_id" : 0,
 		"titulo": "",
+		"editora" : '',
+		"editora_id" : 0,
 		"status": "",
+		"volumes": 0,
 		"sinopse": "",
 		"url_capa": "",
-		"generos": ['teste']
+		"generos": [''],
+		"id_generos": [0]
 	})
 
 	const [selectedBook, setSelectedBook] = useState({ generos: [], editora: "", volumes: 0, url_capa: '' })
@@ -29,28 +34,21 @@ export default function Search(props) {
 	const [publishers, setPublishers] = useState(["Sextante"])
 	const [generos, setGeneros] = useState(["Nutrição"])
 	const [hasSearchBeenMade, setHasSearchBeenMade] = useState(false)
-	const [resultBooks, setResultBooks] = useState([
+	const [resultBooks, setResultBooks] = useState([])
 
-		{
-			titulo: "Quincas Borba",
-			autor: "Machado de Assis",
-			editora: "AAAAAAA",
-			url_capa: "https://cdn.awsli.com.br/2500x2500/2419/2419289/produto/20280348554e2f54b5b.jpg",
-			codigo: "SDGJ8416",
-			generos: ["Naturalista", "Romance"],
-			volumes: 70,
-			sinopse: "O romance a ascensão social de Rubião que, após receber toda a herança do filósofo louco Quincas Borba - criador da filosofia 'Humanitas' e muda-se para a Corte no final do século XlX..."
-
-		}
-	]
-	)
-
-	function handleSearch(e) {
+	async function handleSearch(e) {
 		e.preventDefault()
 
-		//Busca dos livros pela Api
+		const booksFoundByAuthor = await Api.books.getBookByAuthor(formData.autor)
 
-		setFormData({ ...formData })
+		const booksFoundByTitle = await Api.books.getBookByTitle(formData.titulo)
+
+		if(Array.isArray(booksFoundByAuthor)) setResultBooks([...booksFoundByAuthor])
+		if(Array.isArray(booksFoundByTitle)) booksFoundByTitle.forEach(book => {
+			if(resultBooks.find(b => b.titulo == book.titulo)) return 
+			setResultBooks([...resultBooks, book])
+		});
+
 
 		if (hasSearchBeenMade) {
 			setHasSearchBeenMade(false)
@@ -70,6 +68,14 @@ export default function Search(props) {
 		},
 	});
 
+	async function handleEdit(){
+
+	}
+
+
+	useEffect(() => {
+		setFormData({...selectedBook})
+	}, [selectedBook])
 
 
 	useEffect(() => {
@@ -86,10 +92,6 @@ export default function Search(props) {
 			setPublishers(dataPublishers.map(p => p.editora))
 			console.log(dataPublishers);
 
-			const books = await Api.books.getAllBooks()
-			console.log(books);
-			setResultBooks(books)
-
 			const dataGeneros = await Api.genres.getAllGenres()
 			setGeneros(dataGeneros.map(g => g.genero))
 			console.log("GENEROS================== " + generos);
@@ -101,17 +103,6 @@ export default function Search(props) {
 			setDataWithId({ genres: genresData, authors, authorsData, publishers: publishersData })
 		})()
 	}, [])
-
-	useEffect(() => {
-		setFormData({ ...formData, ...selectedBook })
-		console.log(selectedBook);
-	}, [selectedBook])
-
-	useEffect(() => {
-		console.log(editOrRemove);
-	}, [editOrRemove])
-
-	
 
 	if (selectedBook.titulo) {
 
@@ -134,8 +125,7 @@ export default function Search(props) {
 										value={formData.titulo}
 										onChange={e => {
 											setFormData({ ...formData, titulo: e.target.value })
-											
-											setSelectedBook({...selectedBook, titulo: e.target.value})
+									
 
 										}}
 										placeholder="Título"
@@ -154,8 +144,15 @@ export default function Search(props) {
 										value={formData.autor}
 										onChange={(event, newValue) => {
 											if (!newValue) return
-											setFormData({ ...formData, autor: newValue });
-											setSelectedBook({...selectedBook, autor: newValue})
+											console.log('====================================');
+											console.log(dataWithId);
+											console.log('====================================');
+											const authorObject = dataWithId.authorsData.find(a => a.nome == newValue)
+											console.log('authorObject ====================================');
+											console.log(authorObject);
+											console.log('====================================');
+
+											setFormData({ ...formData, autor: newValue, autor_id: authorObject.id });
 										}}
 										options={authors}
 										id="controllable-states-demo"
@@ -179,12 +176,16 @@ export default function Search(props) {
 									{
 										publishers.length >= 2 ? <Autocomplete
 
-											value={selectedBook.editora}
+											value={formData.editora}
 											onChange={(event, newValue) => {
 												if (!newValue) return
 
+												const publisherObject = dataWithId.publishers.find(p => p.editora == newValue)
+												console.log('publisherObject ====================================');
+												console.log(publisherObject);
+												console.log('====================================');
+
 												setFormData({ ...formData, editora: newValue });
-												setSelectedBook({...selectedBook, editora: newValue})
 											}}
 
 											options={publishers}
@@ -211,7 +212,7 @@ export default function Search(props) {
 											multiple
 											id="tags-filled"
 											fullWidth
-											value={selectedBook.generos}
+											value={formData.generos}
 											onChange={(event, generosEscolhidos) => {
 												let chosenGenres = []
 												generosEscolhidos.forEach(g => {
@@ -231,7 +232,6 @@ export default function Search(props) {
 													console.log(`NOVO ======== id genero no dataWithId : ${generoId}`);
 
 													setFormData({ ...formData, generos: chosenGenres });
-													setSelectedBook({...selectedBook, generos: chosenGenres})
 
 												})
 												setFormData({ ...formData, generos: { ...formData.generos, generos: generosEscolhidos } })
@@ -263,7 +263,6 @@ export default function Search(props) {
 										value={formData.sinopse}
 										onChange={e => {
 											setFormData({ ...formData, sinopse: e.target.value })
-											setSelectedBook({ ...selectedBook, sinopse: e.target.value });
 										}}
 										placeholder="Título"
 										style={{ width: 550 }}
@@ -295,7 +294,6 @@ export default function Search(props) {
 											}
 
 											setFormData({ ...formData, volumes: e.target.value })
-											setSelectedBook({...selectedBook, volumes: e.target.value})
 
 
 										}}
@@ -316,7 +314,6 @@ export default function Search(props) {
 										value={formData.codigo}
 										onChange={e => {
 											setFormData({ ...formData, codigo: e.target.value })
-											setSelectedBook({...selectedBook, codigo: e.target.value})
 										}
 										}
 										placeholder="Código"
@@ -330,9 +327,7 @@ export default function Search(props) {
 					</div>
 
 					<div className=" flex no-wrap gap-4 mt-3">
-						<button onClick={(e) => {
-							e.preventDefault()
-						}} className="button no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
+						<button onClick={handleEdit} className="button no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
 
 							Confirmar
 
@@ -593,9 +588,8 @@ export default function Search(props) {
 
 						<TextField
 							value={formData.titulo}
-							onChange={(event, newValue) => {
-								if (!newValue) return
-								setFormData({ ...formData, titulo: newValue });
+							onChange={(event) => {
+								setFormData({ ...formData, titulo: event.target.value });
 							}}
 							size="sm"
 							fullWidth
@@ -621,7 +615,6 @@ export default function Search(props) {
 							options={authors}
 							id="controllable-states-demo"
 							size="sm"
-							required
 							fullWidth
 							placeholder="Autor"
 							sx={{ width: 650 }}

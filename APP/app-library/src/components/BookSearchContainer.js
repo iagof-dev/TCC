@@ -29,7 +29,7 @@ export default function BookSearchContainer(props) {
 					return <EditingPageBook
 						id={book.id}
 						code={book.codigo}
-						author={book.autor}
+						author={book.autor_nome}
 						publisher={book.editora}
 						title={book.titulo}
 						rating={book.avaliacao}

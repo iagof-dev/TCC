@@ -1,6 +1,7 @@
 import { Box, Divider } from "@mui/material"
 import { useEffect, useState } from "react"
 import { dateConvert } from "../miscellaneous"
+import { Api } from "../../api"
 
 export default function DevolutionBooksContainer(props) {
 	const { isRequesting, devolutionBooks } = { ...props }
@@ -15,7 +16,12 @@ export default function DevolutionBooksContainer(props) {
 		// 	}
 		// });
 
-		const book = devolutionBooks.find(book => book.id == id)
+		const loan = devolutionBooks.find(book => book.id == id)
+		console.log(loan);
+
+		if (loan) {
+			// Api.loans.makeDevolution(loan)
+		}
 
 	}
 

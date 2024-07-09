@@ -67,6 +67,17 @@ const Api = {
 
         },
 
+		getBookByAuthor: async function (author) {
+			if(author == "" || author == undefined) return {}
+
+			return await fetch(url + '/livros/listar/autor/' + author.replace(" ", "+")).then(res => res.json()).then(data => data.DATA)
+		},
+
+		getBookByTitle: async function (title) {
+			if(title == "" || title == undefined) return {}
+
+			return await fetch(url + '/livros/listar/titulo/' + title.replace(" ", "+")).then(res => res.json()).then(data => data.DATA)
+		},
 
         getAllBooks: async function () {
             try {
@@ -170,6 +181,18 @@ const Api = {
 
         },
 
+		editBook: async function(){
+			//https://marciossupiais.shop/tcc/livros/modificar
+			const formData = new FormData()
+
+            //[ID, CODIGO*, TITULO*, ID_AUTOR*, ID_EDITORA*, CAPA*, VOLUMES*, SINOPSE*]
+
+            return await fetch(url + '/livros/criar/', {
+                method: "POST",
+                body: formData
+            }).then(res => console.log(res))
+		}
+
     },
 
     loans: {
@@ -213,7 +236,21 @@ const Api = {
                 method: "POST",
                 body: formData
             }).then(res => res.json()).then(res => console.log(res))
-        }
+        },
+
+		makeDevolution: async function(loan){
+            const formData = new FormData()
+
+			formData.append("id", loan.id)
+			formData.append("id_estado", "3")
+
+            formData.append("authpass", authpass)
+
+            return await fetch(url + '/emprestimos/modificar/', {
+                method: "POST",
+                body: formData
+            }).then(res => res.json()).then(res => console.log(res))
+		}
     },
 
     librarians: {

@@ -22,16 +22,18 @@ export default function EditingPageBook(props) {
                             {title}
                         </p>
                     </span>
-                    <p className="text-lg">
-                        {author}
-                    </p>
-                    <p className="text-lg">
-                        {publisher}
-                    </p>
+                    <div className="flex no-wrap">
+						<p className="text-sm">
+							{author} • 
+						</p>
+						<p className="text-sm">
+							{'‎  ' + publisher}
+						</p>
+					</div>
 
                 </span>
                 <div className="w-full flex justify-between no-wrap">
-                    <p className=" text-sm max-w-[20vw] my-4">
+                    <p className=" text-sm max-w-[20vw]">
                         {synopsis.length >= 150 ? (
                             <>
                                 {`${synopsis.slice(0, 180)}...`}
@@ -42,7 +44,7 @@ export default function EditingPageBook(props) {
                         <p className="text-sm text-right">
                             Código: <span className=" font-semibold">{code}</span>
                         </p>
-                        <button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg flex no-wrap justify-evenly" onClick={() => {
+                        <button className="button no-wrap align-center w-full py-2 px-4 rounded flex no-wrap justify-evenly" onClick={() => {
                             // id={book.id}
                             // code={book.codigo}
                             // author={book.autor}
@@ -78,7 +80,7 @@ export default function EditingPageBook(props) {
 
                             Editar
                         </button>
-                        <button className="button button-remove no-wrap align-center w-full py-2 px-4 rounded text-lg flex gap-1 no-wrap justify-between" onClick={() => {
+                        <button className="button button-remove no-wrap align-center w-full py-2 px-4 rounded flex gap-1 no-wrap justify-between" onClick={() => {
 							setEditOrRemove('remove')
 							setSelectedBook({
                                 id: id,
