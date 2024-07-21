@@ -6,7 +6,6 @@ export default function BookSearchContainer(props) {
 	
 	const {setEditOrRemove, hasSearchBeenMade, setSelectedBook, resultBooks, isEditingPage } = { ...props };
 
-	
 	const [isLoading, setIsLoading] = useState(hasSearchBeenMade); 
 
 	useEffect(() => {
@@ -24,7 +23,6 @@ export default function BookSearchContainer(props) {
 				<span className="loading m-auto loading-spinner loading-lg"></span>
 			) : (
 				resultBooks.map((book) => {
-					console.log(book);
 
 					return <EditingPageBook
 						id={book.id}
@@ -53,19 +51,23 @@ export default function BookSearchContainer(props) {
 			{isLoading ? (
 				<span className="loading m-auto loading-spinner loading-lg"></span>
 			) : (
+				
+
+
+				resultBooks.length > 0?
 				resultBooks.map((book) => (
 					<Book
 						id={book.id}
-						code={book.code}
-						author={book.author}
-						title={book.title}
-						rating={book.rating}
+						code={book.codigo}
+						author={book.autor_nome}
+						title={book.titulo}
+						rating={book.avaliacao}
 						status={book.status}
-						synopsis={book.synopsis}
-						coverURL={book.coverURL}
-						tags={book.tags}
+						synopsis={book.sinopse}
+						coverURL={book.capa}
+						tags={book.genero}
 					/>
-				))
+				)) : (<span>Nenhum livro encontrado</span>)
 			)}
 		</section>
 	);

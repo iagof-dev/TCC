@@ -79,13 +79,15 @@ export default function List(props) {
 	}
 
 	useEffect(() => {
-		// getBooks()
+		getBooks()
 	}, [])
 
 	async function getBooks(){
-		console.log(Api);
 
-		const data = await Api.books.getBooksByRM(userInfo.RM)
+		console.log('====================================');
+		console.log(userInfo.rm);
+		console.log('====================================');
+		const data = await Api.books.getBooksByRM(userInfo.rm)
 		setBookHistory(data)
 	}
 

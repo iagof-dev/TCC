@@ -44,6 +44,9 @@ export default function StudentLogin(props) {
 		}
 
 		setUserInfo(student)
+		console.log('userInfo ====================================');
+		console.log(userInfo);
+		console.log('====================================');
 
 		navigate('/studentMenu/studentList')
 		
