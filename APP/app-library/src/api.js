@@ -70,11 +70,15 @@ const Api = {
 		getBookByAuthor: async function (author) {
 			if(author == "" || author == undefined) return {}
 
+			console.log(await fetch(url + '/livros/listar/autor/' + author.replace(" ", "+")).then(res => res.json()).then(data => data.DATA));
+
 			return await fetch(url + '/livros/listar/autor/' + author.replace(" ", "+")).then(res => res.json()).then(data => data.DATA)
 		},
 
 		getBookByTitle: async function (title) {
 			if(title == "" || title == undefined) return {}
+
+			console.log(await fetch(url + '/livros/listar/titulo/' + title.replace(" ", "+")).then(res => res.json()).then(data => data.DATA));
 
 			return await fetch(url + '/livros/listar/titulo/' + title.replace(" ", "+")).then(res => res.json()).then(data => data.DATA)
 		},

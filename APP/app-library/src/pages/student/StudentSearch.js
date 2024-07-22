@@ -18,32 +18,10 @@ export default function Search(props) {
 	})
 	const [hasSearchBeenMade, setHasSearchBeenMade] = useState(false)
 	const [resultBooks, setResultBooks] = useState([
-		{
-			"id": 0,
-			"code": "SDGJ8416",
-			"author": "Machado de Assis",
-			"title": "Quincas Borba",
-			"rating": 2,
-			"status": "Disponível",
-			"synopsis": "O romance a ascensão social de Rubião que, após receber toda a herança do filósofo louco Quincas Borba - criador da filosofia 'Humanitas' e muda-se para a Corte no final do século XlX...",
-			"coverURL": "https://cdn.awsli.com.br/2500x2500/2419/2419289/produto/20280348554e2f54b5b.jpg",
-			"tags": ["Naturalista", "Romance"]
-		},
-		{
-			"id": 0,
-			"code": "HJKL3490",
-			"author": "Clarice Lispector",
-			"title": "Perto do Coração Selvagem",
-			"rating": 3,
-			"status": "Indisponível",
-			"synopsis": "Publicado em 1943, Perto do Coração Selvagem marca a estreia literária da renomada escritora brasileira Clarice Lispector. O romance, aclamado pela crítica e público, apresenta uma narrativa inovadora e introspectiva, mergulhando nas profundezas da alma humana e explorando temas como identidade, amor, solidão e a busca pelo sentido da vida.",
-			"coverURL": "https://images-americanas.b2w.io/produtos/01/00/img/1227806/7/1227806762_1GG.jpg",
-			"tags": ["Naturalista", "Romance"]
-		},
 	]
+
 	)
 
-	const [allFoundBooks, setAllFoundBooks] = useState([])
 
 	const [genresAndCourses, setGenresAndCourses] = useState([])
 
@@ -103,12 +81,12 @@ export default function Search(props) {
 
 					let uniqueFoundBooks = []
 
-					if(Array.isArray(tempBooksByTag)) uniqueFoundBooks = [...uniqueFoundBooks, ...tempBooksByTag]
-					if(Array.isArray(booksByAuthor)) uniqueFoundBooks = [...uniqueFoundBooks, ...booksByAuthor]
-					if(Array.isArray(booksByTitle)) uniqueFoundBooks = [...uniqueFoundBooks, ...booksByTitle]
+					if (Array.isArray(tempBooksByTag)) uniqueFoundBooks = [...uniqueFoundBooks, ...tempBooksByTag]
+					if (Array.isArray(booksByAuthor)) uniqueFoundBooks = [...uniqueFoundBooks, ...booksByAuthor]
+					if (Array.isArray(booksByTitle)) uniqueFoundBooks = [...uniqueFoundBooks, ...booksByTitle]
 
 					uniqueFoundBooks = Array.from(new Set(uniqueFoundBooks.map(obj => JSON.stringify(obj))))
-					.map(str => JSON.parse(str));
+						.map(str => JSON.parse(str));
 
 
 					setResultBooks(uniqueFoundBooks)
@@ -118,6 +96,25 @@ export default function Search(props) {
 			}
 			)
 
+		} else {
+			setResultBooks([])
+
+			let uniqueFoundBooks = []
+
+			console.log('booksByAuthor e booksByTitle ====================================');
+			console.log(booksByAuthor);
+			console.log(booksByTitle);
+			console.log('====================================');
+
+			if (Array.isArray(booksByAuthor)) uniqueFoundBooks = [...uniqueFoundBooks, ...booksByAuthor]
+			if (Array.isArray(booksByTitle)) uniqueFoundBooks = [...uniqueFoundBooks, ...booksByTitle]
+
+			uniqueFoundBooks = Array.from(new Set(uniqueFoundBooks.map(obj => JSON.stringify(obj))))
+				.map(str => JSON.parse(str));
+
+
+			setResultBooks(uniqueFoundBooks)
+			setHasSearchBeenMade(true)
 		}
 
 		if (hasSearchBeenMade) {
