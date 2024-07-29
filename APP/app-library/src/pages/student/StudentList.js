@@ -67,13 +67,16 @@ export default function List(props) {
 		let booksWithNewRatings = []
 
 		booksHistory.map((book, id) => {
+			console.log(book);
 			if (book.rating != DOMRatingValues[id]) {
-				booksWithNewRatings.push({code: book.code, rating: DOMRatingValues[id]})
+				booksWithNewRatings.push({id: book.id, rating: DOMRatingValues[id]})
 				book.rating = DOMRatingValues[id]
 			}
 		})
 
 		console.log(booksWithNewRatings);
+
+		
 
 		setHasRatingsBeenChanged(false)
 	}
@@ -158,9 +161,9 @@ export default function List(props) {
 								<tr className={` ${i == 0 ? "tr--first" : ""} ${i == booksHistory.length - 1 ? "tr--last" : ""}`}>
 									<th>{booksHistory.length - i}</th>
 									<td>{b.titulo}</td>
-									<td>{b.autor}</td>
+									<td>{b.autor_nome}</td>
 									<td>{b.data_aluguel}</td>
-									<td>{b.loanPeriod}</td>
+									<td>{b.prazo}</td>
 									<td>
 
 											<div className="rating">

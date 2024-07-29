@@ -260,7 +260,21 @@ const Api = {
                 method: "POST",
                 body: formData
             }).then(res => res.json()).then(res => console.log(res))
-		}
+		},
+
+        // updateRating: async function(id, rating){
+        //     const formData = new FormData()
+
+		// 	formData.append("id", loan.id)
+		// 	formData.append("id_estado", "3")
+
+        //     formData.append("authpass", authpass)
+
+        //     return await fetch(url + '/emprestimos/modificar/', {
+        //         method: "POST",
+        //         body: formData
+        //     }).then(res => res.json()).then(res => console.log(res))
+        // }
     },
 
     librarians: {
