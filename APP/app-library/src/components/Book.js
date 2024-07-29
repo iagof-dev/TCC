@@ -17,7 +17,14 @@ export default function Book(props) {
 
 						<div className="flex no-wrap gap-1">
 							{
-								[tags].map(tag => {
+								Array.isArray(tags)? 
+								tags.map(tag => {
+									return (
+										<p className="px-2 r h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
+											{tag}
+										</p>
+									)
+								}) : [tags].map(tag => {
 									return (
 										<p className="px-2 r h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
 											{tag}

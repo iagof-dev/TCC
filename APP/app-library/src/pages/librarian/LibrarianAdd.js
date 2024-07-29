@@ -70,67 +70,110 @@ export default function LibrarianAdd() {
         e.preventDefault()
         setIsRequesting(true)
 
-        console.log("codigo livro -----------");
-        console.log(formData.codigo);
+        let isNewAuthor = false
+        let isNewPublisher = false
+
+        let newAuthorId = 0
+        let newPublisherId = 0
 
         if (formData.autor.id == -1) {
-            if (allAuthors.find(a => a.autor == formData.autor.autor)) return
+            console.log(allAuthors);
+
+            if (allAuthors.find(a => a == formData.autor.autor)) {
+                console.log("autor já existe");
+                return
+            }
 
             console.log("NOVO AUTOR");
-            await Api.authors.addAuthor(formData.autor)
-            const newAuthors = await Api.authors.getAllAuthors()
 
-            const newAuthorId = newAuthors.find(a => a.nome == formData.autor.autor).id
-            setFormData({ ...formData, autor: { ...formData.autor, id: newAuthorId } })
+            isNewAuthor = true
+
         }
 
         console.log("-------- formData.editora.id");
         console.log(formData);
 
         if (formData.editora.id == -1) {
-            const res = await Api.publishers.addPublisher(formData.editora)
-            console.log("NOVA EDITORA");
-            console.log("--------- res");
-            console.log(res);
-            const newPublishers = await Api.publishers.getAllPublishers()
 
-            console.log(newPublishers.find(p => p.editora == formData.editora.editora));
+            isNewPublisher = true
 
-            const newPublisherId = newPublishers.find(p => p.editora == formData.editora.editora)
-            setFormData({ ...formData, editora: { ...formData.editora, id: newPublisherId } })
+
         }
 
-        const idGenerosASeremAdicionados = formData.generos.map(g => g.id)
-
-        // idGenerosASeremAdicionados.forEach(g => {
-        //     await Api.books.
-        // });
-
-        console.log("---------- formData.generos");
-        console.log(formData.generos);
-
-        console.log('formData.codigo');
-        console.log(formData.codigo);
-
-        await Api.books.addNewBook(formData)
-
-        // const allBooks = await Api.books.getAllBooks()
-
-        // console.log('------- allBooks');
-        // console.log(allBooks);
-
-
-        const addedBook = await Api.books.getBookByCode(formData.codigo)
-        
         
 
+            //isNewAuthor
 
-        console.log('------- addedBook');
-        console.log(addedBook);
+            (async () => {
+                if (isNewAuthor) {
+                    await Api.authors.addAuthor(formData.autor)
+                    const newAuthors = await Api.authors.getAllAuthors()
 
-        idGenerosASeremAdicionados.forEach( async g => {
-            await Api.books.addNewBookGenre(addedBook[0].id, g)
-        });
+                    console.log(formData);
+
+                    console.log(newAuthors);
+
+                    const postedAuthor = newAuthors.find(a => a.nome == formData.autor.autor)
+                    // console.log(newAuthorId);
+                    setFormData({ ...formData, autor: { ...formData.autor, id: postedAuthor.id } })
+                    newAuthorId = postedAuthor.id
+                }
+
+                if (isNewPublisher) {
+                    const editoras = await Api.publishers.addPublisher(formData.editora.editora)
+                    console.log("NOVA EDITORA");
+
+
+
+                    const newPublishers = await Api.publishers.getAllPublishers()
+                    console.log(newPublishers);
+
+                    console.log(newPublishers);
+                    console.log(newPublishers.find(p => p.editora == formData.editora.editora));
+
+                    const newPublisher = newPublishers.find(p => p.editora == formData.editora.editora)
+                    console.log(newPublisher.id);
+
+
+
+                    setFormData({ ...formData, editora: { ...formData.editora, id: newPublisher.id } })
+                    newPublisherId = newPublisher.id
+                }
+
+                console.log("formData antes da API:");
+                console.log(formData);
+
+                let newFormData = formData
+
+                newFormData.autor.id = newAuthorId? newAuthorId : newFormData.autor.id
+                newFormData.editora.id = newPublisherId? newPublisherId : newFormData.editora.id
+
+                console.log(newFormData);
+
+                await Api.books.addNewBook(newFormData)
+
+                // const allBooks = await Api.books.getAllBooks()
+
+                // console.log('------- allBooks');
+                // console.log(allBooks);
+
+
+                const addedBook = await Api.books.getBookByCode(formData.codigo)
+
+
+
+
+                console.log('------- addedBook');
+                console.log(addedBook);
+
+                idGenerosASeremAdicionados.forEach(async g => {
+                    await Api.books.addNewBookGenre(addedBook[0].id, g)
+                });
+
+            })()
+
+            const idGenerosASeremAdicionados = formData.generos.map(g => g.id)
+
 
         document.getElementById("modalAddSuccess").showModal()
     }
@@ -164,14 +207,14 @@ export default function LibrarianAdd() {
         document.getElementById('bookCoverSelectionModal').showModal()
 
 
-        
+
 
         const uniqueCode = generateUniqueCodeAndCheck();
-        
+
         console.log("uniqueCode");
         console.log(uniqueCode);
 
-        
+
         setFormData({ ...formData, codigo: uniqueCode })
 
 
@@ -314,7 +357,7 @@ export default function LibrarianAdd() {
 
                                 let autorId
 
-                                if(id == undefined){
+                                if (id == undefined) {
                                     autorId = -1
                                 } else {
                                     autorId = id.id

@@ -6,6 +6,7 @@ import Info from '../../components/Info';
 import Book from '../../components/Book'
 import BookSearchContainer from '../../components/BookSearchContainer';
 import { Api } from '../../api';
+import {groupBooksByCode} from '../miscellaneous'
 
 export default function Search(props) {
 	const { setPath, path } = { ...props }
@@ -89,7 +90,14 @@ export default function Search(props) {
 						.map(str => JSON.parse(str));
 
 
-					setResultBooks(uniqueFoundBooks)
+						console.log(uniqueFoundBooks);
+
+						let groupedFoundBooks = []
+
+						groupedFoundBooks = groupBooksByCode(uniqueFoundBooks)
+
+
+					setResultBooks(groupedFoundBooks)
 					setHasSearchBeenMade(true)
 				})
 
