@@ -6,6 +6,7 @@ import Info from '../../components/Info';
 import Book from '../../components/Book'
 import BookSearchContainer from '../../components/BookSearchContainer';
 import { Api } from '../../api';
+import { groupBooksByCode } from '../miscellaneous';
 
 export default function Search(props) {
 	const { setPath, path, librarianId } = { ...props }
@@ -39,9 +40,14 @@ export default function Search(props) {
 	async function handleSearch(e) {
 		e.preventDefault()
 
-		const booksFoundByAuthor = await Api.books.getBookByAuthor(formData.autor)
+		let booksFoundByAuthor = await Api.books.getBookByAuthor(formData.autor)
+		let booksFoundByTitle = await Api.books.getBookByTitle(formData.titulo)
 
-		const booksFoundByTitle = await Api.books.getBookByTitle(formData.titulo)
+		booksFoundByAuthor = Array.isArray(booksFoundByAuthor) ? Array.from(new Set(booksFoundByAuthor.map(b => JSON.stringify(b)))).map(b => JSON.parse(b)) : []
+		booksFoundByTitle = Array.isArray(booksFoundByTitle) ? Array.from(new Set(booksFoundByTitle.map(b => JSON.stringify(b)))).map(b => JSON.parse(b)) : []
+
+		booksFoundByAuthor = groupBooksByCode(booksFoundByAuthor)
+		booksFoundByTitle = groupBooksByCode(booksFoundByTitle)
 
 		if(Array.isArray(booksFoundByAuthor)) setResultBooks([...booksFoundByAuthor])
 		if(Array.isArray(booksFoundByTitle)) booksFoundByTitle.forEach(book => {
@@ -57,6 +63,7 @@ export default function Search(props) {
 			}, 1)
 			return
 		}
+
 		setHasSearchBeenMade(true)
 	}
 
