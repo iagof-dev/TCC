@@ -22,7 +22,9 @@ export default function BookSearchContainer(props) {
 			{isLoading ? (
 				<span className="loading m-auto loading-spinner loading-lg"></span>
 			) : (
-				resultBooks.map((book) => {
+				resultBooks.length == 0 ? <span>
+					Nenhum livro encontrado.
+				</span> : (resultBooks.map((book) => {
 
 					return <EditingPageBook
 						id={book.id}
@@ -41,7 +43,9 @@ export default function BookSearchContainer(props) {
 						setEditOrRemove={setEditOrRemove}
 						
 					/>
-				})
+				}))
+
+				
 			)}
 		</section>
 	);
