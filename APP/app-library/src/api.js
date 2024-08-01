@@ -283,6 +283,8 @@ const Api = {
 			formData.append("id", loan.id)
 			formData.append("id_estado", "3")
 
+            console.log(loan);
+
             formData.append("authpass", authpass)
 
             return await fetch(url + '/emprestimos/modificar/', {
