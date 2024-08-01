@@ -16,10 +16,10 @@ export default function Search(props) {
 	const [formData, setFormData] = useState({
 		"codigo": "",
 		"autor": "",
-		"autor_id": 0,
+		"id_autor": 0,
 		"titulo": "",
 		"editora": '',
-		"editora_id": 0,
+		"id_editora": 0,
 		"status": "",
 		"volumes": 0,
 		"sinopse": "",
@@ -27,6 +27,8 @@ export default function Search(props) {
 		"generos": [''],
 		"id_generos": [0]
 	})
+
+	let newFormData = {}
 
 	const [selectedBook, setSelectedBook] = useState({ generos: [], editora: "", volumes: 0, url_capa: '' })
 
@@ -76,6 +78,27 @@ export default function Search(props) {
 	});
 
 	async function handleEdit() {
+		await Api.books.editBook(newFormData).then(() => {
+			setFormData({
+				"codigo": "",
+				"autor": "",
+				"id_autor": 0,
+				"titulo": "",
+				"editora": '',
+				"id_editora": 0,
+				"status": "",
+				"volumes": 0,
+				"sinopse": "",
+				"url_capa": "",
+				"generos": [],
+				"id_generos": []
+			})
+			document.getElementById('modalEditSuccess').showModal()
+			setTimeout(() => {setSelectedBook({ generos: [], editora: "", volumes: 0, url_capa: '' })
+			}, 1500)
+			
+		}
+		)
 	}
 
 
@@ -109,6 +132,10 @@ export default function Search(props) {
 			setDataWithId({ genres: genresData, authors, authorsData, publishers: publishersData })
 		})()
 	}, [])
+
+	useEffect(() => {
+		newFormData = formData
+	}, [formData])
 
 	if (selectedBook.titulo) {
 
@@ -150,15 +177,8 @@ export default function Search(props) {
 										value={formData.autor}
 										onChange={(event, newValue) => {
 											if (!newValue) return
-											console.log('====================================');
-											console.log(dataWithId);
-											console.log('====================================');
 											const authorObject = dataWithId.authorsData.find(a => a.nome == newValue)
-											console.log('authorObject ====================================');
-											console.log(authorObject);
-											console.log('====================================');
-
-											setFormData({ ...formData, autor: newValue, autor_id: authorObject.id });
+											setFormData({ ...formData, autor: newValue, id_autor: authorObject.id });
 										}}
 										options={authors}
 										id="controllable-states-demo"
@@ -183,15 +203,11 @@ export default function Search(props) {
 										publishers.length >= 2 ? <Autocomplete
 
 											value={formData.editora}
-											onChange={(event, newValue) => {
+											onChange={async (event, newValue) => {
 												if (!newValue) return
-
 												const publisherObject = dataWithId.publishers.find(p => p.editora == newValue)
-												console.log('publisherObject ====================================');
 												console.log(publisherObject);
-												console.log('====================================');
-
-												setFormData({ ...formData, editora: newValue });
+												setFormData({ ...formData, editora: newValue, id_editora: publisherObject.id });
 											}}
 
 											options={publishers}
@@ -228,7 +244,7 @@ export default function Search(props) {
 													idsGenero.push(objetoGenero.id)
 												})
 
-												setFormData({...formData, id_generos: idsGenero, generos: generosEscolhidos})
+												setFormData({ ...formData, id_generos: idsGenero, generos: generosEscolhidos })
 
 											}
 											}
@@ -337,6 +353,24 @@ export default function Search(props) {
 					</div>
 
 				</div>
+				<dialog id="modalEditSuccess" className="modal ">
+					<div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl ">Sucesso!</h3>
+							<p className="py-4">
+								Edição realizada!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									<button className="btn">Fechar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
 			</ThemeProvider>
 		} else {
 			return <ThemeProvider theme={theme}>

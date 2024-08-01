@@ -191,13 +191,42 @@ const Api = {
 
         },
 
-		editBook: async function(){
+		editBook: async function(book){
 			//https://marciossupiais.shop/tcc/livros/modificar
 			const formData = new FormData()
 
+            
+
+        // "codigo": "",
+		// "autor": "",
+		// "autor_id": 0,
+		// "titulo": "",
+		// "editora": '',
+		// "editora_id": 0,
+		// "status": "",
+		// "volumes": 0,
+		// "sinopse": "",
+		// "url_capa": "",
+		// "generos": [''],
+		// "id_generos": [0]
+
             //[ID, CODIGO*, TITULO*, ID_AUTOR*, ID_EDITORA*, CAPA*, VOLUMES*, SINOPSE*]
 
-            return await fetch(url + '/livros/criar/', {
+            formData.append("authpass", authpass)
+
+            console.log('book api -----------');
+            console.log(book);
+
+            formData.append("id", book.id)
+            formData.append("titulo", book.titulo)
+            if(![null, undefined, 0].includes(book.id_autor)) formData.append("id_autor", book.id_autor)
+            if(![null, undefined, 0].includes(book.id_editora)) formData.append("id_editora", book.id_editora)
+            // if(book.id_autor != 0 || book.id_autor != undefined) formData.append("id_autor", book.id_autor)
+            // if(book.id_editora != 0 || book.id_editora != undefined) { console.log(book.id_editora); formData.append("id_editora", book.id_editora)}
+            formData.append("volumes", book.volumes)
+            formData.append("sinopse", book.sinopse)
+
+            return await fetch(url + '/livros/modificar/', {
                 method: "POST",
                 body: formData
             }).then(res => console.log(res))
