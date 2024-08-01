@@ -16,10 +16,10 @@ export default function Search(props) {
 	const [formData, setFormData] = useState({
 		"codigo": "",
 		"autor": "",
-		"autor_id" : 0,
+		"autor_id": 0,
 		"titulo": "",
-		"editora" : '',
-		"editora_id" : 0,
+		"editora": '',
+		"editora_id": 0,
 		"status": "",
 		"volumes": 0,
 		"sinopse": "",
@@ -49,9 +49,9 @@ export default function Search(props) {
 		booksFoundByAuthor = groupBooksByCode(booksFoundByAuthor)
 		booksFoundByTitle = groupBooksByCode(booksFoundByTitle)
 
-		if(Array.isArray(booksFoundByAuthor)) setResultBooks([...booksFoundByAuthor])
-		if(Array.isArray(booksFoundByTitle)) booksFoundByTitle.forEach(book => {
-			if(resultBooks.find(b => b.titulo == book.titulo)) return 
+		if (Array.isArray(booksFoundByAuthor)) setResultBooks([...booksFoundByAuthor])
+		if (Array.isArray(booksFoundByTitle)) booksFoundByTitle.forEach(book => {
+			if (resultBooks.find(b => b.titulo == book.titulo)) return
 			setResultBooks([...resultBooks, book])
 		});
 
@@ -75,18 +75,17 @@ export default function Search(props) {
 		},
 	});
 
-	async function handleEdit(){
-
+	async function handleEdit() {
 	}
 
 
 	useEffect(() => {
-		setFormData({...selectedBook})
+		setFormData({ ...selectedBook })
 	}, [selectedBook])
 
 
 	useEffect(() => {
-		
+
 
 		(async () => {
 			const data = await Api.authors.getAllAuthors()
@@ -132,7 +131,7 @@ export default function Search(props) {
 										value={formData.titulo}
 										onChange={e => {
 											setFormData({ ...formData, titulo: e.target.value })
-									
+
 
 										}}
 										placeholder="Título"
@@ -221,27 +220,16 @@ export default function Search(props) {
 											fullWidth
 											value={formData.generos}
 											onChange={(event, generosEscolhidos) => {
-												let chosenGenres = []
+
+												let idsGenero = []
+
 												generosEscolhidos.forEach(g => {
-
-													chosenGenres.push(g)
-
-													setFormData({ ...formData, generos: chosenGenres });
-
-													let id = dataWithId.genres.findIndex(a => a.genero == g)
-
-													console.log(`id genero no dataWithId : ${id}`);
-
-													let generoId = -1
-
-													if (id != -1) generoId = dataWithId.genres[id].id
-
-													console.log(`NOVO ======== id genero no dataWithId : ${generoId}`);
-
-													setFormData({ ...formData, generos: chosenGenres });
-
+													const objetoGenero = dataWithId.genres.find(d => d.genero == g)
+													idsGenero.push(objetoGenero.id)
 												})
-												setFormData({ ...formData, generos: { ...formData.generos, generos: generosEscolhidos } })
+
+												setFormData({...formData, id_generos: idsGenero, generos: generosEscolhidos})
+
 											}
 											}
 											options={generos}
