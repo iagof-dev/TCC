@@ -102,7 +102,7 @@ export default function List(props) {
 
 		<>
 			<h1 className="pb-5 text-3xl">
-				Bem-vindo(a), {userInfo.name}!
+				Bem-vindo(a), {userInfo.nome}!
 			</h1>
 			
 			<span className="flex flex-nowrap w-full justify-between items-center mb-4">
