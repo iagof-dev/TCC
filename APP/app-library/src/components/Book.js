@@ -1,6 +1,6 @@
 
 export default function Book(props) {
-	const { id, code, author, title, rating, status, synopsis, coverURL, tags } = { ...props }
+	const { id, code, author, title, rating, status, synopsis, coverURL, tags, disponivel } = { ...props }
 
 	return (
 		<section className="book flex no-wrap w-full gap-3 rounded-lg max-w-[50vw] max-h-[30vh]">
@@ -17,20 +17,20 @@ export default function Book(props) {
 
 						<div className="flex no-wrap gap-1">
 							{
-								Array.isArray(tags)? 
-								tags.map(tag => {
-									return (
-										<p className="px-2 r h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
-											{tag}
-										</p>
-									)
-								}) : [tags].map(tag => {
-									return (
-										<p className="px-2 r h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
-											{tag}
-										</p>
-									)
-								})
+								Array.isArray(tags) ?
+									tags.map(tag => {
+										return (
+											<p className="px-2 r h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
+												{tag}
+											</p>
+										)
+									}) : [tags].map(tag => {
+										return (
+											<p className="px-2 r h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
+												{tag}
+											</p>
+										)
+									})
 							}
 						</div>
 
@@ -80,9 +80,14 @@ export default function Book(props) {
 						<p className="text-sm text-right">
 							Código: <span className=" font-semibold">{code}</span>
 						</p>
-						<p className={`px-3 py-2 border-[1px] rounded-md text-base text-center status-green`}>
-							Disponível
-						</p>
+						{
+							disponivel ? <p className={`px-3 py-2 border-[1px] rounded-md text-base text-center status-red`}>
+								Disponível
+							</p> : <p className={`px-3 py-2 border-[1px] rounded-md text-base text-center status-red`}>
+								Indisponível
+							</p>
+						}
+
 					</div>
 				</div>
 

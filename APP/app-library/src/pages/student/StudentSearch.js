@@ -33,6 +33,23 @@ export default function Search(props) {
 
 		//Busca dos livros pela Api
 
+		if(formData.author.length < 1 && formData.title.length < 1 && selectedCategories < 1) {
+			let books = await Api.books.getAllBooks()
+			books = groupBooksByCode(books)
+
+			setResultBooks(books)
+
+			if (hasSearchBeenMade) {
+				setHasSearchBeenMade(false)
+				setTimeout(() => {
+					setHasSearchBeenMade(true)
+				}, 1)
+				return
+			}
+			setHasSearchBeenMade(true)
+			return
+		}
+
 		setFormData({ ...formData, tags: selectedCategories })
 
 		const booksByAuthor = await Api.books.getBookByAuthor(formData.author)

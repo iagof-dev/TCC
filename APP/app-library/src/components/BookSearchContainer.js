@@ -67,6 +67,7 @@ export default function BookSearchContainer(props) {
 						title={book.titulo}
 						rating={book.avaliacao}
 						status={book.status}
+						disponivel={book.volumes - book.reservados}
 						synopsis={book.sinopse}
 						coverURL={book.capa}
 						tags={book.genero}

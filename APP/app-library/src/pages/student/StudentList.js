@@ -69,7 +69,15 @@ export default function List(props) {
 		booksHistory.map((book, id) => {
 			console.log(book);
 			if (book.rating != DOMRatingValues[id]) {
-				booksWithNewRatings.push({id: book.id, rating: DOMRatingValues[id]})
+				booksWithNewRatings.push(
+					{
+						bookId: book.livro_id //Era pra ser tipo "book.book_id"
+						//Falta o campo evaluation: evaluation.id
+						, 
+						rating: DOMRatingValues[id],
+						ratingId: book.avaliacao_id
+					}
+				)
 				book.rating = DOMRatingValues[id]
 			}
 		})
@@ -87,10 +95,13 @@ export default function List(props) {
 
 	async function getBooks(){
 
-		console.log('====================================');
-		console.log(userInfo.rm);
-		console.log('====================================');
+		
 		const data = await Api.books.getBooksByRM(userInfo.rm)
+
+		console.log('books ====================================');
+		console.log(data);
+		console.log('====================================');
+
 		setBookHistory(data)
 	}
 
@@ -160,7 +171,7 @@ export default function List(props) {
 							return (
 								<tr className={` ${i == 0 ? "tr--first" : ""} ${i == booksHistory.length - 1 ? "tr--last" : ""}`}>
 									<th>{booksHistory.length - i}</th>
-									<td>{b.titulo}</td>
+									<td>{b.livro_titulo}</td>
 									<td>{b.autor_nome}</td>
 									<td>{b.data_aluguel}</td>
 									<td>{b.prazo}</td>

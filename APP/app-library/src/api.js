@@ -293,6 +293,23 @@ const Api = {
             }).then(res => res.json()).then(res => console.log(res))
 		},
 
+		evaluateBooks: async function(data){
+            const formData = new FormData()
+
+			// const 
+
+			// formData.append("id", loan.id)
+			// formData.append("id_estado", "3")
+
+            // console.log(loan);
+
+            // formData.append("authpass", authpass)
+
+            // return await fetch(url + '/emprestimos/modificar/', {
+            //     method: "POST",
+            //     body: formData
+            // }).then(res => res.json()).then(res => console.log(res))
+
         // updateRating: async function(id, rating){
         //     const formData = new FormData()
 
@@ -306,6 +323,7 @@ const Api = {
         //         body: formData
         //     }).then(res => res.json()).then(res => console.log(res))
         // }
+		}
     },
 
     librarians: {
