@@ -69,7 +69,6 @@ export default function Book(props) {
 				</span>
 				<div className="w-full flex justify-between no-wrap">
 					<p className=" text-sm max-w-[20vw] my-4">
-						{/* add "ver mais" */}
 						{synopsis.length >= 150 ? (
 							<>
 								{`${synopsis.slice(0, 180)}...`}

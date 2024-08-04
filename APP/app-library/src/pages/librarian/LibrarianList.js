@@ -27,7 +27,7 @@ export default function LibrarianList(props) {
             console.log("--------------- loans");
             console.log(data);
 
-            setLectures(data)
+            Array.isArray(data)? setLectures(data) : setLectures([])
         }
 
         setAllLectures()
