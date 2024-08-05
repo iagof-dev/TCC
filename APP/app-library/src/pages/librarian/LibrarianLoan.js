@@ -204,12 +204,17 @@ export default function LibrarianLoan(props) {
 
 		const loanedBooks = await Api.loans.getLoansByRM(formData.RM)
 
-		if (loanedBooks.length > 0) {
+		if (Array.isArray(loanedBooks) && loanedBooks.length > 0) {
 			setDevolutionBooks(loanedBooks)
 
 			setIsRequesting(false)
 		} else {
-			console.log('sem livros');
+			setTimeout(() => {
+				document.getElementById('modalRMError').showModal()
+				setDevolutionBooks([])
+				setIsRequesting(false)
+			}, 1000);
+			setDevolutionBooks([])
 		}
 
 	}
@@ -411,7 +416,7 @@ export default function LibrarianLoan(props) {
 					</button>
 				</form>
 
-				<dialog id="modalRMError" className="modal ">
+				<dialog id="modalNoBooksError" className="modal ">
 					<div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
 							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
@@ -420,6 +425,25 @@ export default function LibrarianLoan(props) {
 						<div>
 							<h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
 							<p className="py-4 text-slate-50">Verifique se o RM está preenchido corretamente!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									{/* if there is a button in form, it will close the modal */}
+									<button className="btn">Fechar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
+
+				<dialog id="modalRMError" className="modal ">
+					<div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+							<p className="py-4 text-slate-50">Não há nenhum livro emprestado por esse aluno!</p>
 							<div className="modal-action">
 								<form method="dialog">
 									{/* if there is a button in form, it will close the modal */}
@@ -642,7 +666,7 @@ export default function LibrarianLoan(props) {
 						Empréstimo
 					</button>
 					<button className={`button button-loan${loanOrDevolution == 1 ? "--active" : ""} no-wrap items-center flex gap-3 align-center mx-2 w-fit py-2 px-4 rounded text-lg`} onClick={() => setLoanOrDevolution(1)}>
-						Devolução/perda
+						Devolução/renovação
 					</button>
 				</div>
 
