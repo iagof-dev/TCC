@@ -97,7 +97,7 @@ export default function LibrarianList(props) {
                                         <th>{lectures.length - i}</th>
                                         <td>{b.aluno_nome}</td>
                                         <td>{b.aluno_rm}</td>
-                                        <td>{b.titulo}</td>
+                                        <td>{b.livro_titulo}</td>
                                         <td>{dateConvert(b.data_aluguel)}</td>
                                         <td className={`td-situation`}>
                                             {
