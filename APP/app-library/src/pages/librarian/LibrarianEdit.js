@@ -101,6 +101,10 @@ export default function Search(props) {
 		)
 	}
 
+	async function handleDelete() {
+		console.log(formData);
+	}
+
 
 	useEffect(() => {
 		setFormData({ ...selectedBook })
@@ -378,9 +382,6 @@ export default function Search(props) {
 					<div className="flex gap-3 justify-between">
 
 						<div>
-
-
-
 							<h3 className="font-bold text-3xl">Remoção de livro</h3>
 							<p className="py-4 text-md">Deseja remover o livro do sistema?</p>
 							<div class="flex flex-col gap-4">
@@ -576,11 +577,10 @@ export default function Search(props) {
 						</div>
 					</div>
 
-
-
 					<div className=" flex no-wrap gap-4 mt-4 start-end">
 						<button onClick={(e) => {
 							e.preventDefault()
+							handleDelete()
 						}} className=" button no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
 
 							Remover livro

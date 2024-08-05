@@ -1,52 +1,52 @@
 import { useEffect, useState } from "react"
 import { json } from "react-router-dom"
-import {Api} from '../../api'
+import { Api } from '../../api'
 
 export default function List(props) {
 	const { setPath, path, userInfo } = { ...props }
 
 	//Após o fetch
 	const [booksHistory, setBookHistory] = useState()
-// 		{
-// 			titulo: "Quincas Borba",
-// 			code: "ABCD1234",
-// 			autor: "Machado de Assis",
-// 			data_aluguel
-// : "14/06/24",
-// 			loanPeriod: "15",
-// 			rating: 4,
-// 			situation: "Devolvido"
-// 		},
-// 		{
-// 			titulo: "Java para Leigos",
-// 			autor: "Barry A. Burd",
-// 			code: "WWRE4563",
-// 			data_aluguel
-// : "14/02/24",
-// 			loanPeriod: "15",
-// 			rating: 1,
-// 			situation: "Pendente"
-// 		},
-// 		{
-// 			titulo: "Java para Leigos",
-// 			autor: "Barry A. Burd",
-// 			code: "FYTM5467",
-// 			data_aluguel
-// : "14/02/24",
-// 			loanPeriod: "15",
-// 			rating: 2,
-// 			situation: "Atrasado"
-// 		},
-// 		{
-// 			titulo: "Java para Leigos",
-// 			autor: "Barry A. Burd",
-// 			code: "FYTM5467",
-// 			data_aluguel
-// : "14/02/24",
-// 			loanPeriod: "15",
-// 			rating: 2,
-// 			situation: "Perdido"
-// 		},
+	// 		{
+	// 			titulo: "Quincas Borba",
+	// 			code: "ABCD1234",
+	// 			autor: "Machado de Assis",
+	// 			data_aluguel
+	// : "14/06/24",
+	// 			loanPeriod: "15",
+	// 			rating: 4,
+	// 			situation: "Devolvido"
+	// 		},
+	// 		{
+	// 			titulo: "Java para Leigos",
+	// 			autor: "Barry A. Burd",
+	// 			code: "WWRE4563",
+	// 			data_aluguel
+	// : "14/02/24",
+	// 			loanPeriod: "15",
+	// 			rating: 1,
+	// 			situation: "Pendente"
+	// 		},
+	// 		{
+	// 			titulo: "Java para Leigos",
+	// 			autor: "Barry A. Burd",
+	// 			code: "FYTM5467",
+	// 			data_aluguel
+	// : "14/02/24",
+	// 			loanPeriod: "15",
+	// 			rating: 2,
+	// 			situation: "Atrasado"
+	// 		},
+	// 		{
+	// 			titulo: "Java para Leigos",
+	// 			autor: "Barry A. Burd",
+	// 			code: "FYTM5467",
+	// 			data_aluguel
+	// : "14/02/24",
+	// 			loanPeriod: "15",
+	// 			rating: 2,
+	// 			situation: "Perdido"
+	// 		},
 
 	const [previousRatings, setPreviousRatings] = useState([])
 
@@ -59,7 +59,7 @@ export default function List(props) {
 
 	const [hasRatingsBeenChanged, setHasRatingsBeenChanged] = useState(false)
 
-	async function setNewRatings(){
+	async function setNewRatings() {
 
 		//Update livros
 
@@ -72,7 +72,7 @@ export default function List(props) {
 					{
 						bookId: book.livro_id //Era pra ser tipo "book.book_id"
 						//Falta o campo evaluation: evaluation.id
-						, 
+						,
 						rating: DOMRatingValues[id],
 						ratingId: book.avaliacao_id
 					}
@@ -85,29 +85,29 @@ export default function List(props) {
 			const res = await Api.loans.modifyEvaluation(b)
 		});
 
-		
+
 
 		setHasRatingsBeenChanged(false)
 	}
 
 	useEffect(() => {
 		getBooks(true)
-		
+
 	}, [])
 
-	async function getBooks(isFirst){
-		
+	async function getBooks(isFirst) {
+
 		const data = await Api.books.getBooksByRM(userInfo.rm)
 
 		let _previousRatings = []
 
-		data.forEach(b => {
+		if (Array.isArray(data)) data.forEach(b => {
 			_previousRatings.push(b.avaliacao)
 		});
 
 		setBooksNewRatings(_previousRatings)
-		
-		if(isFirst) setPreviousRatings(_previousRatings)
+
+		if (isFirst) setPreviousRatings(_previousRatings)
 
 		setDOMRatingValues(_previousRatings)
 
@@ -121,8 +121,8 @@ export default function List(props) {
 		let _previousRatings = []
 		let _DOMRatingValues = []
 
-		previousRatings.forEach(r => r == undefined? '' : _previousRatings.push(r))
-		DOMRatingValues.forEach(r => r == undefined? '' : _DOMRatingValues.push(r))
+		previousRatings.forEach(r => r == undefined ? '' : _previousRatings.push(r))
+		DOMRatingValues.forEach(r => r == undefined ? '' : _DOMRatingValues.push(r))
 
 		setHasRatingsBeenChanged(JSON.stringify(_DOMRatingValues) != JSON.stringify(_previousRatings))
 	}, [DOMRatingValues])
@@ -133,7 +133,7 @@ export default function List(props) {
 			<h1 className="pb-5 text-3xl">
 				Bem-vindo(a), {userInfo.nome}!
 			</h1>
-			
+
 			<span className="flex flex-nowrap w-full justify-between items-center mb-4">
 				<h2>
 					📚 Leituras anteriores, pendentes e atrasadas
@@ -149,7 +149,7 @@ export default function List(props) {
 				}
 			</span>
 
-			{Array.isArray(booksHistory)? <div className="table-wrapper overflow-x-auto overflow-y-scroll w-fit h-[20rem]">
+			{Array.isArray(booksHistory) ? <div className="table-wrapper overflow-x-auto overflow-y-scroll w-fit h-[20rem]">
 				<table className="table w-fit">
 					{/* head */}
 					<thead>
@@ -195,25 +195,25 @@ export default function List(props) {
 									<td>{b.prazo}</td>
 									<td>
 
-											<div className="rating">
-												{
-													[...Array(5)].map((e, j) => {
-														return (
-															<input type="radio" onClick={() => {
-																let _ratings = [...booksNewRatings]
-																_ratings[i] = j
+										<div className="rating">
+											{
+												[...Array(5)].map((e, j) => {
+													return (
+														<input type="radio" onClick={() => {
+															let _ratings = [...booksNewRatings]
+															_ratings[i] = j
 
-																console.log(_ratings);
-																setBooksNewRatings(_ratings)
-																setDOMRatingValues(_ratings)
-															}}
-																key={j}
-																name={`rating-${i}`}
-																className={`mask mask-star ${DOMRatingValues[i] >= j ? "marked" : "not-marked"}`}
-															/>
-														)
-													})
-												}
+															console.log(_ratings);
+															setBooksNewRatings(_ratings)
+															setDOMRatingValues(_ratings)
+														}}
+															key={j}
+															name={`rating-${i}`}
+															className={`mask mask-star ${DOMRatingValues[i] >= j ? "marked" : "not-marked"}`}
+														/>
+													)
+												})
+											}
 										</div>
 									</td>
 									<td className={`td-situation td-situation-${situationColor} `
@@ -225,8 +225,12 @@ export default function List(props) {
 
 					</tbody>
 				</table>
-			</div> : <span className="m-auto loading loading-spinner loading-xl"></span>}
-			
+			</div> : (() => {
+				return <span className="m-auto loading loading-spinner loading-xl"></span>
+			})()
+
+			}
+
 
 		</>
 

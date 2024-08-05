@@ -230,7 +230,20 @@ const Api = {
                 method: "POST",
                 body: formData
             }).then(res => console.log(res))
-        }
+        },
+
+        removeBook: async function (book) {
+            const formData = new FormData()
+
+            formData.append("authpass", authpass)
+
+            console.log(book);
+
+            return await fetch(url + '/livros/deletar/', {
+                method: "POST",
+                body: formData
+            }).then(res => console.log(res))
+        },
 
     },
 

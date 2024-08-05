@@ -20,6 +20,7 @@ export default function DevolutionBooksContainer(props) {
 		console.log(loan);
 
 		if (loan) {
+			console.log(loan);
 			const res = await Api.loans.makeDevolution(loan)
 			console.log(res);
 		}

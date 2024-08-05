@@ -53,7 +53,7 @@ export default function LibrarianAdd() {
             generos: []
         },
         volumes: "",
-        sinopse: "ab"
+        sinopse: ""
     })
 
     const [requestedCoverSelectionWithTheseValues, setRequestedCoverSelectionWithTheseValues] = useState(false)
@@ -184,12 +184,12 @@ export default function LibrarianAdd() {
         setRequestedCoverSelectionWithTheseValues(true)
 
         const urls = await Api.getCoverURLs({ title: formData.titulo })
-        setCoverURLs(urls.message.imagens)
+        setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png', ...urls.message.imagens])
 
         const synopsisResponse = await (await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor })).json()
         console.log(synopsisResponse);
 
-        setFormData({ ...formData, codigo: code, sinopse: synopsisResponse ? synopsisResponse.message : "Não foi possível gerar a sinopse." })
+        setFormData({ ...formData, codigo: code, sinopse: typeof synopsisResponse == 'string' && !synopsisResponse.includes('gpt') ? synopsisResponse.message : "" })
         setRequestedCoverSelectionWithTheseValues(true)
 
         console.log(synopsisResponse.message);
@@ -201,8 +201,7 @@ export default function LibrarianAdd() {
 
         console.log(formData);
 
-        console.log("----------- formData.autor");
-        console.log(formData.autor);
+
 
         document.getElementById('bookCoverSelectionModal').showModal()
 
