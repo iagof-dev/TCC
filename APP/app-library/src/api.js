@@ -248,15 +248,11 @@ const Api = {
         makeLoan: async function (data) {
             const formData = new FormData()
 
-			console.log('DATA na API ====================================');
-			console.log(data);
-			console.log('====================================');
-
 			formData.append("rm", data.RM)
             formData.append("id_livro", data.bookId)
             formData.append("data_aluguel", data.loanDate)
             formData.append("id_status_emprestimo", "1")
-            formData.append("prazo", data.time)
+            formData.append("prazo", data.time * 7)
 
             formData.append("authpass", authpass)
 
@@ -270,16 +266,14 @@ const Api = {
             const formData = new FormData()
 
 			formData.append("id", loan.id)
-			formData.append("id_estado", "3")
-
-            console.log(loan);
+			formData.append("id_status_emprestimo", 3)
 
             formData.append("authpass", authpass)
 
             return await fetch(url + '/emprestimos/modificar/', {
                 method: "POST",
                 body: formData
-            }).then(res => res.json()).then(res => console.log(res))
+            }).then(res => res.json())
 		},
 
 		modifyEvaluation: async function(data){

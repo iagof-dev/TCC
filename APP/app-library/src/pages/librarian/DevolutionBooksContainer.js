@@ -7,7 +7,7 @@ export default function DevolutionBooksContainer(props) {
 	const { isRequesting, devolutionBooks } = { ...props }
 	const [selectedBook, setSelectedBook] = useState({})
 
-	function handleBookDevolution(id) {
+	async function handleBookDevolution(id) {
 		// devolutionBooks.forEach(book => {
 		// 	if (book.codigo == code) {
 		// 		setSelectedBook(book)
@@ -20,7 +20,8 @@ export default function DevolutionBooksContainer(props) {
 		console.log(loan);
 
 		if (loan) {
-			Api.loans.makeDevolution(loan)
+			const res = await Api.loans.makeDevolution(loan)
+			console.log(res);
 		}
 
 	}
@@ -46,7 +47,7 @@ export default function DevolutionBooksContainer(props) {
 							<th>Título</th>
 							<th>Autor</th>
 							<th>Data de <br />Empréstimo</th>
-							<th>Período<br />(semanas)</th>
+							<th>Período<br />(dias)</th>
 							<th>Situação</th>
 							<th>
 
@@ -87,7 +88,7 @@ export default function DevolutionBooksContainer(props) {
 								return (
 									<tr className={` ${i == 0 ? "tr--first" : ""} ${i == devolutionBooks.length - 1 ? "tr--last" : ""}`}>
 										<th>{devolutionBooks.length - i}</th>
-										<td>{b.titulo}</td>
+										<td>{b.livro_titulo}</td>
 										<td>{b.autor_nome}</td>
 										<td>{dateConvert(b.data_aluguel)}</td>
 										<td>{b.prazo}</td>
@@ -103,9 +104,13 @@ export default function DevolutionBooksContainer(props) {
 											<button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" onClick={() => handleBookDevolution(b.id)}>
 												Devolução
 											</button>
-											<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-700 text-slate-50" onClick={() => handleBookLost(b.id)}>
-												Renovar
-											</button>
+											
+											{b.renovavel? 
+												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-700 text-slate-50" onClick={() => handleBookLost(b.id)}>
+													Renovar
+												</button> : ''
+												
+											}
 										</td>
 									</tr>
 								)

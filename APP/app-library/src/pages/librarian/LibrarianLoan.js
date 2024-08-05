@@ -203,6 +203,9 @@ export default function LibrarianLoan(props) {
 		if (Array.isArray(loanedBooks) && loanedBooks.length > 0) {
 			setDevolutionBooks(loanedBooks)
 
+			console.log("------------------------");
+			console.log(loanedBooks);
+
 			setIsRequesting(false)
 		} else {
 			setTimeout(() => {

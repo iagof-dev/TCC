@@ -125,9 +125,6 @@ export default function List(props) {
 		DOMRatingValues.forEach(r => r == undefined? '' : _DOMRatingValues.push(r))
 
 		setHasRatingsBeenChanged(JSON.stringify(_DOMRatingValues) != JSON.stringify(_previousRatings))
-		console.log("----------------------");
-		console.log(DOMRatingValues);
-		console.log(_previousRatings);
 	}, [DOMRatingValues])
 
 	return (

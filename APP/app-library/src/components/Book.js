@@ -1,10 +1,7 @@
 
 export default function Book(props) {
 	const { id, code, author, title, rating, status, synopsis, coverURL, tags, disponivel } = { ...props }
-
-	console.log("Numero disponivel");
-	console.log(disponivel);
-
+	
 	return (
 		<section className="book flex no-wrap w-full gap-3 rounded-lg max-w-[50vw] max-h-[30vh]">
 
