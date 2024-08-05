@@ -2,6 +2,9 @@
 export default function Book(props) {
 	const { id, code, author, title, rating, status, synopsis, coverURL, tags, disponivel } = { ...props }
 
+	console.log("Numero disponivel");
+	console.log(disponivel);
+
 	return (
 		<section className="book flex no-wrap w-full gap-3 rounded-lg max-w-[50vw] max-h-[30vh]">
 
@@ -80,9 +83,9 @@ export default function Book(props) {
 							Código: <span className=" font-semibold">{code}</span>
 						</p>
 						{
-							disponivel ? <p className={`px-3 py-2 border-[1px] rounded-md text-base text-center status-red`}>
+							disponivel ? <p className={`px-3 py-2 border-[1px] rounded-md text-base text-center status-d`}>
 								Disponível
-							</p> : <p className={`px-3 py-2 border-[1px] rounded-md text-base text-center status-red`}>
+							</p> : <p className={`px-3 py-2 border-[1px] rounded-md text-base text-center status-i`}>
 								Indisponível
 							</p>
 						}
