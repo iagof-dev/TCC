@@ -130,6 +130,11 @@ export default function LibrarianLoan(props) {
 
 		const res = await Api.loans.makeLoan(formData)
 
+		if(res.status == 'error') {
+			document.getElementById('modalNoBooksError').showModal()
+			setIsRequesting(false)
+			return
+		}
 
 		// Api: post empréstimo
 
@@ -423,7 +428,7 @@ export default function LibrarianLoan(props) {
 
 						<div>
 							<h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
-							<p className="py-4 text-slate-50">Verifique se o RM está preenchido corretamente!</p>
+							<p className="py-4 text-slate-50">Não há mais livros disponíveis!</p>
 							<div className="modal-action">
 								<form method="dialog">
 									{/* if there is a button in form, it will close the modal */}

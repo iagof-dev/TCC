@@ -26,8 +26,12 @@ export default function DevolutionBooksContainer(props) {
 
 	}
 
-	function handleBookLost(id) {
-		document.getElementById('lostModal').showModal()
+	async function handleRenewBook(book) {
+
+		const res = await Api.loans.renewBook(book)
+		console.log(res);
+
+		document.getElementById('renewBookModal').showModal()
 	}
 
 	return <section className='results-container p-1 mt-2 w-full flex flex-col no-wrap justify-start gap-5 items-center rounded-md min-h-[20vh] max-h-[60vh] overflow-y-scroll'>
@@ -39,9 +43,6 @@ export default function DevolutionBooksContainer(props) {
 				:
 				<table className="table w-fit">
 					<thead>
-						{
-							console.log(devolutionBooks)
-						}
 						<tr>
 							<th></th>
 							<th>Título</th>
@@ -100,16 +101,21 @@ export default function DevolutionBooksContainer(props) {
 												‎
 											</p>
 										</td>
-										<td className="flex gap-4">
-											<button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" onClick={() => handleBookDevolution(b.id)}>
-												Devolução
-											</button>
-											
-											{b.renovavel? 
-												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-700 text-slate-50" onClick={() => handleBookLost(b.id)}>
+										<td className="flex gap-4 justify-between w-full">
+											{
+												b.estado == 'pendente' ? 
+												<button className="button no-wrap align-center py-2 px-4 rounded text-lg" onClick={() => handleBookDevolution(b.id)}>
+													Devolução
+												</button> : <div className="w-full py-2 px-4"></div>
+											}
+
+
+
+											{b.renovavel ?
+												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-700 text-slate-50 " onClick={() => handleRenewBook(b)}>
 													Renovar
-												</button> : ''
-												
+												</button> : <div className="w-full py-2 px-4"></div>
+
 											}
 										</td>
 									</tr>
@@ -146,12 +152,29 @@ export default function DevolutionBooksContainer(props) {
 			</div>
 		</dialog>
 
-		<dialog id="lostModal" className="modal">
+		{/* <dialog id="renewBookModal" className="modal">
 			<div className="modal-box  w-full max-w-5xl">
-				<h3 className="font-bold text-lg">Confirmar perda</h3>
-				<p className="py-4">Press ESC key or click the button below to close</p>
+				<h3 className="font-bold text-lg">Confirmar renovação</h3>
+				<p className="py-4">Deseja realizar a renovação do empréstimo?</p>
 
-				<img src="" />
+				<div className=" w-full p-4">
+			
+					<div className=" flex no-wrap gap-4 mt-3">
+						<button onClick={handleRenewBook} className="button no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
+
+							Confirmar
+
+						</button>
+						<button className="btn" onClick={() => {
+							setSelectedBook({})
+							setHasSearchBeenMade(false)
+						}
+						}>
+							Voltar e editar
+						</button>
+					</div>
+
+				</div>
 
 				<div className="modal-action">
 
@@ -160,7 +183,7 @@ export default function DevolutionBooksContainer(props) {
 					</form>
 				</div>
 			</div>
-		</dialog>
+		</dialog> */}
 
 
 

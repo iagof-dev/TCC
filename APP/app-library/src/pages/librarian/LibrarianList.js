@@ -17,7 +17,7 @@ export default function LibrarianList(props) {
 	function dateConvert(dataStr) {
 		const date = new Date(dataStr);
 		const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-		return `${date.getDate()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
+		return `${date.getDate() + 1} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
 	  }
 
     useEffect(() => {
@@ -64,6 +64,7 @@ export default function LibrarianList(props) {
                                 <th>RM</th>
                                 <th>Título</th>
                                 <th>Data de <br /> Empréstimo</th>
+                                <th>Duração (dias)</th>
                                 <th>Situação</th>
                                 {/* <th>Registrar</th> */}
                             </tr>
@@ -99,6 +100,7 @@ export default function LibrarianList(props) {
                                         <td>{b.aluno_rm}</td>
                                         <td>{b.livro_titulo}</td>
                                         <td>{dateConvert(b.data_aluguel)}</td>
+                                        <td>{b.prazo}</td>
                                         <td className={`td-situation`}>
                                             {
                                                 b.estado ? <span className={`px-3 py-2 rounded td-situation-${situationColor}`}>{b.estado[0].toUpperCase() + b.estado.slice(1)}</span> : ''
