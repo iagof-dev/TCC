@@ -128,10 +128,6 @@ export default function LibrarianLoan(props) {
 		console.log(formData);
 		console.log('====================================');
 
-		// console.log('ACTUAl Form data===================================');
-		// console.log(`${bookId}, ${librarianId}, ${formData.RM}`);
-		// console.log('====================================');
-
 		const res = await Api.loans.makeLoan(formData)
 
 
