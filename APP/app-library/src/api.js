@@ -282,36 +282,21 @@ const Api = {
             }).then(res => res.json()).then(res => console.log(res))
 		},
 
-		evaluateBooks: async function(data){
+		modifyEvaluation: async function(data){
             const formData = new FormData()
 
-			// const 
+            console.log(data);
+            console.log(data.ratingId);
+            console.log(data.rating);
 
-			// formData.append("id", loan.id)
-			// formData.append("id_estado", "3")
+            formData.append("id", data.ratingId)
+			formData.append("avaliacao", data.rating)
+            formData.append("authpass", authpass)
 
-            // console.log(loan);
-
-            // formData.append("authpass", authpass)
-
-            // return await fetch(url + '/emprestimos/modificar/', {
-            //     method: "POST",
-            //     body: formData
-            // }).then(res => res.json()).then(res => console.log(res))
-
-        // updateRating: async function(id, rating){
-        //     const formData = new FormData()
-
-		// 	formData.append("id", loan.id)
-		// 	formData.append("id_estado", "3")
-
-        //     formData.append("authpass", authpass)
-
-        //     return await fetch(url + '/emprestimos/modificar/', {
-        //         method: "POST",
-        //         body: formData
-        //     }).then(res => res.json()).then(res => console.log(res))
-        // }
+            return await fetch(url + '/avaliacoes/modificar/', {
+                method: "POST",
+                body: formData
+            }).then(res => res.json())
 		}
     },
 

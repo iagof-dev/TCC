@@ -48,8 +48,7 @@ export default function List(props) {
 // 			situation: "Perdido"
 // 		},
 
-
-	let previousRatings = []
+	const [previousRatings, setPreviousRatings] = useState([])
 
 	if (Array.isArray(booksHistory)) booksHistory.map((b) => {
 		previousRatings.push(b.rating)
@@ -60,7 +59,7 @@ export default function List(props) {
 
 	const [hasRatingsBeenChanged, setHasRatingsBeenChanged] = useState(false)
 
-	function setNewRatings(){
+	async function setNewRatings(){
 
 		//Update livros
 
@@ -82,7 +81,9 @@ export default function List(props) {
 			}
 		})
 
-		console.log(booksWithNewRatings);
+		booksWithNewRatings.forEach(async b => {
+			const res = await Api.loans.modifyEvaluation(b)
+		});
 
 		
 
@@ -90,23 +91,43 @@ export default function List(props) {
 	}
 
 	useEffect(() => {
-		getBooks()
+		getBooks(true)
+		
 	}, [])
 
-	async function getBooks(){
-
+	async function getBooks(isFirst){
 		
 		const data = await Api.books.getBooksByRM(userInfo.rm)
 
-		console.log('books ====================================');
-		console.log(data);
-		console.log('====================================');
+		let _previousRatings = []
+
+		data.forEach(b => {
+			_previousRatings.push(b.avaliacao)
+		});
+
+		setBooksNewRatings(_previousRatings)
+		
+		if(isFirst) setPreviousRatings(_previousRatings)
+
+		setDOMRatingValues(_previousRatings)
+
+
 
 		setBookHistory(data)
 	}
 
 	useEffect(() => {
-		setHasRatingsBeenChanged(JSON.stringify(DOMRatingValues) != JSON.stringify(previousRatings))
+
+		let _previousRatings = []
+		let _DOMRatingValues = []
+
+		previousRatings.forEach(r => r == undefined? '' : _previousRatings.push(r))
+		DOMRatingValues.forEach(r => r == undefined? '' : _DOMRatingValues.push(r))
+
+		setHasRatingsBeenChanged(JSON.stringify(_DOMRatingValues) != JSON.stringify(_previousRatings))
+		console.log("----------------------");
+		console.log(DOMRatingValues);
+		console.log(_previousRatings);
 	}, [DOMRatingValues])
 
 	return (
@@ -184,6 +205,8 @@ export default function List(props) {
 															<input type="radio" onClick={() => {
 																let _ratings = [...booksNewRatings]
 																_ratings[i] = j
+
+																console.log(_ratings);
 																setBooksNewRatings(_ratings)
 																setDOMRatingValues(_ratings)
 															}}
