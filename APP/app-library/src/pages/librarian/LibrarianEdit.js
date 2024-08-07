@@ -665,7 +665,7 @@ export default function Search(props) {
 				</form>
 
 
-				{hasSearchBeenMade ? <BookSearchContainer setEditOrRemove={setEditOrRemove} hasSearchBeenMade={hasSearchBeenMade} setSelectedBook={setSelectedBook} resultBooks={resultBooks} isEditingPage={true} /> : ""}
+				{hasSearchBeenMade ? <BookSearchContainer setEditOrRemove={setEditOrRemove} setHasSearchBeenMade={setHasSearchBeenMade} hasSearchBeenMade={hasSearchBeenMade} setSelectedBook={setSelectedBook} resultBooks={resultBooks} isEditingPage={true} /> : ""}
 
 			</ThemeProvider>
 

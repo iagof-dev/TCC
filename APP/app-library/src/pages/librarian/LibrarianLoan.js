@@ -594,7 +594,7 @@ export default function LibrarianLoan(props) {
 
 
 				{
-					hasRequestedDevolution ? <DevolutionBooksContainer isRequesting={isRequesting} setIsRequesting={setIsRequesting} devolutionBooks={devolutionBooks} setFormData={setFormData} /> : ""
+					hasRequestedDevolution ? <DevolutionBooksContainer isRequesting={isRequesting} setHasRequestedDevolution={setHasRequestedDevolution} devolutionBooks={devolutionBooks} setFormData={setFormData} /> : ""
 				}
 
 				<dialog id="modal_success" className="modal ">

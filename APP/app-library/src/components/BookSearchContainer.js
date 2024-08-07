@@ -4,7 +4,7 @@ import EditingPageBook from "./EditingPageBook";
 
 export default function BookSearchContainer(props) {
 	
-	const {setEditOrRemove, hasSearchBeenMade, setSelectedBook, resultBooks, isEditingPage } = { ...props };
+	const {setEditOrRemove, hasSearchBeenMade, setHasSearchBeenMade, setSelectedBook, resultBooks, isEditingPage } = { ...props };
 
 	const [isLoading, setIsLoading] = useState(hasSearchBeenMade); 
 
@@ -26,6 +26,8 @@ export default function BookSearchContainer(props) {
 					Nenhum livro encontrado.
 				</span> : (resultBooks.map((book) => {
 
+					
+
 					return <EditingPageBook
 						id={book.id}
 						code={book.codigo}
@@ -41,6 +43,7 @@ export default function BookSearchContainer(props) {
 
 						setSelectedBook={setSelectedBook}
 						setEditOrRemove={setEditOrRemove}
+						setHasSearchBeenMade={setHasSearchBeenMade}
 						
 					/>
 				}))

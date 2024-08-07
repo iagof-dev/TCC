@@ -4,7 +4,7 @@ import { dateConvert } from "../miscellaneous"
 import { Api } from "../../api"
 
 export default function DevolutionBooksContainer(props) {
-	const { isRequesting, setIsRequesting, devolutionBooks, setFormData } = { ...props }
+	const { isRequesting, setHasRequestedDevolution, devolutionBooks, setFormData } = { ...props }
 	const [selectedBook, setSelectedBook] = useState({})
 
 
@@ -38,7 +38,7 @@ export default function DevolutionBooksContainer(props) {
 				name: "",
 				time: 2
 			})
-			// setIsRequesting(true)
+			setTimeout(() => setHasRequestedDevolution(false), 2000)
 			
 		}
 
@@ -60,7 +60,8 @@ export default function DevolutionBooksContainer(props) {
 			name: "",
 			time: 2
 		})
-		// setIsRequesting(true)
+		setTimeout(() => setHasRequestedDevolution(false), 2000)
+		
 		
 	}
 
