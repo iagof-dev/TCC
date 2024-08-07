@@ -4,9 +4,11 @@ import { dateConvert } from "../miscellaneous"
 import { Api } from "../../api"
 
 export default function DevolutionBooksContainer(props) {
-	const { isRequesting, devolutionBooks } = { ...props }
+	const { isRequesting, setIsRequesting, devolutionBooks, setFormData } = { ...props }
 	const [selectedBook, setSelectedBook] = useState({})
-	const [bookToBeRenewed, setBookToBeRenewed] = useState({})
+
+
+	let bookToBeRenewed = {}
 
 	async function handleBookDevolution(id) {
 		// devolutionBooks.forEach(book => {
@@ -26,6 +28,18 @@ export default function DevolutionBooksContainer(props) {
 			console.log(res);
 
 			document.getElementById('devolutionSuccessModal').showModal()
+			setFormData({
+				code: "",
+				title: "",
+				RM: "",
+				loanDate :"",
+				librarianId: "",
+				bookId: "",
+				name: "",
+				time: 2
+			})
+			// setIsRequesting(true)
+			
 		}
 
 	}
@@ -35,7 +49,19 @@ export default function DevolutionBooksContainer(props) {
 		const res = await Api.loans.renewBook(bookToBeRenewed)
 		console.log(res);
 
-
+		document.getElementById('renewSuccessModal').showModal()
+		setFormData({
+			code: "",
+			title: "",
+			RM: "",
+			loanDate :"",
+			librarianId: "",
+			bookId: "",
+			name: "",
+			time: 2
+		})
+		// setIsRequesting(true)
+		
 	}
 
 	return <section className='results-container p-1 mt-2 w-full flex flex-col no-wrap justify-start gap-5 items-center rounded-md min-h-[20vh] max-h-[60vh] overflow-y-scroll'>
@@ -116,7 +142,7 @@ export default function DevolutionBooksContainer(props) {
 
 
 											{b.renovavel && b.estado != 'devolvido' ?
-												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-700 text-slate-50 " onClick={() => {document.getElementById('renewBookModal').showModal(); setBookToBeRenewed(b)}}>
+												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-700 text-slate-50 " onClick={() => {bookToBeRenewed = b ; handleRenewBook(b)}}>
 													Renovar
 												</button> : <div className="w-full py-2 px-4"></div>
 
@@ -194,6 +220,24 @@ export default function DevolutionBooksContainer(props) {
 				<div>
 					<h3 className="font-bold text-3xl ">Sucesso!</h3>
 					<p className="py-4">Devolução realizada!</p>
+					<div className="modal-action">
+						<form method="dialog">
+							<button className="btn">Fechar</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</dialog>
+
+		<dialog id="renewSuccessModal" className="modal ">
+			<div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
+					<path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+				</svg>
+
+				<div>
+					<h3 className="font-bold text-3xl ">Sucesso!</h3>
+					<p className="py-4">Renovação realizada!</p>
 					<div className="modal-action">
 						<form method="dialog">
 							<button className="btn">Fechar</button>

@@ -139,16 +139,16 @@ export default function LibrarianLoan(props) {
 		// Api: post empréstimo
 
 		document.getElementById('modalLoanSuccess').showModal()
-		// setFormData({
-		//     code: "",
-		//     title: "",
-		//     RM: "",
-		// 	loanDate :"",
-		// 	librarianId: "",
-		// 	bookId: "",
-		//     name: "",
-		//     time: 2
-		// })
+		setFormData({
+		    code: "",
+		    title: "",
+		    RM: "",
+			loanDate :"",
+			librarianId: "",
+			bookId: "",
+		    name: "",
+		    time: 2
+		})
 		setIsRequesting(false)
 
 
@@ -594,7 +594,7 @@ export default function LibrarianLoan(props) {
 
 
 				{
-					hasRequestedDevolution ? <DevolutionBooksContainer isRequesting={isRequesting} devolutionBooks={devolutionBooks} /> : ""
+					hasRequestedDevolution ? <DevolutionBooksContainer isRequesting={isRequesting} setIsRequesting={setIsRequesting} devolutionBooks={devolutionBooks} setFormData={setFormData} /> : ""
 				}
 
 				<dialog id="modal_success" className="modal ">

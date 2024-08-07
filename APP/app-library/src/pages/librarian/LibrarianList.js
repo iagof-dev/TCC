@@ -64,7 +64,7 @@ export default function LibrarianList(props) {
                                 <th>RM</th>
                                 <th>Título</th>
                                 <th>Data de <br /> Empréstimo</th>
-                                <th>Duração (dias)</th>
+                                <th>Período (dias)</th>
                                 <th>Situação</th>
                                 {/* <th>Registrar</th> */}
                             </tr>
