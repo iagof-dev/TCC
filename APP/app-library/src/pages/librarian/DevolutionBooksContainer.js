@@ -6,6 +6,7 @@ import { Api } from "../../api"
 export default function DevolutionBooksContainer(props) {
 	const { isRequesting, devolutionBooks } = { ...props }
 	const [selectedBook, setSelectedBook] = useState({})
+	const [bookToBeRenewed, setBookToBeRenewed] = useState({})
 
 	async function handleBookDevolution(id) {
 		// devolutionBooks.forEach(book => {
@@ -23,16 +24,18 @@ export default function DevolutionBooksContainer(props) {
 			console.log(loan);
 			const res = await Api.loans.makeDevolution(loan)
 			console.log(res);
+
+			document.getElementById('devolutionSuccessModal').showModal()
 		}
 
 	}
 
-	async function handleRenewBook(book) {
+	async function handleRenewBook() {
 
-		const res = await Api.loans.renewBook(book)
+		const res = await Api.loans.renewBook(bookToBeRenewed)
 		console.log(res);
 
-		document.getElementById('renewBookModal').showModal()
+
 	}
 
 	return <section className='results-container p-1 mt-2 w-full flex flex-col no-wrap justify-start gap-5 items-center rounded-md min-h-[20vh] max-h-[60vh] overflow-y-scroll'>
@@ -104,16 +107,16 @@ export default function DevolutionBooksContainer(props) {
 										</td>
 										<td className="flex gap-4 justify-between w-full">
 											{
-												b.estado == 'pendente' ? 
-												<button className="button no-wrap align-center py-2 px-4 rounded text-lg" onClick={() => handleBookDevolution(b.id)}>
-													Devolução
-												</button> : <div className="w-full py-2 px-4"></div>
+												b.estado == 'pendente' ?
+													<button className="button no-wrap align-center py-2 px-4 rounded text-lg" onClick={() => handleBookDevolution(b.id)}>
+														Devolução
+													</button> : <div className="w-full py-2 px-4"></div>
 											}
 
 
 
-											{b.renovavel ?
-												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-700 text-slate-50 " onClick={() => handleRenewBook(b)}>
+											{b.renovavel && b.estado != 'devolvido' ?
+												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-700 text-slate-50 " onClick={() => {document.getElementById('renewBookModal').showModal(); setBookToBeRenewed(b)}}>
 													Renovar
 												</button> : <div className="w-full py-2 px-4"></div>
 
@@ -153,39 +156,70 @@ export default function DevolutionBooksContainer(props) {
 			</div>
 		</dialog>
 
-		{/* <dialog id="renewBookModal" className="modal">
-			<div className="modal-box  w-full max-w-5xl">
+		<dialog id="renewBookModal" className="modal">
+			<div className="modal-box  w-full">
 				<h3 className="font-bold text-lg">Confirmar renovação</h3>
 				<p className="py-4">Deseja realizar a renovação do empréstimo?</p>
 
 				<div className=" w-full p-4">
-			
-					<div className=" flex no-wrap gap-4 mt-3">
-						<button onClick={handleRenewBook} className="button no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
+
+					<div className=" flex w-full justify-end no-wrap gap-4 mt-3">
+						<button onClick={() => handleRenewBook()} className="button no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
 
 							Confirmar
 
 						</button>
-						<button className="btn" onClick={() => {
-							setSelectedBook({})
-							setHasSearchBeenMade(false)
-						}
-						}>
-							Voltar e editar
-						</button>
+						<form method="dialog">
+							<button className="btn"
+								onClick={() => {
+									setSelectedBook({})
+									// setHasSearchBeenMade(false)
+								}
+								}>
+								Voltar
+							</button>
+						</form>
 					</div>
 
 				</div>
+			</div>
+		</dialog>
 
-				<div className="modal-action">
+		<dialog id="devolutionSuccessModal" className="modal ">
+			<div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
+					<path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+				</svg>
 
-					<form method="dialog">
-						<button className="btn">Close</button>
-					</form>
+				<div>
+					<h3 className="font-bold text-3xl ">Sucesso!</h3>
+					<p className="py-4">Devolução realizada!</p>
+					<div className="modal-action">
+						<form method="dialog">
+							<button className="btn">Fechar</button>
+						</form>
+					</div>
 				</div>
 			</div>
-		</dialog> */}
+		</dialog>
 
+		<dialog id="errorSuccessModal" className="modal ">
+			<div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+					<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+				</svg>
+
+				<div>
+					<h3 className="font-bold text-3xl text-slate-50">Jão!</h3>
+					<p className="py-4 text-slate-50">Devolução realizada!</p>
+					<div className="modal-action">
+						<form method="dialog">
+							<button className="btn">Fechar</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</dialog>
 
 
 	</section>

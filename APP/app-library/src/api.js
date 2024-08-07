@@ -306,8 +306,10 @@ const Api = {
             const formData = new FormData()
 
             formData.append("id_emprestimo", data.id)
-            formData.append("novo_prazo", data.prazo + 14)
+            formData.append("novo_prazo", 14)
             formData.append("authpass", authpass)
+
+            console.log(data);
 
             return await fetch(url + '/emprestimos/estender/', {
                 method: "POST",
