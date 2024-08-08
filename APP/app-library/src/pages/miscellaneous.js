@@ -14,9 +14,11 @@ export function bookCodeGenerator(){
 }
 
 export function dateConvert(dataStr) {
-	const date = new Date(dataStr);
+	const date = dataStr;
+   
 	const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-	return `${date.getDate()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
+
+	return `${date.slice(-2)} de ${Number.parseInt(date.slice(5,7)) == 0? months[Number.parseInt(date.slice(5,7))] : months[Number.parseInt(date.slice(5,7)-1)]} de ${date.slice(0,4)}`;
   }
 
 export function dateConverter(date){

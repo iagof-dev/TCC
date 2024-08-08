@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Api } from "../../api"
 import { ThemeProvider, createTheme } from "@mui/material"
+import {dateConvert} from '../miscellaneous'
 
 export default function LibrarianList(props) {
 
@@ -14,11 +15,6 @@ export default function LibrarianList(props) {
 
     }
 
-	function dateConvert(dataStr) {
-		const date = new Date(dataStr);
-		const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-		return `${date.getDate() + 1} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
-	  }
 
     useEffect(() => {
         async function setAllLectures() {
