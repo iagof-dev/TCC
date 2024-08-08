@@ -66,7 +66,7 @@ export default function List(props) {
 		let booksWithNewRatings = []
 
 		booksHistory.map((book, id) => {
-			console.log(book);
+
 			if (book.rating != DOMRatingValues[id]) {
 				booksWithNewRatings.push(
 					{
@@ -203,7 +203,6 @@ export default function List(props) {
 															let _ratings = [...booksNewRatings]
 															_ratings[i] = j
 
-															console.log(_ratings);
 															setBooksNewRatings(_ratings)
 															setDOMRatingValues(_ratings)
 														}}

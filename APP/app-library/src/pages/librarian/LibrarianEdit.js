@@ -102,7 +102,12 @@ export default function Search(props) {
 	}
 
 	async function handleDelete() {
-		console.log(formData);
+		await Api.books.removeBook(selectedBook).then(res => {
+			if (res.error) return
+
+			document.getElementById('modalRemoveSuccess').showModal()
+			setTimeout(() => setSelectedBook({ generos: [], editora: "", volumes: 0, url_capa: '' }), 2000) 
+		})
 	}
 
 
@@ -117,17 +122,12 @@ export default function Search(props) {
 		(async () => {
 			const data = await Api.authors.getAllAuthors()
 			setAuthors(data.map(a => a.nome))
-			console.log(
-				'AUTORES=========== ' + authors
-			);
 
 			const dataPublishers = await Api.publishers.getAllPublishers()
 			setPublishers(dataPublishers.map(p => p.editora))
-			console.log(dataPublishers);
 
 			const dataGeneros = await Api.genres.getAllGenres()
 			setGeneros(dataGeneros.map(g => g.genero))
-			console.log("GENEROS================== " + generos);
 
 			const genresData = await Api.genres.getAllGenres()
 			const authorsData = await Api.authors.getAllAuthors()
@@ -210,7 +210,6 @@ export default function Search(props) {
 											onChange={async (event, newValue) => {
 												if (!newValue) return
 												const publisherObject = dataWithId.publishers.find(p => p.editora == newValue)
-												console.log(publisherObject);
 												setFormData({ ...formData, editora: newValue, id_editora: publisherObject.id });
 											}}
 
@@ -477,13 +476,9 @@ export default function Search(props) {
 
 													let id = dataWithId.genres.findIndex(a => a.genero == g)
 
-													console.log(`id genero no dataWithId : ${id}`);
-
 													let generoId = -1
 
 													if (id != -1) generoId = dataWithId.genres[id].id
-
-													console.log(generoId);
 
 													setFormData({ ...formData, generos: chosenGenres });
 
@@ -593,6 +588,23 @@ export default function Search(props) {
 						}>Cancelar</button>
 					</div>
 
+					<dialog id="modalRemoveSuccess" className="modal ">
+					<div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl ">Sucesso!</h3>
+							<p className="py-4">Livro deletado!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									<button className="btn">Fechar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
 				</div>
 			</ThemeProvider>
 		}

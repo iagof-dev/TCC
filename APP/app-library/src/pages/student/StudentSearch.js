@@ -27,7 +27,6 @@ export default function Search(props) {
 	const [genresAndCourses, setGenresAndCourses] = useState([])
 
 	async function handleSearch(e) {
-		console.log("========================== handleSearch ==========================");
 		setResultBooks([])
 		e.preventDefault()
 
@@ -107,8 +106,6 @@ export default function Search(props) {
 						.map(str => JSON.parse(str));
 
 
-						console.log(uniqueFoundBooks);
-
 						let groupedFoundBooks = []
 
 						groupedFoundBooks = groupBooksByCode(uniqueFoundBooks)
@@ -125,11 +122,6 @@ export default function Search(props) {
 			setResultBooks([])
 
 			let uniqueFoundBooks = []
-
-			console.log('booksByAuthor e booksByTitle ====================================');
-			console.log(booksByAuthor);
-			console.log(booksByTitle);
-			console.log('====================================');
 
 			if (Array.isArray(booksByAuthor)) uniqueFoundBooks = [...uniqueFoundBooks, ...booksByAuthor]
 			if (Array.isArray(booksByTitle)) uniqueFoundBooks = [...uniqueFoundBooks, ...booksByTitle]

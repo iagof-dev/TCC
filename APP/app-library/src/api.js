@@ -55,7 +55,7 @@ const Api = {
         //Books
         getBooksByRM: async function (rm) {
 
-            return await fetch(url + '/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => { console.log(data); return data.DATA })
+            return await fetch(url + '/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA )
 
 
         },
@@ -70,16 +70,12 @@ const Api = {
         getBookByAuthor: async function (author) {
             if (author == "" || author == undefined) return {}
 
-            console.log(await fetch(url + '/livros/listar/autor/' + author.replace(" ", "+")).then(res => res.json()).then(data => data.DATA));
-
             return await fetch(url + '/livros/listar/autor/' + author.replace(" ", "+")).then(res => res.json()).then(data => data.DATA)
         },
 
         getBookByTitle: async function (title) {
             if (title == "" || title == undefined) return {}
-
-            console.log(await fetch(url + '/livros/listar/titulo/' + title.replace(" ", "+")).then(res => res.json()).then(data => data.DATA));
-
+            
             return await fetch(url + '/livros/listar/titulo/' + title.replace(" ", "+")).then(res => res.json()).then(data => data.DATA)
         },
 
@@ -138,13 +134,10 @@ const Api = {
             //     sinopse: "ab"
             // })
 
-            console.log("---------------- pageData.codigo");
-            console.log(pageData.codigo);
-
+            ("---------------- pageData.codigo");
+            
             const formData = new FormData()
 
-            console.log("------------ API pageData");
-            console.log(pageData);
 
             formData.append("authpass", authpass)
             formData.append("codigo", pageData.codigo)
@@ -168,7 +161,7 @@ const Api = {
             return await fetch(url + '/livros/criar/', {
                 method: "POST",
                 body: formData
-            }).then(res => console.log(res))
+            })
         },
 
         addNewBookGenre: async function (idLivro, idGenero) {
@@ -181,7 +174,7 @@ const Api = {
             return await fetch(url + '/generos_livros/inserir/', {
                 method: "POST",
                 body: formData
-            }).then(res => console.log(res))
+            })
         },
 
         getAllCodes: async function () {
@@ -214,42 +207,40 @@ const Api = {
 
             formData.append("authpass", authpass)
 
-            console.log('book api -----------');
-            console.log(book);
-
             formData.append("id", book.id)
             formData.append("titulo", book.titulo)
             if (![null, undefined, 0].includes(book.id_autor)) formData.append("id_autor", book.id_autor)
             if (![null, undefined, 0].includes(book.id_editora)) formData.append("id_editora", book.id_editora)
-            // if(book.id_autor != 0 || book.id_autor != undefined) formData.append("id_autor", book.id_autor)
-            // if(book.id_editora != 0 || book.id_editora != undefined) { console.log(book.id_editora); formData.append("id_editora", book.id_editora)}
+                
             formData.append("volumes", book.volumes)
             formData.append("sinopse", book.sinopse)
 
             return await fetch(url + '/livros/modificar/', {
                 method: "POST",
                 body: formData
-            }).then(res => console.log(res))
+            })
         },
 
         removeBook: async function (book) {
             const formData = new FormData()
 
+
             formData.append("authpass", authpass)
 
-            console.log(book);
+            formData.append("id", book.id)
 
-            return await fetch(url + '/livros/deletar/', {
+            return await fetch(url + '/livros/deletar/id', {
                 method: "POST",
                 body: formData
-            }).then(res => console.log(res))
+            }).then(res => res.json())
         },
 
     },
 
     loans: {
         getAllLoans: async function () {
-            return await fetch(url + '/emprestimos/listar/').then(res => res.json()).then(data => data.DATA)
+            
+            return await fetch(url + '/emprestimos/listar/').then(res => res.json()).then(data =>  {if(data.error) return 0; return data.DATA})
         },
 
         getLoansByRM: async function (rm) {
@@ -268,9 +259,6 @@ const Api = {
             formData.append("prazo", data.time * 7)
 
             formData.append("authpass", authpass)
-
-            console.log('API -------------------------');
-            console.log(data);
 
             return await fetch(url + '/emprestimos/registrar/', {
                 method: "POST",
@@ -311,8 +299,6 @@ const Api = {
             formData.append("id_emprestimo", data.id)
             formData.append("novo_prazo", 14)
             formData.append("authpass", authpass)
-
-            console.log(data);
 
             return await fetch(url + '/emprestimos/estender/', {
                 method: "POST",
@@ -356,8 +342,6 @@ const Api = {
 
             const formData = new FormData()
 
-            console.log("API ----------- add author");
-
             formData.append("nome", autor.autor)
             formData.append("authpass", authpass)
 
@@ -366,10 +350,6 @@ const Api = {
                 body: formData
             }).then(res => res.json())
 
-            // return await fetch(url + '/livros/criar/', {
-            //     method: "POST",
-            //     body: formData
-            // }).then(res => console.log(res))
         },
 
 
@@ -394,7 +374,7 @@ const Api = {
             return await fetch(url + '/editoras/adicionar', {
                 method: "POST",
                 body: formData
-            }).then(res => console.log(res))
+            })
         },
     },
 

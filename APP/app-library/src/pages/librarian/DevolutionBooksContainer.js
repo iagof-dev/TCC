@@ -20,12 +20,10 @@ export default function DevolutionBooksContainer(props) {
 		// });
 
 		const loan = devolutionBooks.find(book => book.id == id)
-		console.log(loan);
+
 
 		if (loan) {
-			console.log(loan);
 			const res = await Api.loans.makeDevolution(loan)
-			console.log(res);
 
 			document.getElementById('devolutionSuccessModal').showModal()
 			setFormData({
@@ -47,7 +45,6 @@ export default function DevolutionBooksContainer(props) {
 	async function handleRenewBook() {
 
 		const res = await Api.loans.renewBook(bookToBeRenewed)
-		console.log(res);
 
 		document.getElementById('renewSuccessModal').showModal()
 		setFormData({

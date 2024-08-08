@@ -30,11 +30,6 @@ export default function EditingPageBook(props) {
 
             <img className="w-[12vw] rounded object-cover" src={coverURL} alt="" />
 
-            {
-                console.log(id, code, author, title, rating, status, synopsis, volumes, publisher, coverURL, generos)
-            }
-
-
             <div className="flex flex-col justify-between w-full">
                 <span className="flex flex-col">
                     <span className="flex justify-between items-center">

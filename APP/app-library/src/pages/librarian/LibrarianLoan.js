@@ -113,22 +113,6 @@ export default function LibrarianLoan(props) {
 		setIsRequesting(true)
 		e.preventDefault()
 
-		// const tempbookId = booksData.find(b => b.titulo == formData.title && b.codigo == formData.code)
-		// console.log('booksData ====================================');
-		// console.log(booksData);
-		// console.log('====================================');
-
-		// if (!tempbookId) return
-		// setFormData({...formData, bookId: tempbookId.id})
-
-
-
-		// setFormData({...formData, bookId: bookId, librarianId: librarianId})
-
-		console.log('Form data ====================================');
-		console.log(formData);
-		console.log('====================================');
-
 		const res = await Api.loans.makeLoan(formData)
 
 		if(res.status == 'error') {
@@ -174,7 +158,6 @@ export default function LibrarianLoan(props) {
 			setBooks(data)
 			bookTitles = books.map(b => b.titulo)
 			setBooksData(groupBooksByCode(data))
-			console.log(booksData);
 
 		}
 
@@ -199,9 +182,6 @@ export default function LibrarianLoan(props) {
 
 		if (Array.isArray(loanedBooks) && loanedBooks.length > 0) {
 			setDevolutionBooks(loanedBooks)
-
-			console.log("------------------------");
-			console.log(loanedBooks);
 
 			setIsRequesting(false)
 		} else {
@@ -232,17 +212,9 @@ export default function LibrarianLoan(props) {
 			const bookObject = booksData.find(book => book.codigo == formData.code)
 			if (!bookObject) return
 
-			console.log('bookObject ====================================');
-			console.log(bookObject);
-			console.log('====================================');
-
 			setFormData({ ...formData, bookId: bookObject.id, title: bookObject.titulo })
 
 		}
-
-		console.log('booksData ====================================');
-		console.log(booksData );
-		console.log('====================================');
 
 		return (
 			<>

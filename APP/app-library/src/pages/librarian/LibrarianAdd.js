@@ -75,21 +75,12 @@ export default function LibrarianAdd() {
         let newPublisherId = 0
 
         if (formData.autor.id == -1) {
-            console.log(allAuthors);
 
-            if (allAuthors.find(a => a == formData.autor.autor)) {
-                console.log("autor já existe");
-                return
-            }
-
-            console.log("NOVO AUTOR");
+            if (allAuthors.find(a => a == formData.autor.autor)) return
 
             isNewAuthor = true
 
         }
-
-        console.log("-------- formData.editora.id");
-        console.log(formData);
 
         if (formData.editora.id == -1) {
 
@@ -107,62 +98,31 @@ export default function LibrarianAdd() {
                     await Api.authors.addAuthor(formData.autor)
                     const newAuthors = await Api.authors.getAllAuthors()
 
-                    console.log(formData);
-
-                    console.log(newAuthors);
-
                     const postedAuthor = newAuthors.find(a => a.nome == formData.autor.autor)
-                    // console.log(newAuthorId);
+
                     setFormData({ ...formData, autor: { ...formData.autor, id: postedAuthor.id } })
                     newAuthorId = postedAuthor.id
                 }
 
                 if (isNewPublisher) {
-                    const editoras = await Api.publishers.addPublisher(formData.editora.editora)
-                    console.log("NOVA EDITORA");
-
-
 
                     const newPublishers = await Api.publishers.getAllPublishers()
-                    console.log(newPublishers);
-
-                    console.log(newPublishers);
-                    console.log(newPublishers.find(p => p.editora == formData.editora.editora));
 
                     const newPublisher = newPublishers.find(p => p.editora == formData.editora.editora)
-                    console.log(newPublisher.id);
-
-
 
                     setFormData({ ...formData, editora: { ...formData.editora, id: newPublisher.id } })
                     newPublisherId = newPublisher.id
                 }
-
-                console.log("formData antes da API:");
-                console.log(formData);
 
                 let newFormData = formData
 
                 newFormData.autor.id = newAuthorId? newAuthorId : newFormData.autor.id
                 newFormData.editora.id = newPublisherId? newPublisherId : newFormData.editora.id
 
-                console.log(newFormData);
 
                 await Api.books.addNewBook(newFormData)
 
-                // const allBooks = await Api.books.getAllBooks()
-
-                // console.log('------- allBooks');
-                // console.log(allBooks);
-
-
                 const addedBook = await Api.books.getBookByCode(formData.codigo)
-
-
-
-
-                console.log('------- addedBook');
-                console.log(addedBook);
 
                 idGenerosASeremAdicionados.forEach(async g => {
                     await Api.books.addNewBookGenre(addedBook[0].id, g)
@@ -174,7 +134,7 @@ export default function LibrarianAdd() {
 
 
         document.getElementById("modalAddSuccess").showModal()
-        
+
         setFormData({titulo: "",
             autor: {
                 id: "",
@@ -203,21 +163,15 @@ export default function LibrarianAdd() {
         setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png', ...urls.message.imagens])
 
         const synopsisResponse = await (await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor })).json()
-        console.log(synopsisResponse);
 
         setFormData({ ...formData, codigo: code, sinopse: typeof synopsisResponse == 'string' && !synopsisResponse.includes('gpt') ? synopsisResponse.message : "" })
         setRequestedCoverSelectionWithTheseValues(true)
 
-        console.log(synopsisResponse.message);
     }
 
 
     async function handleBookAddModal(e) {
         e.preventDefault()
-
-        console.log(formData);
-
-
 
         document.getElementById('bookCoverSelectionModal').showModal()
 
@@ -226,21 +180,10 @@ export default function LibrarianAdd() {
 
         const uniqueCode = generateUniqueCodeAndCheck();
 
-        console.log("uniqueCode");
-        console.log(uniqueCode);
-
-
         setFormData({ ...formData, codigo: uniqueCode })
 
 
-        if (requestedCoverSelectionWithTheseValues) {
-            console.log("NAO CAIU NA API");
-        } else {
-            console.log("CAIU NA API");
-
-            getCoversAndSynopsis(uniqueCode)
-
-        }
+        if (!requestedCoverSelectionWithTheseValues) getCoversAndSynopsis(uniqueCode)
 
 
     }
@@ -283,12 +226,6 @@ export default function LibrarianAdd() {
             const authors = await Api.authors.getAllAuthors()
             const publishers = await Api.publishers.getAllPublishers()
             const existingCodesData = await Api.books.getAllCodes()
-
-            console.log("-------------- existingCodesData");
-            console.log(existingCodesData);
-
-            console.log("-------------- publishers");
-            console.log(publishers);
 
             setAllGenres(genres.map(g => g.genero))
             setAllAuthors(authors.map(a => a.nome))
@@ -367,9 +304,6 @@ export default function LibrarianAdd() {
 
                                 let id = dataWithId.authors.find(a => a.nome == e.target.value)
 
-                                console.log('-------------- id');
-                                console.log(id);
-
                                 let autorId
 
                                 if (id == undefined) {
@@ -377,9 +311,6 @@ export default function LibrarianAdd() {
                                 } else {
                                     autorId = id.id
                                 }
-
-                                console.log('-------------- autorId');
-                                console.log(autorId);
 
                                 setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value, id: autorId } })
 
@@ -432,9 +363,6 @@ export default function LibrarianAdd() {
                                     editoraId = selectedPublisher.id
                                 }
 
-                                console.log("---------- editoraId");
-                                console.log(editoraId);
-
                                 setFormData({ ...formData, editora: { ...formData.editora, editora: e.target.value, id: editoraId } });
 
                             }}
@@ -468,34 +396,20 @@ export default function LibrarianAdd() {
                             onChange={(event, generos) => {
                                 let chosenGenresWithId = []
 
-                                console.log("----------formData.generos.generos");
-                                console.log(formData.generos.genero);
-
                                 setTempGenres(generos)
 
                                 generos.forEach(g => {
 
                                     let id = dataWithId.genres.findIndex(a => a.genero == g)
 
-                                    console.log(`id genero no dataWithId : ${id}`);
-
                                     let generoId = dataWithId.genres[id].id
 
-                                    console.log("--------- generoID");
-                                    console.log(generoId);
-
-                                    console.log("--------- g");
-                                    console.log(g);
-
                                     const generoComId = { id: generoId, genero: g }
-
-                                    console.log(generoComId);
 
                                     chosenGenresWithId.push(generoComId)
                                 })
 
                                 setFormData({ ...formData, generos: chosenGenresWithId })
-                                console.log(formData);
                             }
                             }
                             sx={{ width: 550 }}
@@ -576,7 +490,6 @@ export default function LibrarianAdd() {
 
 
                                         coverURLs.map((b, i) => {
-                                            console.log(b)
                                             return <CoverOption id={i}
                                                 coverURL={b}
                                                 selectedCoverURL={selectedCoverURL} setselectedCoverURL={setselectedCoverURL} />
@@ -595,8 +508,6 @@ export default function LibrarianAdd() {
                                         {/* if there is a button in form, it will close the modal */}
                                         <button onClick={(e) => {
                                             document.getElementById('bookConfirmationModal').showModal()
-
-                                            console.log(`url: ${selectedCoverURL}`);
 
                                         }} className="btn button button-search no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">Confirmar</button>
                                         <button className="btn">Fechar</button>

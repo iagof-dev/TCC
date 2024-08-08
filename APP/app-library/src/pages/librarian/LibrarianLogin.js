@@ -83,10 +83,9 @@ export default function LibrarianLogin(props) {
                             fullWidth
                             value={LibrarianTemp}
                             onChange={(v) => {
-                                console.log("-----------lib id");
+                                
                                 setLibrarianId(v.target.value)
-                                console.log("-----------l => l.nome == v.target.value)");
-                                console.log(loginNames.find(l => l.nome == v.target.value));
+
                                 setLibrarianTemp(loginNames.find(l => l.nome == v.target.value).nome)
 
                                 setLibrarianId(loginNames.find(l => l.nome == v.target.value).id)
