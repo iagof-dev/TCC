@@ -5,6 +5,7 @@ import { groupBooksByCode, onKeyDownRM } from "../miscellaneous"
 import Info from "../../components/Info"
 import DevolutionBooksContainer from "./DevolutionBooksContainer"
 import { Api } from "../../api"
+import {getCurrentDate} from '../miscellaneous'
 
 import { dateConvert } from "../miscellaneous"
 export default function LibrarianLoan(props) {
@@ -23,7 +24,7 @@ export default function LibrarianLoan(props) {
 		name: "",
 		time: 2
 	})
-	
+
 	// const [books, setBooks] = useState([
 	//     { code: 1, title: "O Senhor dos Anéis: A Sociedade do Anel" },
 	//     { code: 2, title: "O Senhor dos Anéis: As Duas Torres" },
@@ -143,8 +144,8 @@ export default function LibrarianLoan(props) {
 		    code: "",
 		    title: "",
 		    RM: "",
-			loanDate :"",
-			librarianId: "",
+			loanDate :getCurrentDate(),
+			librarianId: librarianId,
 			bookId: "",
 		    name: "",
 		    time: 2
@@ -157,18 +158,9 @@ export default function LibrarianLoan(props) {
 
 	useEffect(() => {
 
-		console.log('librarianId ====================================');
-		console.log(librarianId);
-		console.log('====================================');
-
-		const today = new Date();
-		const year = today.getFullYear();
-		const month = String(today.getMonth() + 1).padStart(2, '0');
-		const day = String(today.getDate()).padStart(2, '0');
-		const formattedDate = `${year}-${month}-${day}`;
 
 
-		setFormData({ ...formData, loanDate: formattedDate })
+		setFormData({ ...formData, loanDate: getCurrentDate() })
 
 
 		async function getAllStudents() {

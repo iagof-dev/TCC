@@ -7,21 +7,9 @@ export default function LibrarianList(props) {
 
     const [lectures, setLectures] = useState([])
 
-    function goToDevolution(code){
-
-    }
-
-    function goToLost(code){
-
-    }
-
-
     useEffect(() => {
         async function setAllLectures() {
             const data = await Api.loans.getAllLoans()
-
-            console.log("--------------- loans");
-            console.log(data);
 
             Array.isArray(data)? setLectures(data) : setLectures([])
         }
@@ -37,10 +25,7 @@ export default function LibrarianList(props) {
             ].join(','),
         },
 
-
     });
-
-	
 
     return (
         <>

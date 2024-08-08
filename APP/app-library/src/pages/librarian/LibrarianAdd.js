@@ -58,8 +58,6 @@ export default function LibrarianAdd() {
 
     const [requestedCoverSelectionWithTheseValues, setRequestedCoverSelectionWithTheseValues] = useState(false)
 
-    const [formDataTempValues, setFormDataTempValues] = useState()
-
     const [tempGenres, setTempGenres] = useState([])
 
     useEffect(() => {
@@ -176,6 +174,24 @@ export default function LibrarianAdd() {
 
 
         document.getElementById("modalAddSuccess").showModal()
+        
+        setFormData({titulo: "",
+            autor: {
+                id: "",
+                autor: ""
+            },
+            editora: {
+                id: "",
+                editora: ""
+            },
+            url_capa: "",
+            codigo: "",
+            generos: {
+                ids: [],
+                generos: []
+            },
+            volumes: "",
+            sinopse: ""})
     }
 
     async function getCoversAndSynopsis(code) {
@@ -552,7 +568,7 @@ export default function LibrarianAdd() {
                     <div className="modal-box bg-[#F8F8F8] flex w-fit max-w-none gap-12 items-center">
                         <div className=" w-fit">
                             <h3 className="font-bold text-3xl">Escolha de Capa do Livro</h3>
-                            <p className="py-4">Escolha a capa do livro entre as opções.<br />Caso não haja, escolha a última (capa padrão) ou deixe em branco.</p>
+                            <p className="py-4">Escolha a capa do livro entre as opções.<br />Caso não haja, escolha a primeira opção (capa padrão).</p>
                             <div className="flex gap-4">
 
                                 {

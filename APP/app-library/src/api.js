@@ -269,6 +269,9 @@ const Api = {
 
             formData.append("authpass", authpass)
 
+            console.log('API -------------------------');
+            console.log(data);
+
             return await fetch(url + '/emprestimos/registrar/', {
                 method: "POST",
                 body: formData
