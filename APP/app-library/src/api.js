@@ -239,7 +239,7 @@ const Api = {
 
     loans: {
         getAllLoans: async function () {
-            
+
             return await fetch(url + '/emprestimos/listar/').then(res => res.json()).then(data =>  {if(data.error) return 0; return data.DATA})
         },
 
@@ -384,17 +384,17 @@ const Api = {
         formData.append("autor", book.autor)
         formData.append("caracteres", "200")
 
-        // return await post(url + '/sinopse/gerar/', formData)
-
         formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
 
+
+        console.log(book);
 
         return await fetch(url + '/sinopse/gerar/', {
             method: "POST",
             headers: {
             },
             body: formData
-        })
+        }).then(res => res.json())
     },
 
 

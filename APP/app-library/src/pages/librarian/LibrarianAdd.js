@@ -135,7 +135,8 @@ export default function LibrarianAdd() {
 
         document.getElementById("modalAddSuccess").showModal()
 
-        setFormData({titulo: "",
+        setTimeout(() => {
+            setFormData({titulo: "",
             autor: {
                 id: "",
                 autor: ""
@@ -152,6 +153,14 @@ export default function LibrarianAdd() {
             },
             volumes: "",
             sinopse: ""})
+            
+            setTempGenres([])
+
+            document.getElementById('bookConfirmationModal').close()
+            document.getElementById('modalAddSuccess').close()
+            setIsRequesting(false)
+        } , 2000)
+        
     }
 
     async function getCoversAndSynopsis(code) {
@@ -162,9 +171,13 @@ export default function LibrarianAdd() {
         const urls = await Api.getCoverURLs({ title: formData.titulo })
         setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png', ...urls.message.imagens])
 
-        const synopsisResponse = await (await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor })).json()
+        
 
-        setFormData({ ...formData, codigo: code, sinopse: typeof synopsisResponse == 'string' && !synopsisResponse.includes('gpt') ? synopsisResponse.message : "" })
+
+        await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor }).then(res => setFormData({ ...formData, codigo: code, sinopse: res.message.length >= 57 ? res.message : '' }))
+
+
+        
         setRequestedCoverSelectionWithTheseValues(true)
 
     }

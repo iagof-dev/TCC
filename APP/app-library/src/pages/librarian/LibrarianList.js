@@ -11,8 +11,6 @@ export default function LibrarianList(props) {
         async function setAllLectures() {
             const data = await Api.loans.getAllLoans()
 
-            console.log(data);
-
             if (data == 'Dado não encontrado.') return (setTimeout(() => setIsLoading('no-books'), 1000))
 
             if (Array.isArray(data)) {
