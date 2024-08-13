@@ -171,12 +171,7 @@ export default function LibrarianAdd() {
         const urls = await Api.getCoverURLs({ title: formData.titulo })
         setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png', ...urls.message.imagens])
 
-        
-
-
         await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor }).then(res => setFormData({ ...formData, codigo: code, sinopse: res.message.length >= 57 ? res.message : '' }))
-
-
         
         setRequestedCoverSelectionWithTheseValues(true)
 
@@ -188,16 +183,11 @@ export default function LibrarianAdd() {
 
         document.getElementById('bookCoverSelectionModal').showModal()
 
-
-
-
         const uniqueCode = generateUniqueCodeAndCheck();
 
         setFormData({ ...formData, codigo: uniqueCode })
 
-
         if (!requestedCoverSelectionWithTheseValues) getCoversAndSynopsis(uniqueCode)
-
 
     }
 
@@ -518,9 +508,9 @@ export default function LibrarianAdd() {
                             <div className="modal-action">
                                 <form method="dialog">
                                     <div className=" flex no-wrap gap-4">
-                                        {/* if there is a button in form, it will close the modal */}
                                         <button onClick={(e) => {
                                             document.getElementById('bookConfirmationModal').showModal()
+                                            console.log(coverURLs[selectedCoverURL]);
 
                                         }} className="btn button button-search no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">Confirmar</button>
                                         <button className="btn">Fechar</button>

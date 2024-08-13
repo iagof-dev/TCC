@@ -6,6 +6,7 @@ export default function CoverOption(props) {
     return (
         <div className="w-[18rem] h-[28rem] relative" id={`cover-${id}`} onClick={() => {
             setselectedCoverURL(id)
+            console.log(selectedCoverURL);
             }}>
             <img className={`rounded-2xl h-[100%] object-top bg-cover ${selectedCoverURL == id? "brightness-75" : "hover:brightness-75"} duration-500`} src={coverURL? coverURL : BlankBookCover} />
 
