@@ -37,7 +37,7 @@ CREATE TABLE `alunos` (
 
 LOCK TABLES `alunos` WRITE;
 /*!40000 ALTER TABLE `alunos` DISABLE KEYS */;
-INSERT INTO `alunos` VALUES (221001,'João Silva',1,'12345678901'),(221002,'Maria Santos',2,'23456789012'),(221003,'Carlos Pereira',3,'34567890123');
+INSERT INTO `alunos` VALUES (221001,'João Silva',1,'14991379469'),(221002,'Maria Santos',2,'23456789012'),(221003,'Carlos Pereira',3,'34567890123');
 /*!40000 ALTER TABLE `alunos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,9 +50,9 @@ DROP TABLE IF EXISTS `autores`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `autores` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `autor` tinytext NOT NULL,
+  `nome` tinytext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12693 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +61,7 @@ CREATE TABLE `autores` (
 
 LOCK TABLES `autores` WRITE;
 /*!40000 ALTER TABLE `autores` DISABLE KEYS */;
-INSERT INTO `autores` VALUES (1,'Carlos Drummond'),(2,'Clarice Lispector'),(12692,'Jeff Kinney');
+INSERT INTO `autores` VALUES (1,'Carlos Drummond'),(2,'Clarice Lispector'),(3,'Jeff Kinney'),(19,'Fernando Pessoa'),(20,'Jean Jacque Exupery'),(21,'Markus Suzak'),(22,'Jane Austen'),(23,'Sun Tzu');
 /*!40000 ALTER TABLE `autores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -74,6 +74,7 @@ DROP TABLE IF EXISTS `avaliacoes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `avaliacoes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_emprestimo` int(11) NOT NULL,
   `id_livro` int(11) NOT NULL,
   `rm_aluno` int(11) NOT NULL,
   `avaliacao` float NOT NULL,
@@ -87,7 +88,7 @@ CREATE TABLE `avaliacoes` (
 
 LOCK TABLES `avaliacoes` WRITE;
 /*!40000 ALTER TABLE `avaliacoes` DISABLE KEYS */;
-INSERT INTO `avaliacoes` VALUES (1,1,2210001,4.5),(2,1,2210002,5),(3,1,2210002,2);
+INSERT INTO `avaliacoes` VALUES (1,1,1,221001,2),(2,2,51,221001,3),(3,3,51,221001,1);
 /*!40000 ALTER TABLE `avaliacoes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +103,7 @@ CREATE TABLE `bibliotecarias` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nome` tinytext DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1027 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,7 +112,7 @@ CREATE TABLE `bibliotecarias` (
 
 LOCK TABLES `bibliotecarias` WRITE;
 /*!40000 ALTER TABLE `bibliotecarias` DISABLE KEYS */;
-INSERT INTO `bibliotecarias` VALUES (1,'Ana Beatriz'),(2,'Laura Neves'),(1000,'Iago F.'),(1025,'TESTE'),(1026,'Laura Neves');
+INSERT INTO `bibliotecarias` VALUES (1,'Ana Beatriz'),(2,'Laura Neves'),(3,'Iago F.'),(5,'Laura Neves');
 /*!40000 ALTER TABLE `bibliotecarias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,7 +127,8 @@ CREATE TABLE `c_logs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `autor` text NOT NULL,
   `acao` tinytext NOT NULL,
-  `sujeito` tinytext NOT NULL,
+  `sujeito` int(11) NOT NULL,
+  `tipo_sujeito` int(11) NOT NULL,
   `efetivado` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -139,6 +141,31 @@ CREATE TABLE `c_logs` (
 LOCK TABLES `c_logs` WRITE;
 /*!40000 ALTER TABLE `c_logs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `c_logs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `coordenador_cursos`
+--
+
+DROP TABLE IF EXISTS `coordenador_cursos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `coordenador_cursos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_coordenador` int(11) NOT NULL,
+  `id_curso` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `coordenador_cursos`
+--
+
+LOCK TABLES `coordenador_cursos` WRITE;
+/*!40000 ALTER TABLE `coordenador_cursos` DISABLE KEYS */;
+INSERT INTO `coordenador_cursos` VALUES (1,1,1),(2,1,2);
+/*!40000 ALTER TABLE `coordenador_cursos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -164,31 +191,6 @@ LOCK TABLES `coordenadores` WRITE;
 /*!40000 ALTER TABLE `coordenadores` DISABLE KEYS */;
 INSERT INTO `coordenadores` VALUES (1,'Roberto Carlos','1122334455');
 /*!40000 ALTER TABLE `coordenadores` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `curso_coordenadores`
---
-
-DROP TABLE IF EXISTS `curso_coordenadores`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `curso_coordenadores` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_curso` int(11) NOT NULL,
-  `id_coordenador` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `curso_coordenadores`
---
-
-LOCK TABLES `curso_coordenadores` WRITE;
-/*!40000 ALTER TABLE `curso_coordenadores` DISABLE KEYS */;
-INSERT INTO `curso_coordenadores` VALUES (1,1,1);
-/*!40000 ALTER TABLE `curso_coordenadores` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -228,7 +230,7 @@ CREATE TABLE `editoras` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `editora` varchar(120) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=77890 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -237,7 +239,7 @@ CREATE TABLE `editoras` (
 
 LOCK TABLES `editoras` WRITE;
 /*!40000 ALTER TABLE `editoras` DISABLE KEYS */;
-INSERT INTO `editoras` VALUES (1,'Editora Alpha'),(2,'Editora Beta'),(3,'Editora Sigma'),(4,'Teste'),(77889,'Companhia da Letras');
+INSERT INTO `editoras` VALUES (1,'Editora Alpha'),(2,'Editora Beta'),(3,'Editora Sigma'),(4,'Companhia da Letras');
 /*!40000 ALTER TABLE `editoras` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,13 +253,13 @@ DROP TABLE IF EXISTS `emprestimos`;
 CREATE TABLE `emprestimos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `rm` int(11) NOT NULL,
-  `id_bibliotecaria` int(11) NOT NULL,
   `id_livro` int(11) NOT NULL,
   `data_aluguel` date NOT NULL,
   `id_status_emprestimo` int(2) NOT NULL,
   `prazo` int(11) NOT NULL,
+  `renovacao` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -266,7 +268,7 @@ CREATE TABLE `emprestimos` (
 
 LOCK TABLES `emprestimos` WRITE;
 /*!40000 ALTER TABLE `emprestimos` DISABLE KEYS */;
-INSERT INTO `emprestimos` VALUES (1,221002,1,1,'2023-04-01',1,14),(2,221003,2,2,'2023-04-05',2,14),(3,221001,1,1,'2024-06-04',3,7),(4,221001,2,1,'2024-06-04',4,7);
+INSERT INTO `emprestimos` VALUES (1,221001,1,'2024-08-08',2,14,1),(2,221001,51,'2024-08-08',3,14,1),(3,221001,51,'2024-08-08',1,21,1);
 /*!40000 ALTER TABLE `emprestimos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,7 +292,7 @@ CREATE TABLE `estado_emprestimos` (
 
 LOCK TABLES `estado_emprestimos` WRITE;
 /*!40000 ALTER TABLE `estado_emprestimos` DISABLE KEYS */;
-INSERT INTO `estado_emprestimos` VALUES (1,'pendente'),(2,'atrasado'),(3,'restituido'),(4,'extraviado');
+INSERT INTO `estado_emprestimos` VALUES (1,'pendente'),(2,'atrasado'),(3,'devolvido'),(4,'perdido');
 /*!40000 ALTER TABLE `estado_emprestimos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,9 +328,11 @@ DROP TABLE IF EXISTS `generos_livros`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `generos_livros` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_livro` int(11) NOT NULL,
-  `id_genero` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `id_genero` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,7 +341,7 @@ CREATE TABLE `generos_livros` (
 
 LOCK TABLES `generos_livros` WRITE;
 /*!40000 ALTER TABLE `generos_livros` DISABLE KEYS */;
-INSERT INTO `generos_livros` VALUES (1,1),(2,2),(1,2),(1000,2599);
+INSERT INTO `generos_livros` VALUES (1,1,1),(2,2,2),(3,1,2),(5,44,2),(6,44,1),(7,44,99),(8,45,99),(9,45,1),(10,45,99),(11,45,1),(12,45,1),(13,45,99),(14,48,1),(15,48,99),(16,49,99),(17,49,1),(18,49,1),(19,49,99),(20,51,1),(21,51,99),(22,0,99),(23,0,2),(24,0,2),(25,0,99),(26,0,99),(27,0,2),(28,0,2),(29,0,99),(30,0,99),(31,0,2),(32,0,99),(33,0,1),(34,0,99),(35,0,1),(36,0,1),(37,0,99),(38,0,1),(39,0,99),(40,0,99),(41,0,1),(42,0,1),(43,0,2),(44,0,1),(45,66,99),(46,67,99),(47,68,99),(48,69,99),(49,69,1),(50,70,99),(51,71,1),(52,72,1),(53,73,1),(54,74,1),(55,75,99),(56,76,99),(57,77,2),(58,78,2),(59,79,1),(60,80,1),(61,81,1),(62,0,1),(63,82,1),(64,83,99),(65,84,1);
 /*!40000 ALTER TABLE `generos_livros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,10 +360,11 @@ CREATE TABLE `livros` (
   `id_editora` int(11) NOT NULL,
   `capa` tinytext NOT NULL,
   `volumes` int(11) NOT NULL,
+  `volumes_reservado` int(11) NOT NULL,
   `sinopse` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `codigo` (`codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -368,7 +373,7 @@ CREATE TABLE `livros` (
 
 LOCK TABLES `livros` WRITE;
 /*!40000 ALTER TABLE `livros` DISABLE KEYS */;
-INSERT INTO `livros` VALUES (1,'L001','Aprendendo SQL',1,1,'https://m.media-amazon.com/images/I/811EGiSqCPL._AC_UF1000,1000_QL80_.jpg',1,'Um guia completo para aprender SQL do zero.'),(2,'L002','Programação avançada em Linux',2,2,'https://cdn.dlojavirtual.com/static1/102704/sku/informatica-livro-programacao-avancada-em-linux-1707774500502.jpg',2,'\"Programação Avançada em Linux\" é um guia abrangente e prático para desenvolvedores que desejam aprofundar seus conhecimentos no ambiente Linux. Escrito por Gleicon da Silva Moraes, um especialista renomado na área, este livro mergulha nos aspectos mais avançados da programação para Linux, oferecendo insights valiosos e técnicas essenciais para dominar a plataforma. Desde o entendimento detalhado do kernel até a implementação de sistemas distribuídos e técnicas avançadas de depuração, cada capítulo é projetado para desafiar e expandir o conhecimento do leitor, permitindo-lhes criar aplicativos robustos e eficientes para o ecossistema Linux. Com exemplos de código claros e exercícios práticos, este livro é tanto um recurso de referência essencial quanto um guia de aprendizado indispensável para qualquer desenvolvedor que deseje se destacar na programação avançada em Linux.');
+INSERT INTO `livros` VALUES (2,'L002','Programação Avançada em Linux',1,1,'https://cdn.dlojavirtual.com/static1/102704/sku/informatica-livro-programacao-avancada-em-linux-1707774500502.jpg',99999,5,'\"Programação Avançada em Linux\" é um guia abrangente e prático para desenvolvedores que desejam aprofundar seus conhecimentos no ambiente Linux. Escrito por Gleicon da Silva Moraes, um especialista renomado na área, este livro mergulha nos aspectos mais avançados da programação para Linux, oferecendo insights valiosos e técnicas essenciais para dominar a plataforma. Desde o entendimento detalhado do kernel até a implementação de sistemas distribuídos e técnicas avançadas de depuração, cada capítulo é projetado para desafiar e expandir o conhecimento do leitor, permitindo-lhes criar aplicativos robustos e eficientes para o ecossistema Linux. Com exemplos de código claros e exercícios práticos, este livro é tanto um recurso de referência essencial quanto um guia de aprendizado indispensável para qualquer desenvolvedor que deseje se destacar na programação avançada em Linux.'),(49,'WMN3231','Diario de um Banana',1,1,'https://m.media-amazon.com/images/I/91VEsOcU2YL._AC_UF1000,1000_QL80_.jpg',99999,1,'Houve um erro na resposta da API (openai-3.5-gpt-unfiltered)'),(51,'LNG8465','1984',1,1,'https://m.media-amazon.com/images/I/61HtBosDhwL._AC_UF1000,1000_QL80_.jpg',99999,3,'Houve um erro na resposta da API (openai-3.5-gpt-unfiltered)'),(69,'ZMI7859','O Pequeno Príncipe',20,14,'https://m.media-amazon.com/images/I/71LJ4k-k9hL._AC_UF1000,1000_QL80_.jpg',99999,0,'Houve um erro na resposta da API (openai-3.5-gpt-turbo)'),(75,'SPN4672','A menina que roubava livros',21,14,'https://m.media-amazon.com/images/I/61L+4OBhm-L._AC_UF1000,1000_QL80_.jpg',99999,0,''),(79,'FSM7767','machado',3,2,'https://m.media-amazon.com/images/I/614LvEt36dS._AC_UF350,350_QL80_.jpg',70,0,''),(80,'ZIV2005','machado',3,2,'https://m.media-amazon.com/images/I/614LvEt36dS._AC_UF350,350_QL80_.jpg',70,0,''),(81,'YVP5118','futebol',1,1,'undefined',8,0,'Na saga \"Coração de Campeão\", reclame pelos phens da vitória como Leonardo, um talentoso jogador cuja carreira sofre anseios e desafios após a promessa Ronaldo. Envolto em fúrgues entre o sucesso na Europa e as pressões do futebol nacional, ele enfrenta rivalidades traçoeiras, amores turbulentos e o peso das expectativas de uma nação futebolística. Com a ajuda de sua cautelosa namorada Isabella e ao lado dos companheiros inquebráveis Diego e Marcos, Leo relembra-se do verdadeiro significado do jogo - união, paixão e triunfo sobre adversidades. Uma história que celebra cada corrida sob os travesseiros até a conquista final.'),(82,'MXV1413','A Fé Explicada',2,3,'undefined',4,0,' baseada no livro \"A Fé Explicada\" de John Lennox, a sinopse seria:\r\n\r\nNo libro \"A Fé Explicada\", o filósofo cristão e matemático John Lennox desafia uma série de mitos científicos modernos que questionam a necessidade ou racionalidade da fé religiosa. Ao longo das páginas, ele discute a ciência versus superstição, argumentando que nem toda explicação natural exclui completamente o espaço para Deus como um fenômeno transcendente. Utilizando exemplos históricos e contemporâneos, incluzindo conversas imaginárias com figuras científicas famintes - like Charles Darwin e Richard Dawkins - Lennox defende que confiança na razão não preclui o exercício do entendimento místico ni fé batizada. O leitor é convidado a explorar se há argumentos convincentes para acreditar na existência de algo além do universo observável, sugerindo que verdadeira ciência e bem fundamentadas podem coexistir com crenças espirituais sustentadas (200 caracteres).'),(83,'IUL0284','Orgulho e Preconceito',22,1,'undefined',7,0,'\"Orgulho e Preconceito\", reimaginado em um cenário contemporâneo, segue Elizabeth Bennet, uma jovem independente e inteligente, nas suas interações com a rica e aristocrática família Darcy. As primeiras impressões equivocadas de ambos levam a mal-entendidos e preconceitos recíprocos. Através das emergentes amizades na pequena aldeia inglesa de Hunsford e os eventos sociais pulsantes de London Town, o leitor é embora em una narrativa que explora as complexidades da fé misópica tradicionalista versus novos ideais revolucionários do século XIX. Com personagens memoráveis como Mr. Darcy, Mr. Bingley, Lydia Bennet e Lady Catherine De Bourgh entre outros receioados dos temperamentos desencadeados pelas diferenças sociais e financeiras, \"Orgulho e Preconceito\" oferece uma cronologia envolvente que questiona prejudicios existentes enquanto conta uma história cambaleante de amor perseguido.\"'),(84,'XVB2404','A Arte da Guerra',23,1,'undefined',100,0,'Ótima escolha! \"A Arte da Guerra\" (!The Art of War!) de Sun Tzu é um clássico estratégico militar, escrito pelo filósofo chinês Sun Wu c. 500 a.C.. A sinopse dessa obra inclui princípios fundamentais e táticas para a conquista do sucesso em qualquer forma de confronto, seja militar ou na vida cotidiana. Ela aborda conceitos como o importância da inteligência sobre a força bruta, o valor da surpresa e da espionagem, além de estratégias para demoralizar o inimigo sem recorrer ao combate direto. Os capítulos trazem reflexões profundas over mensuráveis que podem ser aplicados tanto no campo de batalha quanto nos negócios modernos e situações pessoais complexas. Este livro é essencial para líderes políticos, militares e empresariais que buscam dominar as dinâmicas do poder e dos confrontos iminentes (200 caracteres).');
 /*!40000 ALTER TABLE `livros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,8 +400,31 @@ CREATE TABLE `notificacoes` (
 
 LOCK TABLES `notificacoes` WRITE;
 /*!40000 ALTER TABLE `notificacoes` DISABLE KEYS */;
-INSERT INTO `notificacoes` VALUES (1,221002,1,'2023-04-16 00:00:00',1);
 /*!40000 ALTER TABLE `notificacoes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tipo_sujeito`
+--
+
+DROP TABLE IF EXISTS `tipo_sujeito`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipo_sujeito` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo` tinytext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipo_sujeito`
+--
+
+LOCK TABLES `tipo_sujeito` WRITE;
+/*!40000 ALTER TABLE `tipo_sujeito` DISABLE KEYS */;
+INSERT INTO `tipo_sujeito` VALUES (1,'livro'),(2,'emprestimo'),(3,'autor'),(4,'generos');
+/*!40000 ALTER TABLE `tipo_sujeito` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -412,4 +440,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-10 14:15:33
+-- Dump completed on 2024-08-14 21:02:40
