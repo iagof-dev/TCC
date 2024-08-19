@@ -384,7 +384,7 @@ const Api = {
 
         formData.append("autor", book.autor)
 
-        formData.append("caracteres", "200")
+        formData.append("caracteres", "180")
 
         formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
 

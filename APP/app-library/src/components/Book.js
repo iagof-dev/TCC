@@ -3,7 +3,7 @@ export default function Book(props) {
 	const { id, code, author, title, rating, status, synopsis, coverURL, tags, disponivel } = { ...props }
 	
 	return (
-		<section className="book flex no-wrap w-full gap-3 rounded-lg max-w-[50vw] max-h-[30vh]">
+		<section className="book flex no-wrap w-full gap-3 rounded-lg max-w-[50vw] h-fit">
 
 			<img className="w-[12vw] rounded object-cover" src={coverURL} alt="" />
 
@@ -68,10 +68,10 @@ export default function Book(props) {
 
 				</span>
 				<div className="w-full flex justify-between no-wrap">
-					<p className=" text-sm max-w-[20vw] my-4">
-						{synopsis.length >= 150 ? (
+					<p className=" text-sm max-w-[25vw] my-4">
+						{synopsis.length >= 300 ? (
 							<>
-								{`${synopsis.slice(0, 180)}...`}
+								{`${synopsis.slice(0, 250)}...`}
 							</>
 						) : synopsis}
 					</p>

@@ -168,12 +168,11 @@ export default function LibrarianAdd() {
 
         setRequestedCoverSelectionWithTheseValues(true)
 
-        const urls = await Api.getCoverURLs({ title: formData.titulo }).then(urls => setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png', ...urls.message.imagens]))
+        await Api.getCoverURLs({ title: formData.titulo }).then(urls => setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png', ...urls.message.imagens]))
         
         
 
-        await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor.autor })
-            .then(res => {
+        await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor.autor}).then(res => {
                 console.log(res);
                 if(res.message){
                     setFormData({ ...formData, codigo: code, sinopse: res.message.length >= 57 ? res.message : '' })
