@@ -118,7 +118,13 @@ export default function LibrarianAdd() {
 
                 newFormData.autor.id = newAuthorId? newAuthorId : newFormData.autor.id
                 newFormData.editora.id = newPublisherId? newPublisherId : newFormData.editora.id
+                newFormData.url_capa = newFormData.url_capa? newFormData.url_capa : coverURLs[selectedCoverURL]
 
+                console.log(coverURLs);
+                console.log(selectedCoverURL);
+                console.log(coverURLs[selectedCoverURL]);
+
+                console.log(newFormData);
 
                 await Api.books.addNewBook(newFormData)
 

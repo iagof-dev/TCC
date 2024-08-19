@@ -60,6 +60,8 @@ export default function Book(props) {
 								Avaliação média
 							</p>
 						</div>
+
+						
 					</span>
 					<p className="">
 						{author}
