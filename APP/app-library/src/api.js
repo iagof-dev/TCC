@@ -381,7 +381,15 @@ const Api = {
     generateSynopsis: async function (book) {
         const formData = new FormData()
         formData.append("livro", book.titulo)
-        formData.append("autor", book.autor)
+
+        if(typeof book.author == 'object'){
+            console.log(typeof book.author);
+            formData.append("autor", book.autor.autor)
+        } else {
+            //COMCERTADO POR IAGO F.
+            formData.append("autor", book.autor.autor)
+        }
+        
         formData.append("caracteres", "200")
 
         formData.append("authpass", "c38a7e02bfca0da201015ce51931b09d462080b7")
