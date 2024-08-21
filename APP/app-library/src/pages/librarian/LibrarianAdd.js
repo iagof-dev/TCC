@@ -89,84 +89,94 @@ export default function LibrarianAdd() {
 
         }
 
-        
 
-            //isNewAuthor
 
-            (async () => {
-                if (isNewAuthor) {
-                    await Api.authors.addAuthor(formData.autor)
-                    const newAuthors = await Api.authors.getAllAuthors()
+        //isNewAuthor
 
-                    const postedAuthor = newAuthors.find(a => a.nome == formData.autor.autor)
+        (async () => {
+            if (isNewAuthor) {
+                await Api.authors.addAuthor(formData.autor)
+                const newAuthors = await Api.authors.getAllAuthors()
 
-                    setFormData({ ...formData, autor: { ...formData.autor, id: postedAuthor.id } })
-                    newAuthorId = postedAuthor.id
-                }
+                const postedAuthor = newAuthors.find(a => a.nome == formData.autor.autor)
 
-                if (isNewPublisher) {
+                setFormData({ ...formData, autor: { ...formData.autor, id: postedAuthor.id } })
+                newAuthorId = postedAuthor.id
+            }
 
-                    const newPublishers = await Api.publishers.getAllPublishers()
+            if (isNewPublisher) {
 
-                    const newPublisher = newPublishers.find(p => p.editora == formData.editora.editora)
+                await Api.publishers.addPublisher(formData.editora.editora)
+
+                await Api.publishers.getAllPublishers().then(nps => {
+                    const newPublisher = nps.find(p => p.editora == formData.editora.editora)
+
+                    
+                    console.log(nps);
+                    console.log(newPublisher);
 
                     setFormData({ ...formData, editora: { ...formData.editora, id: newPublisher.id } })
                     newPublisherId = newPublisher.id
-                }
+                })
 
-                let newFormData = formData
 
-                newFormData.autor.id = newAuthorId? newAuthorId : newFormData.autor.id
-                newFormData.editora.id = newPublisherId? newPublisherId : newFormData.editora.id
-                newFormData.url_capa = newFormData.url_capa? newFormData.url_capa : coverURLs[selectedCoverURL]
+            }
 
-                console.log(coverURLs);
-                console.log(selectedCoverURL);
-                console.log(coverURLs[selectedCoverURL]);
+            let newFormData = formData
 
-                console.log(newFormData);
+            newFormData.autor.id = newAuthorId ? newAuthorId : newFormData.autor.id
+            newFormData.editora.id = newPublisherId ? newPublisherId : newFormData.editora.id
+            newFormData.url_capa = newFormData.url_capa ? newFormData.url_capa : coverURLs[selectedCoverURL]
 
-                await Api.books.addNewBook(newFormData)
+            console.log(coverURLs);
+            console.log(selectedCoverURL);
+            console.log(coverURLs[selectedCoverURL]);
 
-                const addedBook = await Api.books.getBookByCode(formData.codigo)
+            console.log(newFormData);
 
-                idGenerosASeremAdicionados.forEach(async g => {
-                    await Api.books.addNewBookGenre(addedBook[0].id, g)
-                });
+            await Api.books.addNewBook(newFormData)
 
-            })()
+            const addedBook = await Api.books.getBookByCode(formData.codigo)
 
-            const idGenerosASeremAdicionados = formData.generos.map(g => g.id)
+            idGenerosASeremAdicionados.forEach(async g => {
+                await Api.books.addNewBookGenre(addedBook[0].id, g)
+            });
+
+        })()
+
+        const idGenerosASeremAdicionados = formData.generos.map(g => g.id)
 
 
         document.getElementById("modalAddSuccess").showModal()
 
         setTimeout(() => {
-            setFormData({titulo: "",
-            autor: {
-                id: "",
-                autor: ""
-            },
-            editora: {
-                id: "",
-                editora: ""
-            },
-            url_capa: "",
-            codigo: "",
-            generos: {
-                ids: [],
-                generos: []
-            },
-            volumes: "",
-            sinopse: ""})
-            
+            setFormData({
+                titulo: "",
+                autor: {
+                    id: "",
+                    autor: ""
+                },
+                editora: {
+                    id: "",
+                    editora: ""
+                },
+                url_capa: "",
+                codigo: "",
+                generos: {
+                    ids: [],
+                    generos: []
+                },
+                volumes: "",
+                sinopse: ""
+            })
+
             setTempGenres([])
 
             document.getElementById('bookConfirmationModal').close()
             document.getElementById('modalAddSuccess').close()
             setIsRequesting(false)
-        } , 2000)
-        
+        }, 2000)
+
     }
 
     async function getCoversAndSynopsis(code) {
@@ -175,20 +185,20 @@ export default function LibrarianAdd() {
         setRequestedCoverSelectionWithTheseValues(true)
 
         await Api.getCoverURLs({ title: formData.titulo }).then(urls => setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png', ...urls.message.imagens]))
-        
-        
 
-        await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor.autor}).then(res => {
-                console.log(res);
-                if(res.message){
-                    setFormData({ ...formData, codigo: code, sinopse: res.message.length >= 57 ? res.message : '' })
-                    return
-                }
 
-                setFormData({ ...formData, codigo: code, sinopse: "Erro ao gerar sinopse." })
-                
-            })
-        
+
+        await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor.autor }).then(res => {
+            console.log(res);
+            if (res.message) {
+                setFormData({ ...formData, codigo: code, sinopse: res.message.length >= 57 ? res.message : '' })
+                return
+            }
+
+            setFormData({ ...formData, codigo: code, sinopse: "Erro ao gerar sinopse." })
+
+        })
+
         setRequestedCoverSelectionWithTheseValues(true)
 
     }
