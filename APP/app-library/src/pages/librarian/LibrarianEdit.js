@@ -45,6 +45,8 @@ export default function Search(props) {
 		let booksFoundByAuthor = await Api.books.getBookByAuthor(formData.autor)
 		let booksFoundByTitle = await Api.books.getBookByTitle(formData.titulo)
 
+		console.log(booksFoundByAuthor);
+
 		booksFoundByAuthor = Array.isArray(booksFoundByAuthor) ? Array.from(new Set(booksFoundByAuthor.map(b => JSON.stringify(b)))).map(b => JSON.parse(b)) : []
 		booksFoundByTitle = Array.isArray(booksFoundByTitle) ? Array.from(new Set(booksFoundByTitle.map(b => JSON.stringify(b)))).map(b => JSON.parse(b)) : []
 

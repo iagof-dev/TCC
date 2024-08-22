@@ -93,7 +93,7 @@ export default function LibrarianAdd() {
 
         let idGenerosASeremAdicionados = 0
 
-        if(formData.generos.length > 0){
+        if (formData.generos.length > 0) {
             idGenerosASeremAdicionados = formData.generos.map(g => g.id)
         }
 
@@ -115,7 +115,7 @@ export default function LibrarianAdd() {
                 await Api.publishers.getAllPublishers().then(nps => {
                     const newPublisher = nps.find(p => p.editora == formData.editora.editora)
 
-                    
+
                     console.log(nps);
                     console.log(newPublisher);
 
@@ -135,20 +135,23 @@ export default function LibrarianAdd() {
             console.log(coverURLs);
             console.log(selectedCoverURL);
             console.log(coverURLs[selectedCoverURL]);
-
             console.log(newFormData);
 
             await Api.books.addNewBook(newFormData)
 
             const addedBook = await Api.books.getBookByCode(formData.codigo)
+                .then((b) => {
+                    console.log(b);
+                    idGenerosASeremAdicionados.forEach(async g => {
+                        await Api.books.addNewBookGenre(b[0].id, g)
+                    });
+                })
 
-            if(idGenerosASeremAdicionados.length < 1) idGenerosASeremAdicionados.forEach(async g => {
-                await Api.books.addNewBookGenre(addedBook[0].id, g)
-            });
+
 
         })()
 
-        
+
 
 
         document.getElementById("modalAddSuccess").showModal()
@@ -188,7 +191,11 @@ export default function LibrarianAdd() {
 
         setRequestedCoverSelectionWithTheseValues(true)
 
-        await Api.getCoverURLs({ title: formData.titulo, author: formData.autor.autor }).then(urls => setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png', ...urls.message.imagens]))
+        await Api.getCoverURLs({ title: formData.titulo, author: formData.autor.autor })
+            .then(urls => {
+                if (!urls.message) return setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png'])
+                setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png', ...urls.message.imagens])
+            })
 
 
 
@@ -211,9 +218,9 @@ export default function LibrarianAdd() {
     async function handleBookAddModal(e) {
         e.preventDefault()
 
-        if( ((formData.generos.generos && formData.generos.generos.length < 1)  || (!formData.generos.generos && formData.generos.length < 1)) || 
-            formData.autor.id == '' || formData.editora.id == ''){           
-            document.getElementById('modalGenreError').showModal()                      
+        if (((formData.generos.generos && formData.generos.generos.length < 1) || (!formData.generos.generos && formData.generos.length < 1)) ||
+            formData.autor.id == '' || formData.editora.id == '') {
+            document.getElementById('modalGenreError').showModal()
             return
         }
 
@@ -298,12 +305,12 @@ export default function LibrarianAdd() {
 
                     console.log(formData.generos);
 
-                    if((formData.generos.generos && formData.generos.generos.length < 1)  || (!formData.generos.generos && formData.generos.length < 1)){           
-                        document.getElementById('modalGenreError').showModal()                      
+                    if ((formData.generos.generos && formData.generos.generos.length < 1) || (!formData.generos.generos && formData.generos.length < 1)) {
+                        document.getElementById('modalGenreError').showModal()
                         return
                     } else await handleBookAddModal(e)
-                    
-                    }}>
+
+                }}>
 
                     <span class="flex gap-7 w-full items-center">
                         <label className="input-label w-[7rem]">
@@ -461,7 +468,7 @@ export default function LibrarianAdd() {
                                     chosenGenresWithId.push(generoComId)
                                 })
 
-                                setFormData({ ...formData, generos: chosenGenresWithId? chosenGenresWithId : {ids: [], generos: []} })
+                                setFormData({ ...formData, generos: chosenGenresWithId ? chosenGenresWithId : { ids: [], generos: [] } })
                             }
                             }
                             sx={{ width: 550 }}
@@ -789,22 +796,22 @@ export default function LibrarianAdd() {
                 </dialog>
 
                 <dialog id="modalGenreError" className="modal ">
-					<div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
-							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-						</svg>
+                    <div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                        </svg>
 
-						<div>
-							<h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
-							<p className="py-4 text-slate-50">O livro deve ter pelo menos 1 categoria, autor e editora!</p>
-							<div className="modal-action">
-								<form method="dialog">
-									<button className="btn">Fechar</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				</dialog>
+                        <div>
+                            <h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+                            <p className="py-4 text-slate-50">O livro deve ter pelo menos 1 categoria, autor e editora!</p>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    <button className="btn">Fechar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
 
 
 
