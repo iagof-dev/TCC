@@ -40,6 +40,7 @@ export default function StudentLogin(props) {
 		if(status != "success") {
 			setIsLoginOpen(true)
 			setIsSubmitting(false)
+			if(data.status) return document.getElementById('modalInternetError').showModal()
 			return
 		}
 
@@ -92,6 +93,25 @@ export default function StudentLogin(props) {
 
 				</form>
 			</div>
+			
+			<dialog id="modalInternetError" className="modal ">
+					<div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+							<p className="py-4 text-slate-50">Sem conexão com a internet!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									{/* if there is a button in form, it will close the modal */}
+									<button className="btn" onClick={() => window.close()}>Fechar aplicação</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
 
 			<LoginErrorDialog open={isLoginOpen} setOpen={setIsLoginOpen}/>
 			</ThemeProvider>

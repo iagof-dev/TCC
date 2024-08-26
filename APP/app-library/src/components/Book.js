@@ -10,28 +10,29 @@ export default function Book(props) {
 
 			<div className="flex flex-col justify-between w-full">
 				<span className="flex flex-col">
-					<span className="flex justify-between items-center">
-						<p className={`font-bold ${title.length > 14 ? "text-base" : ""}`}>
-							{title}
-						</p>
-
-						<div className="flex no-wrap gap-1">
-							{
-								Array.isArray(tags) ?
-									tags.map(tag => {
-										return (
-											<p className="px-2 r h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
-												{tag}
-											</p>
-										)
-									}) : [tags].map(tag => {
-										return (
-											<p className="px-2 r h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
-												{tag}
-											</p>
-										)
-									})
-							}
+					<span className="flex justify-between items-center pt-4 pr-4">
+						<div className="flex align-center gap-4">
+							<p className={`font-bold ${title.length > 14 ? "text-base" : ""}`}>
+								{title}
+							</p>
+							<div className="flex no-wrap  gap-1">
+								{
+									Array.isArray(tags) ?
+										tags.map(tag => {
+											return (
+												<p className="px-2 r h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
+													{tag}
+												</p>
+											)
+										}) : [tags].map(tag => {
+											return (
+												<p className="px-2 r h-fit py-1 border-solid border-[1px] rounded-xl text-sm">
+													{tag}
+												</p>
+											)
+										})
+								}
+							</div>
 						</div>
 
 						<div className="flex flex-col items-center">
@@ -63,21 +64,21 @@ export default function Book(props) {
 
 						
 					</span>
-					<p className="">
+					<p className="text-[1.2rem]">
 						{author}
 					</p>
 
 
 				</span>
-				<div className="w-full flex justify-between no-wrap">
-					<p className=" text-sm max-w-[25vw] my-4">
-						{synopsis.length >= 300 ? (
+				<div className="w-full flex h-full  justify-between no-wrap">
+					<p className=" text-[1rem] max-w-[25vw] my-4">
+						{synopsis.length >= 400 ? (
 							<>
-								{`${synopsis.slice(0, 250)}...`}
+								{`${synopsis.slice(0, 300)}...`}
 							</>
 						) : synopsis}
 					</p>
-					<div className="flex flex-col justify-center">
+					<div className="flex flex-col justify-end pb-4 pr-4">
 						<p className="text-sm text-right">
 							Código: <span className=" font-semibold">{code}</span>
 						</p>

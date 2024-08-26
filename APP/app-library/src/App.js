@@ -43,42 +43,42 @@ function App() {
 
 
 	//Librarian Application
-	// return (
-	// 	<BrowserRouter>
+	return (
+		<BrowserRouter>
 
-	// 		<Routes>
+			<Routes>
 
-	// 			<Route path="/" element={<LibrarianLogin setPath={setPath} librarian={librarian} setLibrarian={setLibrarian} setLibrarianId={setLibrarianId} />} />
+				<Route path="/" element={<LibrarianLogin setPath={setPath} librarian={librarian} setLibrarian={setLibrarian} setLibrarianId={setLibrarianId} />} />
 
-	// 			<Route path="/librarianMenu" element={<LibrarianMenu setPath={setPath} librarian={librarian} />}  >
+				<Route path="/librarianMenu" element={<LibrarianMenu setPath={setPath} librarian={librarian} />}  >
 
-	// 				{/* Empréstimo/devolução */}
+					{/* Empréstimo/devolução */}
 
-	// 				<Route path="/librarianMenu/librarianLoan"
-	// 					element={<LibrarianLoan librarianId={librarianId} />} />
+					<Route path="/librarianMenu/librarianLoan"
+						element={<LibrarianLoan librarianId={librarianId} />} />
 
-	// 				{/* Listar leituras dos alunos */}
+					{/* Listar leituras dos alunos */}
 
-	// 				< Route path="/librarianMenu/librarianList"
-	// 					element={<LibrarianList librarianId={librarianId} />} />
+					< Route path="/librarianMenu/librarianList"
+						element={<LibrarianList librarianId={librarianId} />} />
 
 
-	// 				{/* Adicionar livro ao sistema */}
+					{/* Adicionar livro ao sistema */}
 
-	// 				<Route path="/librarianMenu/librarianAdd"
-	// 					element={<LibrarianAdd librarianId={librarianId} />} />
+					<Route path="/librarianMenu/librarianAdd"
+						element={<LibrarianAdd librarianId={librarianId} />} />
 
-	// 				{/* Editar/remover livro do sistema */}
+					{/* Editar/remover livro do sistema */}
 
-	// 				<Route path="/librarianMenu/librarianEdit"
-	// 					element={<LibrarianEdit librarianId={librarianId} />} />
+					<Route path="/librarianMenu/librarianEdit"
+						element={<LibrarianEdit librarianId={librarianId} />} />
 
-	// 			</Route>
+				</Route>
 
-	// 		</Routes>
+			</Routes>
 
-	// 	</BrowserRouter>
-	// )
+		</BrowserRouter>
+	)
 }
 
 export default App;
