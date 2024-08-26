@@ -45,19 +45,53 @@ export default function Search(props) {
 		let booksFoundByAuthor = await Api.books.getBookByAuthor(formData.autor)
 		let booksFoundByTitle = await Api.books.getBookByTitle(formData.titulo)
 
-		console.log(booksFoundByAuthor);
-
 		booksFoundByAuthor = Array.isArray(booksFoundByAuthor) ? Array.from(new Set(booksFoundByAuthor.map(b => JSON.stringify(b)))).map(b => JSON.parse(b)) : []
 		booksFoundByTitle = Array.isArray(booksFoundByTitle) ? Array.from(new Set(booksFoundByTitle.map(b => JSON.stringify(b)))).map(b => JSON.parse(b)) : []
 
 		booksFoundByAuthor = groupBooksByCode(booksFoundByAuthor)
 		booksFoundByTitle = groupBooksByCode(booksFoundByTitle)
 
-		if (Array.isArray(booksFoundByAuthor)) setResultBooks([...booksFoundByAuthor])
-		if (Array.isArray(booksFoundByTitle)) booksFoundByTitle.forEach(book => {
-			if (resultBooks.find(b => b.titulo == book.titulo)) return
-			setResultBooks([...resultBooks, book])
-		});
+		// if (Array.isArray(booksFoundByAuthor)) setResultBooks([...booksFoundByAuthor])
+
+		let tempResultBooks = []
+
+		
+
+		// if (Array.isArray(booksFoundByAuthor)) setResultBooks([...booksFoundByAuthor])
+		// 	if (Array.isArray(booksFoundByTitle)) booksFoundByTitle.forEach(book => {
+		// 		if (resultBooks.find(b => b.titulo == book.titulo)) return
+		// 		setResultBooks([...resultBooks, book])
+		// 	});
+
+		setResultBooks([])
+
+		if (Array.isArray(booksFoundByTitle) && Array.isArray(booksFoundByAuthor)) {
+
+			booksFoundByTitle.forEach(book => {
+				if (tempResultBooks.find(b => b.titulo == book.titulo)) return
+				tempResultBooks = [...tempResultBooks, ...booksFoundByAuthor, book]
+			});
+
+			setResultBooks(tempResultBooks)
+
+
+		} else if (Array.isArray(booksFoundByTitle)) {
+
+			booksFoundByTitle.forEach(book => {
+				if (tempResultBooks.find(b => b.titulo == book.titulo)) return
+				tempResultBooks = [...resultBooks, book]
+			});
+
+			setResultBooks(tempResultBooks)
+		} else if (Array.isArray(booksFoundByAuthor)) {
+
+			setResultBooks([...booksFoundByAuthor])
+		}
+
+		console.log(booksFoundByTitle);
+		console.log(booksFoundByTitle.length);
+		console.log(resultBooks.length);
+
 
 
 		if (hasSearchBeenMade) {
@@ -96,9 +130,10 @@ export default function Search(props) {
 				"id_generos": []
 			})
 			document.getElementById('modalEditSuccess').showModal()
-			setTimeout(() => {setSelectedBook({ generos: [], editora: "", volumes: 0, url_capa: '' })
+			setTimeout(() => {
+				setSelectedBook({ generos: [], editora: "", volumes: 0, url_capa: '' })
 			}, 1500)
-			
+
 		}
 		)
 	}
@@ -108,7 +143,7 @@ export default function Search(props) {
 			if (res.error) return
 
 			document.getElementById('modalRemoveSuccess').showModal()
-			setTimeout(() => setSelectedBook({ generos: [], editora: "", volumes: 0, url_capa: '' }), 2000) 
+			setTimeout(() => setSelectedBook({ generos: [], editora: "", volumes: 0, url_capa: '' }), 2000)
 		})
 	}
 
@@ -591,22 +626,22 @@ export default function Search(props) {
 					</div>
 
 					<dialog id="modalRemoveSuccess" className="modal ">
-					<div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
-							<path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-						</svg>
+						<div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
+								<path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+							</svg>
 
-						<div>
-							<h3 className="font-bold text-3xl ">Sucesso!</h3>
-							<p className="py-4">Livro deletado!</p>
-							<div className="modal-action">
-								<form method="dialog">
-									<button className="btn">Fechar</button>
-								</form>
+							<div>
+								<h3 className="font-bold text-3xl ">Sucesso!</h3>
+								<p className="py-4">Livro deletado!</p>
+								<div className="modal-action">
+									<form method="dialog">
+										<button className="btn">Fechar</button>
+									</form>
+								</div>
 							</div>
 						</div>
-					</div>
-				</dialog>
+					</dialog>
 				</div>
 			</ThemeProvider>
 		}
