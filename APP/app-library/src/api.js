@@ -70,7 +70,11 @@ const Api = {
         getBookByAuthor: async function (author) {
             if (author == "" || author == undefined) return {}
 
-            return await fetch(url + '/livros/listar/autor/' + author.replace(" ", "+")).then(res => res.json()).then(data => data.DATA)
+            const a = await fetch(url + '/livros/listar/autor/' + author.replace(" ", "+")).then(res => res.json()).then(data => data.DATA)
+
+            console.log(a);
+
+            return a
         },
 
         getBookByTitle: async function (title) {

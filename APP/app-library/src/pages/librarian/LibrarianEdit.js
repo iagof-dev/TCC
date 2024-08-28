@@ -67,26 +67,47 @@ export default function Search(props) {
 
 		if (Array.isArray(booksFoundByTitle) && Array.isArray(booksFoundByAuthor)) {
 
-			booksFoundByTitle.forEach(book => {
-				if (tempResultBooks.find(b => b.titulo == book.titulo)) return
+			if(booksFoundByTitle.length > 0) {
+				booksFoundByTitle.forEach(book => {
+
+
+				if (tempResultBooks.length > 0 && tempResultBooks.find(b => b.titulo == book.titulo)){
+
+					return
+
+				} 
+
 				tempResultBooks = [...tempResultBooks, ...booksFoundByAuthor, book]
-			});
+				})
+
+			} else {
+				tempResultBooks = [...booksFoundByAuthor]
+			}
+			
 
 			setResultBooks(tempResultBooks)
 
 
-		} else if (Array.isArray(booksFoundByTitle)) {
 
-			booksFoundByTitle.forEach(book => {
-				if (tempResultBooks.find(b => b.titulo == book.titulo)) return
-				tempResultBooks = [...resultBooks, book]
-			});
 
-			setResultBooks(tempResultBooks)
-		} else if (Array.isArray(booksFoundByAuthor)) {
+		} 
+		// else if (Array.isArray(booksFoundByTitle)) {
+		// 	console.log('2');
+		// 	booksFoundByTitle.forEach(book => {
+		// 		if (tempResultBooks.find(b => b.titulo == book.titulo)) return
+		// 		tempResultBooks = [...resultBooks, book]
+		// 	});
 
-			setResultBooks([...booksFoundByAuthor])
-		}
+		// 	console.log(booksFoundByAuthor);
+
+		// 	setResultBooks(tempResultBooks)
+		// } else if (Array.isArray(booksFoundByAuthor)) {
+		// 	console.log('3');
+		// 	tempResultBooks = booksFoundByAuthor
+		// 	console.log(tempResultBooks);
+
+		// 	setResultBooks([...tempResultBooks])
+		// }
 
 		console.log(booksFoundByTitle);
 		console.log(booksFoundByTitle.length);

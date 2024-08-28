@@ -140,8 +140,15 @@ export default function DevolutionBooksContainer(props) {
 
 
 											{b.renovavel && b.estado != 'devolvido' ?
-												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-700 text-slate-50 " onClick={() => {bookToBeRenewed = b ; handleRenewBook(b)}}>
+												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-500 text-slate-50 " onClick={() => {bookToBeRenewed = b ; handleRenewBook(b)}}>
 													Renovar
+												</button> : <div className="w-full py-2 px-4"></div>
+
+											}
+
+											{b.estado != 'perdido' ?
+												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-700 text-slate-50 " onClick={() => {bookToBeRenewed = b ; handleRenewBook(b)}}>
+													Perda
 												</button> : <div className="w-full py-2 px-4"></div>
 
 											}
