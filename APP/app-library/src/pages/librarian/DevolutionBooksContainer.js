@@ -62,6 +62,26 @@ export default function DevolutionBooksContainer(props) {
 		
 	}
 
+	async function handleLostBook() {
+
+		const res = await Api.loans.makeLost(bookToBeRenewed)
+
+		document.getElementById('renewSuccessModal').showModal()
+		setFormData({
+			code: "",
+			title: "",
+			RM: "",
+			loanDate :"",
+			librarianId: "",
+			bookId: "",
+			name: "",
+			time: 2
+		})
+		setTimeout(() => setHasRequestedDevolution(false), 2000)
+		
+		
+	}
+
 	return <section className='results-container p-1 mt-2 w-full flex flex-col no-wrap justify-start gap-5 items-center rounded-md min-h-[20vh] max-h-[60vh] overflow-y-scroll'>
 
 		{
@@ -86,8 +106,6 @@ export default function DevolutionBooksContainer(props) {
 							</th>
 						</tr>
 					</thead>
-
-					{/* TODO: Fazer com que o tbody não seja carregado no caso de nao ter devoluções */}
 
 					<tbody className="">
 						{
@@ -132,24 +150,24 @@ export default function DevolutionBooksContainer(props) {
 										<td className="flex gap-4 justify-between w-full">
 											{
 												b.estado == 'pendente' ?
-													<button className="button no-wrap align-center py-2 px-4 rounded text-lg" onClick={() => handleBookDevolution(b.id)}>
+													<button className="button no-wrap align-center py-2 px-4 w-[7rem] rounded text-lg" onClick={() => handleBookDevolution(b.id)}>
 														Devolução
-													</button> : <div className="w-full py-2 px-4"></div>
+													</button> : <div className="py-2 px-4"></div>
 											}
 
 
 
-											{b.renovavel && b.estado != 'devolvido' ?
-												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-500 text-slate-50 " onClick={() => {bookToBeRenewed = b ; handleRenewBook(b)}}>
+											{b.renovavel && !['perdido', 'devolvido'].includes(b.estado) ?
+												<button className="no-wrap align-center w-full py-2 px-4 rounded w-[6rem] text-lg bg-gray-500 text-slate-50 " onClick={() => {bookToBeRenewed = b ; handleRenewBook(b)}}>
 													Renovar
-												</button> : <div className="w-full py-2 px-4"></div>
+												</button> : <div className="py-2 px-4"></div>
 
 											}
 
-											{b.estado != 'perdido' ?
-												<button className="no-wrap align-center w-full py-2 px-4 rounded text-lg bg-gray-700 text-slate-50 " onClick={() => {bookToBeRenewed = b ; handleRenewBook(b)}}>
+											{!['perdido', 'devolvido'].includes(b.estado)  ?
+												<button className="no-wrap align-center w-full py-2 px-4 rounded w-[6rem]  text-lg bg-gray-700 text-slate-50 " onClick={() => {bookToBeRenewed = b ; handleLostBook(b)}}>
 													Perda
-												</button> : <div className="w-full py-2 px-4"></div>
+												</button> : <div className="py-2 px-4"></div>
 
 											}
 										</td>
@@ -269,6 +287,26 @@ export default function DevolutionBooksContainer(props) {
 				</div>
 			</div>
 		</dialog>
+
+		<dialog id="lostSuccessModal" className="modal ">
+			<div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
+					<path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+				</svg>
+
+				<div>
+					<h3 className="font-bold text-3xl ">Sucesso!</h3>
+					<p className="py-4">Perda de livro registrada!</p>
+					<div className="modal-action">
+						<form method="dialog">
+							<button className="btn">Fechar</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</dialog>
+
+
 
 
 	</section>

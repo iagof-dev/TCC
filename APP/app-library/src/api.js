@@ -284,6 +284,20 @@ const Api = {
             }).then(res => res.json())
         },
 
+        makeLost: async function (loan) {
+            const formData = new FormData()
+
+            formData.append("id", loan.id)
+            formData.append("id_status_emprestimo", 4)
+
+            formData.append("authpass", authpass)
+
+            return await fetch(url + '/emprestimos/modificar/', {
+                method: "POST",
+                body: formData
+            }).then(res => res.json())
+        },
+
         modifyEvaluation: async function (data) {
             const formData = new FormData()
 

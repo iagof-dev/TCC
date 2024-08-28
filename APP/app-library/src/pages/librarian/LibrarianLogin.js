@@ -37,7 +37,7 @@ export default function LibrarianLogin(props) {
             setIsSubmitting(false)
             return
         }
-        navigate("/librarianMenu/librarianEdit")
+        navigate("/librarianMenu/librarianLoan")
     }
 
     function handleLoginSubmit(e) {
@@ -104,8 +104,7 @@ export default function LibrarianLogin(props) {
                     {
                         showLibrarians == true ?
 
-                            <>
-                                <hr/>
+                            <div className="border-2 flex no-wrap flex-col align-center p-1 rounded gap-2">
 
                                 <TextField
                                     placeholder="Nome"
@@ -114,17 +113,16 @@ export default function LibrarianLogin(props) {
                                         setLibrarian(e.target.value)
                                     }}
                                     style={{ width: 350 }}
-                                    className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
+                                    className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-fit py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
 
                                 />
 
-                                <button className="button no-wrap align-center mx-2 w-full py-2 px-4 rounded marker:text-lg" onClick={() => addNewLibrarian()}>
+                                <button className="button no-wrap align-center w-full py-2 px-4 rounded marker:text-lg" onClick={() => addNewLibrarian()}>
                                     Adicionar bibliotecário(a)
                                 </button>
                                 
-                                <hr/>
 
-                            </>
+                            </div>
 
                                 
 
