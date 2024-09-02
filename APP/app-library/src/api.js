@@ -244,7 +244,7 @@ const Api = {
     loans: {
         getAllLoans: async function () {
 
-            return await fetch(url + '/emprestimos/listar/').then(res => res.json()).then(data =>  {if(data.error) return 0; return data.DATA})
+            return await fetch(url + '/emprestimos/listar/').then(res => res.json()).then(data =>  {if(data.error) return 0; console.log(data.DATA); return data.DATA})
         },
 
         getLoansByRM: async function (rm) {
