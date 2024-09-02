@@ -70,9 +70,10 @@ const Api = {
         getBookByAuthor: async function (author) {
             if (author == "" || author == undefined) return {}
 
-            const a = await fetch(url + '/livros/listar/autor/' + author.replace(" ", "+")).then(res => res.json()).then(data => data.DATA)
+            const a = await fetch(url + '/livros/listar/autor/' + author.replace(/\s+/g, "+")).then(res => res.json()).then(data => data.DATA)
 
             console.log(a);
+            console.log(a == "Dado não encontrado.");
 
             return a
         },
