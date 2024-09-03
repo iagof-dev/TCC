@@ -21,7 +21,7 @@ export default function StudentLayout(props) {
 	setPath(useLocation().pathname)
 
 	return (<div className={`flex flex-nowrap w-screen ${counter % 3 == 0? "easter-egg" : "not-easter-egg"}`}>
-		<aside className="h-screen w-[18vw] flex flex-col p-6 gap-2 justify-between  rounded-r-xl">
+		<aside className="h-screen w-[14rem] flex flex-col p-6 gap-2 justify-between  rounded-r-xl">
 			<section className="flex flex-col mt-3">
 				<p className="menu__user-info font-bold text-2xl m-0 p-0">
 					{userInfo.nome}
