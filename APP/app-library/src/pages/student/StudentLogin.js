@@ -35,7 +35,7 @@ export default function StudentLogin(props) {
 		setIsSubmitting(true)
 
 		const [status, data] = await Api.students.getStudentByRM(RM)
-		const student = data[0]
+		const student = data.find(a => a.rm == RM)
 
 		if(status != "success") {
 			setIsLoginOpen(true)
