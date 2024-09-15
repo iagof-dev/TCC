@@ -35,13 +35,15 @@ export default function StudentLogin(props) {
 		setIsSubmitting(true)
 
 		const [status, data] = await Api.students.getStudentByRM(RM)
-		const student = data[0]
+		console.log('====================================');
+		console.log(status);
+		console.log('====================================');
+		const student = data? data[0] : null
 
 		if(status != "success") {
-			setIsLoginOpen(true)
+			// setIsLoginOpen(true)
 			setIsSubmitting(false)
-			if(data.status) return document.getElementById('modalInternetError').showModal()
-			return
+			return document.getElementById('modalInternetError').showModal()
 		}
 
 		setUserInfo(student)

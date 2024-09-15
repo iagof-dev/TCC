@@ -28,7 +28,19 @@ const Api = {
     students: {
         //Student
         getStudentByRM: async function (rm) {
-            return await fetch(url + '/alunos/rm/' + rm).then(res => res.json()).then(data => [data.status, data.DATA])
+			let res = {}
+
+			try {
+				res = await fetch(url + '/alunos/rm/' + rm).then(res => res.json()).then(data => [data.status, data.DATA])
+			} catch {
+				res = ['error', null]
+			}
+
+			console.log(res)
+
+			return res
+			
+            
         },
 
         getAllStudents: async function () {
