@@ -34,7 +34,18 @@ export default function StudentLogin(props) {
 		e.preventDefault()
 		setIsSubmitting(true)
 
-		const [status, data] = await Api.students.getStudentByRM(RM)
+		let status = {}
+		let data = {}
+
+		try {
+			[status, data] = await Api.students.getStudentByRM(RM)
+		} catch {
+			setIsLoginOpen(true)
+			setIsSubmitting(false)
+			return document.getElementById('modalInternetError').showModal()
+		}
+
+		
 
 		let student = {}
 
