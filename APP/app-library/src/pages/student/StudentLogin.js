@@ -35,15 +35,34 @@ export default function StudentLogin(props) {
 		setIsSubmitting(true)
 
 		const [status, data] = await Api.students.getStudentByRM(RM)
-		console.log('====================================');
+
+		let student = {}
+
+		try {
+			student = data.find(a => a.rm == RM)
+		} catch {
+			setIsLoginOpen(true)
+			setIsSubmitting(false)
+			document.getElementById('modalRMError').showModal()
+			return
+		}
+		
+
 		console.log(status);
-		console.log('====================================');
-		const student = data? data[0] : null
+		console.log(data);
+
+		if(!student) {
+			setIsLoginOpen(true)
+			setIsSubmitting(false)
+			return 
+			
+		}
 
 		if(status != "success") {
-			// setIsLoginOpen(true)
+			setIsLoginOpen(true)
 			setIsSubmitting(false)
-			return document.getElementById('modalInternetError').showModal()
+			if(data.status) return document.getElementById('modalInternetError').showModal()
+			return
 		}
 
 		setUserInfo(student)
@@ -134,7 +153,7 @@ export default function StudentLogin(props) {
 					</div>
 				</dialog>
 
-			<LoginErrorDialog open={isLoginOpen} setOpen={setIsLoginOpen}/>
+			{/* <LoginErrorDialog open={isLoginOpen} setOpen={setIsLoginOpen}/> */}
 			</ThemeProvider>
 		</div>
 	)
