@@ -103,7 +103,7 @@ export default function List(props) {
 
 		if (Array.isArray(data)) data.forEach(b => {
 			_previousRatings.push(b.avaliacao)
-		});
+		})
 
 		setBooksNewRatings(_previousRatings)
 
@@ -111,7 +111,7 @@ export default function List(props) {
 
 		setDOMRatingValues(_previousRatings)
 
-
+		console.log(data);
 
 		setBookHistory(data)
 	}
@@ -225,6 +225,7 @@ export default function List(props) {
 					</tbody>
 				</table>
 			</div> : (() => {
+				if(booksHistory == "Dado não encontrado.") return <p>❌ Sem empréstimos </p>
 				return <span className="m-auto loading loading-spinner loading-xl"></span>
 			})()
 

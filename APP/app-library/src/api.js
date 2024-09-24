@@ -67,7 +67,10 @@ const Api = {
         //Books
         getBooksByRM: async function (rm) {
 
-            return await fetch(url + '/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA )
+            const res = await fetch(url + '/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA )
+
+            if(res) return res
+            return []
 
 
         },
