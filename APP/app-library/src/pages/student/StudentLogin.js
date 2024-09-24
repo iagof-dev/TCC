@@ -99,7 +99,7 @@ export default function StudentLogin(props) {
 			<img className="login__logo" src={LogoLateral} />
 			<div className="container p-5 shadow-md rounded-xl border-[1px] flex flex-col align-center w-fit h-fit">
 				<h1>Login de Aluno</h1>
-				<form className="flex flex-col items-center justify-center gap-3" onSubmit={handleLoginSubmit}>
+				<form id="login-form" className="flex flex-col items-center justify-center gap-3" onSubmit={handleLoginSubmit}>
 					<span className="gap-5 flex items-center">
 						<label className="mr-10 text-lg">RM:</label>
 

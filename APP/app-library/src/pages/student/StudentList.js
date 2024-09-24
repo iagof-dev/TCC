@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { json } from "react-router-dom"
 import { Api } from '../../api'
+import { dateConvert } from "../miscellaneous"
 
 export default function List(props) {
 	const { setPath, path, userInfo } = { ...props }
@@ -191,29 +192,39 @@ export default function List(props) {
 									<th>{booksHistory.length - i}</th>
 									<td>{b.livro_titulo}</td>
 									<td>{b.autor_nome}</td>
-									<td>{b.data_aluguel}</td>
+									<td>{dateConvert(b.data_aluguel) }</td>
 									<td>{b.prazo}</td>
 									<td>
 
-										<div className="rating">
-											{
-												[...Array(5)].map((e, j) => {
-													return (
-														<input type="radio" onClick={() => {
-															let _ratings = [...booksNewRatings]
-															_ratings[i] = j
+										{(() => {
+											if (b.estado != 'pendente') {
+												return (<div className="rating">
+													{
+														[...Array(5)].map((e, j) => {
+															return (
+																<input type="radio" onClick={() => {
+																	let _ratings = [...booksNewRatings]
+																	_ratings[i] = j
 
-															setBooksNewRatings(_ratings)
-															setDOMRatingValues(_ratings)
-														}}
-															key={j}
-															name={`rating-${i}`}
-															className={`mask mask-star ${DOMRatingValues[i] >= j ? "marked" : "not-marked"}`}
-														/>
-													)
-												})
+																	setBooksNewRatings(_ratings)
+																	setDOMRatingValues(_ratings)
+																}}
+																	key={j}
+																	name={`rating-${i}`}
+																	className={`mask mask-star ${DOMRatingValues[i] >= j ? "marked" : "not-marked"}`}
+																/>
+															)
+														})
+													}
+												</div>)
+
+												
 											}
-										</div>
+
+											return <p className="text-slate-400 text-[1rem] ">(Após leitura)</p>
+										})()}
+
+
 									</td>
 									<td className={`td-situation td-situation-${situationColor} `
 										// + `${i == 0? "td-situation--first" : ""} ${i == booksHistory.length-1? "td-situation--last" : ""}`
@@ -225,7 +236,7 @@ export default function List(props) {
 					</tbody>
 				</table>
 			</div> : (() => {
-				if(booksHistory == "Dado não encontrado.") return <p>❌ Sem empréstimos </p>
+				if (booksHistory == "Dado não encontrado.") return <p>❌ Sem empréstimos </p>
 				return <span className="m-auto loading loading-spinner loading-xl"></span>
 			})()
 

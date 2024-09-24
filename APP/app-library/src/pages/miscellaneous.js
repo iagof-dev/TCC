@@ -1,7 +1,5 @@
-export function onKeyDownRM(e, onResolve) {
-    if(onResolve){
-        if(e.key == "Enter") onResolve()
-    }
+export function onKeyDownRM(e) {
+
     
     if (!/^\d$|^Backspace$/.test(e.key)) {
         e.preventDefault();
