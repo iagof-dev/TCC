@@ -32,7 +32,6 @@ include_once("./api/generos/generos.php");
 include_once("./api/coordenadores/coordenadores.php");
 include_once("./api/avaliacoes/avaliacoes.php");
 include_once("./api/notificacoes/notificacoes.php");
-include_once("./api/geral/geral.php");
 include_once("./api/estado_emprestimos/estado_emprestimos.php");
 include_once("./api/imagens/imagens.php");
 include_once("./api/sinopse/sinopse.php");
