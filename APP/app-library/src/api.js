@@ -67,10 +67,7 @@ const Api = {
         //Books
         getBooksByRM: async function (rm) {
 
-            const res = await fetch(url + '/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA )
-
-            if(res) return res
-            return []
+            return await fetch(url + '/emprestimos/listar/rm/' + rm).then(res => res.json()).then(data => data.DATA )
 
 
         },
@@ -154,8 +151,6 @@ const Api = {
             //     sinopse: "ab"
             // })
 
-            ("---------------- pageData.codigo");
-            
             const formData = new FormData()
 
 
@@ -191,7 +186,21 @@ const Api = {
             formData.append("id_genero", idGenero)
             formData.append("id_livro", idLivro)
 
+
             return await fetch(url + '/generos_livros/inserir/', {
+                method: "POST",
+                body: formData
+            })
+        },
+
+        removeNewBookGenre: async function (idLivro, idGenero) {
+            const formData = new FormData()
+
+            formData.append("authpass", authpass)
+            formData.append("id_genero", idGenero)
+            formData.append("id_livro", idLivro)
+
+            return await fetch(url + '/generos_livros/remover/', {
                 method: "POST",
                 body: formData
             })
@@ -229,8 +238,11 @@ const Api = {
 
             formData.append("id", book.id)
             formData.append("titulo", book.titulo)
+
             if (![null, undefined, 0].includes(book.id_autor)) formData.append("id_autor", book.id_autor)
             if (![null, undefined, 0].includes(book.id_editora)) formData.append("id_editora", book.id_editora)
+
+            
                 
             formData.append("volumes", book.volumes)
             formData.append("sinopse", book.sinopse)
@@ -369,6 +381,7 @@ const Api = {
 
     genres: {
         getAllGenres: async function () { return await fetch(url + '/generos/listar/').then(res => res.json()).then(data => data.DATA) }
+
     },
 
     authors: {
