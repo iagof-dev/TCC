@@ -151,6 +151,11 @@ export default function Search(props) {
 				"id_generos": []
 			})
 			document.getElementById('modalEditSuccess').showModal()
+
+			formData.generos.forEach(g => {
+				console.log(!(selectedBook.generos.find(e => e == g) == undefined));
+			})
+
 			setTimeout(() => {
 				setSelectedBook({ generos: [], editora: "", volumes: 0, url_capa: '' })
 			}, 1500)
@@ -171,6 +176,8 @@ export default function Search(props) {
 
 	useEffect(() => {
 		setFormData({ ...selectedBook })
+		console.log("Selected book -------------------");
+		console.log(selectedBook);
 	}, [selectedBook])
 
 
