@@ -152,9 +152,41 @@ export default function Search(props) {
 			})
 			document.getElementById('modalEditSuccess').showModal()
 
+			let generosNovos = []
+			
+
 			formData.generos.forEach(g => {
-				console.log(!(selectedBook.generos.find(e => e == g) == undefined));
+				// genero ja adicionado
+				if(selectedBook.generos.find(e => e == g)) return
+
+				const a = dataWithId.genres.find(d => {if(d.genero == g) return d})
+
+				generosNovos.push(a.id)
+
 			})
+
+			let generosASeremRemovidos = []
+
+			selectedBook.generos.forEach(g => {
+				// genero ja adicionado
+				if(formData.generos.find(e => e == g)) return
+
+				const b = dataWithId.genres.find(d => {if(d.genero == g) return d})
+
+				generosASeremRemovidos.push(b.id)
+
+			})
+
+			generosNovos.forEach(async g => {
+				console.log([formData.id, g]);
+				await Api.books.addNewBookGenre(formData.id, g).then(res => res.json()).then(res => console.log(res))
+			})
+
+			generosASeremRemovidos.forEach(async g => {
+				await Api.books.removeNewBookGenre(formData.id, g).then(res => console.log(res))
+			})
+
+			
 
 			setTimeout(() => {
 				setSelectedBook({ generos: [], editora: "", volumes: 0, url_capa: '' })
