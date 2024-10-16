@@ -1,0 +1,21 @@
+{
+  "name": "whatsapp_bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matheus",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.7.3",
+    "date-fns": "^3.6.0",
+    "express": "^4.21.0",
+    "fs": "^0.0.1-security",
+    "node-cron": "^3.0.3",
+    "node-fetch": "^3.3.2",
+    "socket.io": "^4.8.0",
+    "venom-bot": "^5.1.0"
+  }
+}

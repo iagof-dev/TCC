@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicializador Zappy Bot</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+
+</head>
+
+
+
+<body>
+
+<main id="main_fail" style="width: 100vw; height: 100vh; display: none; align-items: center; justify-content: center; flex-direction: column;background-color: #e5e7eb;">
+  <svg width="200" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#1784ba">
+    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+    <g id="SVGRepo_iconCarrier">
+        <path opacity="0.4" d="M12 7.75V13" stroke="#1784ba" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M21.0802 8.58003V15.42C21.0802 16.54 20.4802 17.58 19.5102 18.15L13.5702 21.58C12.6002 22.14 11.4002 22.14 10.4202 21.58L4.48016 18.15C3.51016 17.59 2.91016 16.55 2.91016 15.42V8.58003C2.91016 7.46003 3.51016 6.41999 4.48016 5.84999L10.4202 2.42C11.3902 1.86 12.5902 1.86 13.5702 2.42L19.5102 5.84999C20.4802 6.41999 21.0802 7.45003 21.0802 8.58003Z" stroke="#1784ba" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path opacity="0.4" d="M12 16.2002V16.3002" stroke="#1784ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </g>
+</svg>
+<h2 style="margin-top: 10px; font-weight: 700; font-size: 1rem; width:75%; text-align: center; color: #374151;i">CONEXÃO INSTÁVEL, RELAÇÃO COM O BOT INATIVADA!</h2>
+
+<style>
+  button{
+    margin-top: 30px; background-color: #334155; padding: 6px 32px; border-radius: 10px; color: white; font-weight: 500;
+  }
+  button:hover {
+    background-color: #475569;
+  }
+
+  button:active{
+    background-color: #1e293b;
+  }
+</style>
+
+<button onclick="ResetButton()">Encerrar solução</button>
+</main>
+
+<main class="h-full w-full bg-gray-200" id="main_success">
+  <!-- Navbar -->
+  <div class="bg-sky-600 py-2">
+    <div class=" mx-auto flex justify-start items-center">
+      <img src="https://github.com/MathFerreiraDev/whatsapp-bot/blob/main/src/img/logo.png?raw=true" alt="WhatsApp Logo"
+        class="h-8 mr-2">
+      <span class="text-white font-semibold text-lg">ZAPPY BOT - INICIALIZADOR</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex flex-col justify-center">
+
+    <div class="bg-sky-300 h-[40vh] w-full"></div>
+    <div class="bg-gray-200 h-[60vh] w-full"></div>
+
+    <div class="bg-white rounded-lg shadow-lg  w-5/6 p-8 z-[3] mb-16 -mt-[94vh] bottom-[90vh] m-auto">
+
+      <!-- Download section -->
+      <div class="border border-gray-200 p-4 rounded-lg block md:flex  items-center mb-8 gap-4">
+
+        <div class="flex items-center w-full md:w-9/12 ">
+          <img src="https://github.com/MathFerreiraDev/whatsapp-bot/blob/main/src/img/logo.png?raw=true" alt="WhatsApp Logo"
+            class="h-32 mr-3 ">
+          <div class="w-full">
+            <p class="font-semibold text-gray-700">Demorando para inicializar?</p>
+            <p class="text-sm text-gray-500 w-full">Clique no botão para reiniciar o servidor e fornecer melhor
+              conexão, ao reiniciar, a página atual é encerrada! Sendo necessário que clique no atalho novamente.</p>
+          </div>
+        </div>
+        
+        <button onclick="window.close();"
+          class="md:w-3/12 w-full bg-slate-700 hover:bg-slate-600 active:bg-slate-800 text-white font-semibold py-2 px-8 text-center rounded-lg">Encerrar
+          solução</button>
+      </div>
+
+      <!-- Instructions and QR code -->
+      <div class="flex justify-between w-full gap-8 flex-col md:flex-row">
+        <!-- Instructions -->
+        <div class="w-full md:w-2/3 ">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-4">Use o WhatsApp no seu celular</h2>
+          <ol class="list-decimal list-inside text-gray-600 leading-relaxed">
+            <li>Abra o WhatsApp no seu smartphone.</li>
+            <li>Toque em <strong>Dispositivos conectados</strong> e, em seguida, <strong>Conectar dispositivo</strong>.
+            </li>
+            <li>Aponte o seu celular para esta tela para escanear o QR code.</li>
+          </ol>
+
+          <h3 class="flex text-2xl text-violet-800 mt-8 font-medium" id="status"></h3>
+          <h4 class="flex text-1xl text-slate-500" id="status_detail"></h4>
+        </div>
+
+
+
+        <!-- QR Code -->
+        <div class="max-w-1/3 flex justify-center items-center">
+          <div
+            class="border-2 border-gray-300 rounded-lg p-4 w-64 h-64 bg-cover bg-[url('https://github.com/MathFerreiraDev/whatsapp-bot/blob/main/src/img/loading.gif?raw=true')]"
+            id="qrcode">
+            <!-- Placeholder image for QR Code -->
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção: Conectar com número de telefone -->
+      
+
+      <!-- Seção: Tutorial -->
+
+      <div class="text-center w-full flex items-center justify-center mt-8 ">
+        <h3 class="text-blue-600 font-semibold hover:underline w-3/4 text-center">Todos as listagens diárias ocorrem as 18h ou quando posteriormente ligado, somente durante dias úteis ⏰📅</h3>
+      </div>
+
+      <div class="border-t mt-8 pt-8">
+        <h2 class="text-2xl font-semibold text-gray-800 text-center mb-4">Tutorial</h2>
+        <p class="text-center text-green-600 mb-8">
+          <a href="#tutorial" class="hover:underline text-blue-600 text-xl">Precisa de ajuda para conectar?</a>
+        </p>
+
+        <!-- Vídeo Tutorial -->
+        <div class="flex justify-center">
+          <div class="w-full">
+
+            <iframe class="w-full h-[78vh] rounded-lg" id="tutorial"
+              src="####" title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+  <script>
+    if (!navigator.onLine) {
+    navigator.sendBeacon('/shutdown');
+    document.getElementById("main_success").style.display = "none";
+    document.getElementById("main_fail").style.display = "flex";
+  }
+
+  window.onoffline = (event) => {
+    navigator.sendBeacon('/shutdown');
+    document.getElementById("main_success").style.display = "none";
+    document.getElementById("main_fail").style.display = "flex";
+    
+};
+
+   
+
+    window.addEventListener('beforeunload', function () {
+      navigator.sendBeacon('/shutdown');
+    });
+
+    function ResetButton() {
+      navigator.sendBeacon('/shutdown');
+      setTimeout(() => {
+        window.close();
+      }, 2000);
+
+    }
+
+    const socket = io();
+
+
+    socket.on('qrcode', function (qrcode) {
+      document.getElementById('qrcode').innerHTML = qrcode;
+    });
+
+
+    socket.on('status', function (status) {
+
+      let status_desc = "Carregando...";
+      let status_detail = "Carregando...";
+      switch (status) {
+        //Sucesso
+        case "openBrowserowser...":
+          status_desc = "Abrindo o navegador";
+          break;
+        case "initWhatsapp":
+          status_desc = "Inicializando o Whatsapp Web";
+          break;
+        case "successPageWhatsapp":
+          status_desc = "Acesso disponível ao Whatsapp!";
+          status_detail = "Aguarde um momento, estamos atrás do QR Code para você...";
+          break;
+        case "desconnectedMobile":
+          status_desc = "Nenhum dispositivo já conectado...";
+          break;
+        case "notLogged":
+          status_desc = "Requisição de login";
+          status_detail = "Escaneie o QR Code para validar o login!";
+          break;
+        case "qrReadSuccess":
+          status_desc = "QR Code lido com sucesso";
+          status_detail = "Aguarde alguns instantes!";
+          break;
+        case "successChat":
+          status_desc = "<p class='text-green-400 pl-2'>BOT CONECTADO 🤖</p>";
+          status_detail = "<p class='text-green-400'>Bot operante e conectado ao Whatsapp Web!</p>";
+          document.getElementById('qrcode').innerHTML = '<img src="https://github.com/MathFerreiraDev/whatsapp-bot/blob/main/src/img/validation.png?raw=true" alt="QR Code" class="w-full h-full"/>';
+          break;
+        //Erro
+        case "#error":
+          status_desc = "<p class='text-red-400 pl-2'>Erro de sincronização com o Whatsapp Web!</p>";
+          status_detail = "<p class='text-red-400'>Reinicie o bot e tente novamente...</p>";
+          document.getElementById('qrcode').innerHTML = '<img src="https://github.com/MathFerreiraDev/whatsapp-bot/blob/main/src/img/error_validation.png?raw=true" alt="QR Code" class="w-full h-full"/>';
+          //setTimeout(() => { window.close() }, 5000)
+          break;
+        case "noOpenBrowser":
+
+          window.close();
+
+
+          break;
+
+
+      }
+      document.getElementById('status').innerHTML = 'Status do bot: ' + status_desc;
+      document.getElementById('status_detail').innerHTML = status_detail;
+
+
+    });
+  </script>
+
+</body>
+
+</html>
