@@ -47,11 +47,11 @@ exec(process.platform === 'win32' ? 'netstat -ano | findstr :3000' : 'lsof -i :3
   pid && exec(process.platform === 'win32' ? `taskkill /PID ${pid} /F` : `kill -9 ${pid}`);
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 6500;
 server.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
   const command = process.platform === 'win32' ? 'start' : 'open';
-  const url = 'http://localhost:3000';
+  const url = 'http://localhost:6500';
 
   exec(`${command} ${url}`);
 });
