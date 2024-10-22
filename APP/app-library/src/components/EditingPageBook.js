@@ -72,7 +72,23 @@ export default function EditingPageBook(props) {
                             // setSelectedBook={setSelectedBook}
 
                             setEditOrRemove('edit')
-                            setSelectedBook({
+
+                            let generosCorrigidos = []
+
+                            console.log(generos);
+                            
+                            if(generos != null) generos.forEach(g => {
+                                if(Array.isArray(g)){
+                                    generosCorrigidos.push(...g)
+                                    
+                                } else {
+                                    generosCorrigidos.push(g)
+                                }
+
+                            
+                            });
+
+                            const selectedBookData = {
                                 id: id,
                                 codigo: code,
                                 autor: author,
@@ -83,9 +99,11 @@ export default function EditingPageBook(props) {
                                 sinopse: synopsis,
                                 url_capa: coverURL,
                                 volumes: volumes,
-                                generos: Array.isArray(generos) ? generos : [generos]
+                                generos: generosCorrigidos
 
-                            })
+                            }
+
+                            setSelectedBook(selectedBookData)
 
                             setHasSearchBeenMade(false)
 
