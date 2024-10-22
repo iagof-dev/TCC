@@ -26,8 +26,6 @@ export default function BookSearchContainer(props) {
 					Nenhum livro encontrado.
 				</span> : (resultBooks.map((book) => {
 
-					
-
 					return <EditingPageBook
 						id={book.id}
 						code={book.codigo}
@@ -36,7 +34,7 @@ export default function BookSearchContainer(props) {
 						title={book.titulo}
 						rating={book.avaliacao}
 						status={book.status}
-						generos={book.genero}
+						generos={Array.isArray(book.genero)? book.genero : (book.genero == null? [] : [book.genero])}
 						volumes={book.volumes}
 						synopsis={book.sinopse? book.sinopse : ""}
 						coverURL={book.capa}
