@@ -6,7 +6,7 @@ import Info from '../../components/Info';
 import Book from '../../components/Book'
 import BookSearchContainer from '../../components/BookSearchContainer';
 import { Api } from '../../api';
-import {groupBooksByCode} from '../miscellaneous'
+import {groupBooksByCode, sortStrings} from '../miscellaneous'
 
 export default function Search(props) {
 	const { setPath, path } = { ...props }
@@ -147,6 +147,7 @@ export default function Search(props) {
 	useEffect(() => {
 		(async () => {
 			const data = await Api.genres.getAllGenres()
+			data.sort((a,b) => sortStrings(a.genero, b.genero))
 			setGenresAndCourses(data)
 		}
 		)()
