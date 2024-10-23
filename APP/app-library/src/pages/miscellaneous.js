@@ -19,6 +19,16 @@ export function getCurrentDate(){
     return `${year}-${month}-${day}`;
 }
 
+export function sortStrings (a, b) {
+    if (a < b) {
+      return -1;
+    }
+    if (a > b) {
+      return 1;
+    }
+    return 0;
+  }
+
 export function dateConvert(dataStr) {
 	const date = dataStr;
    
