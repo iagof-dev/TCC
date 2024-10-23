@@ -1,826 +1,654 @@
-import { Autocomplete, Chip, TextField, ThemeProvider, createTheme } from "@mui/material"
-import { useEffect, useState } from "react";
-import { onKeyDownRM, sortStrings } from "../miscellaneous";
-import BlankBookCover from '../../assets/img/book-cover.png'
-import CoverOption from "../../components/CoverOption";
-import { Api } from "../../api";
-import { Textarea } from "@material-tailwind/react";
+import { useEffect, useState } from "react"
+import { Autocomplete, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, ThemeProvider, Typography, createTheme } from "@mui/material"
+import { TextField } from "@mui/material"
+import { groupBooksByCode, onKeyDownRM, sortStrings } from "../miscellaneous"
+import Info from "../../components/Info"
+import DevolutionBooksContainer from "./DevolutionBooksContainer"
+import { Api } from "../../api"
+import {getCurrentDate} from '../miscellaneous'
+
+import { dateConvert } from "../miscellaneous"
+export default function LibrarianLoan(props) {
+	const { librarianId } = { ...props }
+	const [loanOrDevolution, setLoanOrDevolution] = useState(0)
+	const [hasRequestedDevolution, setHasRequestedDevolution] = useState(false)
+	const [booksData, setBooksData] = useState([])
+	const [isRequesting, setIsRequesting] = useState(false)
+	const [formData, setFormData] = useState({
+		code: 0,
+		title: "",
+		librarianId: librarianId,
+		bookId: 0,
+		RM: "",
+		loanDate: '',
+		name: "",
+		time: 2
+	})
+
+	// const [books, setBooks] = useState([
+	//     { code: 1, title: "O Senhor dos Anéis: A Sociedade do Anel" },
+	//     { code: 2, title: "O Senhor dos Anéis: As Duas Torres" },
+	//     { code: 3, title: "O Senhor dos Anéis: O Retorno do Rei" },
+	//     { code: 4, title: "O Hobbit" },
+	//     { code: 5, title: "Guia do Mochileiro das Galáxias" },
+	//     { code: 6, title: "Animal Farm" },
+	//     { code: 7, title: "1984" },
+	//     { code: 8, title: "Fahrenheit 451" },
+	//     { code: 9, title: "O Alquimista" },
+	//     { code: 10, title: "O Pequeno Príncipe" },
+	// ])
+
+	const [books, setBooks] = useState([])
+
+	const [students, setStudents] = useState([])
+
+	let bookTitles = books.map(b => b.titulo)
+
+	const [devolutionBooks, setDevolutionBooks] = useState([
+		{
+			code: 1,
+			title: "O Pequeno Príncipe",
+			author: "Antoine de Saint-Exupéry",
+			loanDate: "14/02/24",
+			loanPeriod: "15",
+			situation: "Atrasado"
+		},
+		{
+			code: 1,
+			title: "O Pequeno Príncipe",
+			author: "Antoine de Saint-Exupéry",
+			loanDate: "14/02/24",
+			loanPeriod: "15",
+			situation: "Pendente"
+		},
+	])
+
+	function searchForBookByCode(code) {
+		if (!code) return
+
+		let hasFoundTheBook = false
+
+		books.forEach(book => {
+			if (book.codigo == code) {
+				setFormData({ ...formData, title: book.titulo, code: book.codigo })
+				hasFoundTheBook = true
+			}
+		})
+
+		if (!hasFoundTheBook) {
+			setFormData({ ...formData, title: "", code: "" })
+			bookNotFound()
+		}
+
+
+	}
 
-const theme = createTheme({
-    typography: {
-        fontFamily: [
-            'Figtree',
-        ].join(','),
-    },
+	function studentNotFound() {
+		document.getElementById('modalRMError').showModal()
+		setFormData({ ...formData, name: "" })
+	}
+
+	function bookNotFound() {
+		document.getElementById('modalBookError').showModal()
+		setFormData({ ...formData, code: "", title: "" })
+	}
+
+	function searchForStudentByRM(RM) {
+		if (RM.length < 6) return
+		let studentFound = false
+
+		students.forEach(student => {
+			if (student.rm == RM) {
+				setFormData({ ...formData, name: student.nome })
+				studentFound = true
+			}
+		});
 
+		if (!studentFound || formData.RM.length < 6) studentNotFound()
 
-});
 
+	}
 
-function searchBookWithExistingCode(code) {
-    //TODO
-}
+	async function handleLoan(e) {
+		setIsRequesting(true)
+		e.preventDefault()
 
-export default function LibrarianAdd() {
-    const [isRequesting, setIsRequesting] = useState(false)
-    const [selectedCoverURL, setselectedCoverURL] = useState(0)
+		const res = await Api.loans.makeLoan(formData)
 
-    const [coverURLs, setCoverURLs] = useState([])
+		if(res.status == 'error') {
+			document.getElementById('modalNoBooksError').showModal()
+			setIsRequesting(false)
+			return
+		}
 
-    const [dataWithId, setDataWithId] = useState()
+		// Api: post empréstimo
 
-    const [allGenres, setAllGenres] = useState(["a", "b"])
-    const [allAuthors, setAllAuthors] = useState([""])
+		document.getElementById('modalLoanSuccess').showModal()
+		setFormData({
+		    code: "",
+		    title: "",
+		    RM: "",
+			loanDate :getCurrentDate(),
+			librarianId: librarianId,
+			bookId: "",
+		    name: "",
+		    time: 2
+		})
+		setIsRequesting(false)
 
-    const [allPublishers, setAllPublishers] = useState([""])
 
-    const [existingCodes, setExistingCodes] = useState([])
 
-    const [formData, setFormData] = useState({
-        titulo: "",
-        autor: {
-            id: "",
-            autor: ""
-        },
-        editora: {
-            id: "",
-            editora: ""
-        },
-        url_capa: "",
-        codigo: "",
-        generos: {
-            ids: [],
-            generos: []
-        },
-        volumes: "",
-        sinopse: ""
-    })
+	}
 
-    const [requestedCoverSelectionWithTheseValues, setRequestedCoverSelectionWithTheseValues] = useState(false)
+	useEffect(() => {
 
-    const [tempGenres, setTempGenres] = useState([])
 
-    useEffect(() => {
-        setFormData({ ...formData, url_capa: coverURLs[selectedCoverURL] })
-    }, [selectedCoverURL])
 
-    async function addBook(e) {
-        e.preventDefault()
-        setIsRequesting(true)
+		setFormData({ ...formData, loanDate: getCurrentDate() })
 
-        let isNewAuthor = false
-        let isNewPublisher = false
 
-        let newAuthorId = 0
-        let newPublisherId = 0
+		async function getAllStudents() {
+			const data = await Api.students.getAllStudents()
+			const allStudents = data
+			setStudents(allStudents)
+		}
 
-        if (formData.autor.id == -1) {
+		async function getAllBooks() {
+			const data = await Api.books.getAllBooks()
+			data.sort((a,b) => sortStrings(a.titulo, b.titulo))
+			setBooks(data)
+			bookTitles = books.map(b => b.titulo)
+			setBooksData(groupBooksByCode(data))
 
-            if (allAuthors.find(a => a == formData.autor.autor)) return
+		}
 
-            isNewAuthor = true
 
-        }
 
-        if (formData.editora.id == -1) {
+		getAllStudents()
+		getAllBooks()
 
-            isNewPublisher = true
+		
 
 
-        }
+	}, [])
 
-        //isNewAuthor
 
-        let idGenerosASeremAdicionados = 0
+	async function handleDevolutionBooksRequest(e) {
+		e.preventDefault()
 
-        if (formData.generos.length > 0) {
-            idGenerosASeremAdicionados = formData.generos.map(g => g.id)
-        }
+		setHasRequestedDevolution(true)
+		setIsRequesting(true)
 
-        (async () => {
-            if (isNewAuthor) {
-                await Api.authors.addAuthor(formData.autor)
-                const newAuthors = await Api.authors.getAllAuthors()
+		const loanedBooks = await Api.loans.getLoansByRM(formData.RM)
 
-                const postedAuthor = newAuthors.find(a => a.nome == formData.autor.autor)
+		if (Array.isArray(loanedBooks) && loanedBooks.length > 0) {
+			setDevolutionBooks(loanedBooks)
 
-                setFormData({ ...formData, autor: { ...formData.autor, id: postedAuthor.id } })
-                newAuthorId = postedAuthor.id
-            }
+			setIsRequesting(false)
+		} else {
+			setTimeout(() => {
+				document.getElementById('modalRMError').showModal()
+				setDevolutionBooks([])
+				setIsRequesting(false)
+			}, 1000);
+			setDevolutionBooks([])
+		}
 
-            if (isNewPublisher) {
+	}
 
-                await Api.publishers.addPublisher(formData.editora.editora)
+	const theme = createTheme({
+		typography: {
+			fontFamily: [
+				'Figtree',
+			].join(','),
+		},
 
-                await Api.publishers.getAllPublishers().then(nps => {
-                    const newPublisher = nps.find(p => p.editora == formData.editora.editora)
 
+	});
 
-                    console.log(nps);
-                    console.log(newPublisher);
 
-                    setFormData({ ...formData, editora: { ...formData.editora, id: newPublisher.id } })
-                    newPublisherId = newPublisher.id
-                })
 
+	function loanContent() {
+		function setBookId() {
+			const bookObject = booksData.find(book => book.codigo == formData.code)
+			if (!bookObject) return
 
-            }
+			setFormData({ ...formData, bookId: bookObject.id, title: bookObject.titulo })
 
-            let newFormData = formData
+		}
 
-            newFormData.autor.id = newAuthorId ? newAuthorId : newFormData.autor.id
-            newFormData.editora.id = newPublisherId ? newPublisherId : newFormData.editora.id
-            newFormData.url_capa = newFormData.url_capa ? newFormData.url_capa : coverURLs[selectedCoverURL]
+		return (
+			<>
 
-            console.log(coverURLs);
-            console.log(selectedCoverURL);
-            console.log(coverURLs[selectedCoverURL]);
-            console.log(newFormData);
 
-            await Api.books.addNewBook(newFormData)
+				<p className="p-hint">
+					Identifique o livro por
+				</p>
 
-            const addedBook = await Api.books.getBookByCode(formData.codigo)
-                .then((b) => {
-                    console.log(b);
-                    idGenerosASeremAdicionados.forEach(async g => {
-                        await Api.books.addNewBookGenre(b[0].id, g)
-                    });
-                })
+				<form onSubmit={handleLoan}>
 
+					<span class="flex gap-7 w-full items-center">
+						<label className="input-label w-[5rem]">
+							Código
+						</label>
 
+						<TextField
+							value={formData.code}
+							onBlur={() => setBookId()}
+							onChange={e => {
+								setFormData({ ...formData, code: e.target.value })
+							}}
+							placeholder="Código"
+							focused
+							required
+							className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+						/>
 
-        })()
+						{/* <input placeholder="Código"
+                            value={formData.code} onBlur={() => searchForBookByCode(formData.code)} onChange={e => setFormData({ ...formData, code: e.target.value })}
+                            className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[40rem] py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400" /> */}
+					</span>
 
 
 
+					<p className="p-hint">
+						ou por
+					</p>
 
-        document.getElementById("modalAddSuccess").showModal()
+					<span class="flex gap-7 w-full items-center justify-start my-3">
+						<label className="input-label w-[5rem]">
+							Título
+						</label>
 
-        setTimeout(() => {
-            setFormData({
-                titulo: "",
-                autor: {
-                    id: "",
-                    autor: ""
-                },
-                editora: {
-                    id: "",
-                    editora: ""
-                },
-                url_capa: "",
-                codigo: "",
-                generos: {
-                    ids: [],
-                    generos: []
-                },
-                volumes: "",
-                sinopse: ""
-            })
+						<Autocomplete
 
-            setTempGenres([])
+							value={formData.title}
+							onChange={(event, newValue) => {
+								if (!newValue) return
 
-            document.getElementById('bookConfirmationModal').close()
-            document.getElementById('modalAddSuccess').close()
-            setIsRequesting(false)
-        }, 2000)
+								setFormData({ ...formData, title: newValue });
+								books.forEach(book => {
+									if (book.titulo == newValue) setFormData({ ...formData, code: book.codigo, title: book.titulo })
+								});
+							}}
+							onBlur={() => {
+								if (formData.title) setBookId()
+							}}
+							id="controllable-states-demo"
+							options={Array.from(new Set(bookTitles))}
+							size="sm"
+							required
+							sx={{ width: 650 }}
+							renderInput={(params) => <TextField {...params}
+								className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+							/>}
 
-    }
+						/>
 
-    async function getCoversAndSynopsis(code) {
-        setCoverURLs([])
 
-        setRequestedCoverSelectionWithTheseValues(true)
 
-        await Api.getCoverURLs({ title: formData.titulo, author: formData.autor.autor })
-            .then(urls => {
-                if (!urls.message) return setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png'])
-                setCoverURLs(['https://arthursantana-dev.github.io/tcc-img-empty-book/book-cover.png', ...urls.message.imagens])
-            })
 
+					</span>
 
+					<hr />
 
-        await Api.generateSynopsis({ titulo: formData.titulo, autor: formData.autor.autor }).then(res => {
-            console.log(res);
-            if (res.message) {
-                setFormData({ ...formData, codigo: code, sinopse: res.message.length >= 57 ? res.message : '' })
-                return
-            }
+					<p className="p-hint">
+						Identifique o aluno
+					</p>
 
-            setFormData({ ...formData, codigo: code, sinopse: "Erro ao gerar sinopse." })
+					<div className="flex flex-nowrap justify-between gap-5">
+						<div>
+							<span class="flex gap-7 w-full items-center justify-start my-3">
+								<label className="input-label w-[5rem]">
+									RM
+								</label>
 
-        })
-
-        setRequestedCoverSelectionWithTheseValues(true)
-
-    }
-
-
-    async function handleBookAddModal(e) {
-        e.preventDefault()
-
-        if (((formData.generos.generos && formData.generos.generos.length < 1) || (!formData.generos.generos && formData.generos.length < 1)) ||
-            formData.autor.id == '' || formData.editora.id == '') {
-            document.getElementById('modalGenreError').showModal()
-            return
-        }
-
-        document.getElementById('bookCoverSelectionModal').showModal()
-
-        const uniqueCode = generateUniqueCodeAndCheck();
-
-        setFormData({ ...formData, codigo: uniqueCode })
-
-        if (!requestedCoverSelectionWithTheseValues) getCoversAndSynopsis(uniqueCode)
-
-    }
-
-
-    function generateUniqueCode() {
-        const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const numeric = "0123456789";
-
-        let code = "";
-
-        for (let i = 0; i < 3; i++) {
-            code += alpha[Math.floor(Math.random() * alpha.length)];
-        }
-
-        for (let i = 0; i < 4; i++) {
-            code += numeric[Math.floor(Math.random() * numeric.length)];
-        }
-
-        return code;
-    }
-
-    function checkCodeUniqueness(code) {
-        return !existingCodes.includes(code);
-    }
-
-    function generateUniqueCodeAndCheck() {
-        let code;
-        do {
-            code = generateUniqueCode();
-        } while (!checkCodeUniqueness(code));
-
-        return code;
-    }
-
-    useEffect(() => {
-
-        (async () => {
-            const genres = await Api.genres.getAllGenres()
-            const authors = await Api.authors.getAllAuthors()
-            const publishers = await Api.publishers.getAllPublishers()
-            const existingCodesData = await Api.books.getAllCodes()
-
-            genres.sort((a,b) => sortStrings(a.genero, b.genero))
-            authors.sort((a,b) => sortStrings(a.nome, b.nome))
-            publishers.sort((a,b) => sortStrings(a.editora, b.editora))
-            existingCodesData.sort((a,b) => sortStrings(a.codigo, b.codigo))
-
-            setAllGenres(genres.map(g => g.genero))
-            setAllAuthors(authors.map(a => a.nome))
-            setAllPublishers(publishers.map(p => p.editora))
-            setExistingCodes(existingCodesData.map(c => c.codigo))
-
-            setDataWithId({ genres: genres, authors, authors, publishers: publishers })
-        })()
-
-
-    }, [])
-
-    useEffect(() => {
-        setRequestedCoverSelectionWithTheseValues(false)
-    }, [formData.autor])
-
-    return (
-        <>
-            <ThemeProvider theme={theme}>
-
-                <h1 className="text-3xl">
-                    Adicionar livro ao sistema
-
-                </h1>
-                <p className="text-[1rem] text-gray-500 mb-4">
-                    Caso não haja autor ou editora preexistentes, preencha os campos <br /> normalmente pois esses dados também serão adicionados no sistema.
-                </p>
-
-                <form className="flex flex-col gap-4" onSubmit={async (e) => {
-                    e.preventDefault()
-
-                    console.log(formData.generos);
-
-                    if ((formData.generos.generos && formData.generos.generos.length < 1) || (!formData.generos.generos && formData.generos.length < 1)) {
-                        document.getElementById('modalGenreError').showModal()
-                        return
-                    } else await handleBookAddModal(e)
-
-                }}>
-
-                    <span class="flex gap-7 w-full items-center">
-                        <label className="input-label w-[7rem]">
-                            Título
-                        </label>
-
-                        <TextField
-                            placeholder="Título"
-                            value={formData.titulo}
-                            onChange={e => {
-                                setFormData({ ...formData, titulo: e.target.value })
-                            }}
-                            required
-                            style={{ width: 550 }}
-                            className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
-
-                        />
-
-                    </span>
-
-                    <span class="flex gap-7 w-full items-center">
-                        <label className="input-label w-[7rem]">
-                            Autor
-                        </label>
-
-                        <Autocomplete
-
-                            value={formData.autor.autor}
-                            onChange={(event, newValue) => {
-                                if (!newValue) return
-
-                                setFormData({ ...formData, autor: { ...formData.autor, autor: newValue } });
-
-
-                                // let id = dataWithId.authors.findIndex(a => a.autor == newValue)
-                                // let autorId = -1
-
-                                // if (id != -1) autorId = dataWithId.authors[id].id
-
-                                // setFormData({ ...formData, autor: { ...formData.autor, autor: newValue, id: autorId } })
-
-
-                            }}
-                            onBlur={(e) => {
-
-                                setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value } });
-
-
-                                let id = dataWithId.authors.find(a => a.nome == e.target.value)
-
-                                let autorId
-
-                                if (id == undefined) {
-                                    autorId = -1
-                                } else {
-                                    autorId = id.id
-                                }
-
-                                setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value, id: autorId } })
-
-                                // if (allAuthors.includes(e.target.value)) return setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value } })
-
-                                // setFormData({ ...formData, autor: { ...formData.autor, autor: e.target.value, id: -1 } })
-                            }}
-                            options={allAuthors}
-                            id="controllable-states-demo"
-                            size="sm"
-                            required
-                            fullWidth
-                            placeholder="Autor"
-                            sx={{ width: 550 }}
-                            renderInput={(params) => <TextField  {...params}
-                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                            />}
-
-                        />
-
-                    </span>
-
-                    <span class="flex gap-7 w-full items-center">
-                        <label className="input-label w-[7rem]">
-                            Editora
-                        </label>
-                        <Autocomplete
-
-                            value={formData.editora.editora}
-                            onChange={(event, newValue) => {
-                                if (!newValue) return
-
-                                setFormData({ ...formData, editora: { ...formData.editora, editora: newValue } });
-
-                            }}
-                            onBlur={(e) => {
-                                if (!e.target.value) return
-
-                                setFormData({ ...formData, editora: { ...formData.editora, editora: e.target.value } });
-
-
-                                let selectedPublisher = dataWithId.publishers.find(a => a.editora == e.target.value)
-
-
-                                let editoraId
-
-                                if (selectedPublisher == undefined) {
-                                    editoraId = -1
-                                } else {
-                                    editoraId = selectedPublisher.id
-                                }
-
-                                setFormData({ ...formData, editora: { ...formData.editora, editora: e.target.value, id: editoraId } });
-
-                            }}
-                            options={allPublishers}
-                            id="controllable-states-demo"
-                            size="sm"
-                            required
-                            sx={{ width: 550 }}
-                            renderInput={(params) => <TextField {...params}
-                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                            />}
-
-                        />
-                    </span>
-
-
-                    <span class="flex gap-7 w-full items-center">
-                        <label className="input-label w-[7rem]">
-                            Gêneros e cursos
-                        </label>
-
-
-
-                        <Autocomplete
-                            multiple
-                            id="tags-filled"
-                            fullWidth
-                            value={tempGenres}
-                            options={allGenres}
-                            freeSolo
-                            onChange={(event, generos) => {
-                                let chosenGenresWithId = []
-
-                                setTempGenres(generos)
-
-                                console.log(generos);
-
-                                generos.forEach(g => {
-
-                                    let id = dataWithId.genres.findIndex(a => a.genero == g)
-
-                                    let generoId = dataWithId.genres[id].id
-
-                                    const generoComId = { id: generoId, genero: g }
-
-                                    chosenGenresWithId.push(generoComId)
-                                })
-
-                                setFormData({ ...formData, generos: chosenGenresWithId ? chosenGenresWithId : { ids: [], generos: [] } })
-                            }
-                            }
-                            sx={{ width: 550 }}
-                            renderTags={(value, getTagProps) =>
-                                value.map((option, index) => (
-                                    <Chip variant="outlined" className='text-lg' label={option} {...getTagProps({ index })} />
-
-                                ))
-                            }
-                            renderInput={(params) => <TextField {...params}
-                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                            />}
-                        />
-                    </span>
-
-
-                    <span class="flex gap-7 w-full items-center">
-                        <label className="input-label w-[7rem]">
-                            Número de volumes
-                        </label>
-
-                        <TextField
-                            placeholder="0"
-                            value={formData.volumes}
-                            onKeyDown={(e) => {
-                                if (Number.isInteger(e)) return e
-                            }}
-                            onChange={e => {
-                                if (e.target.value.match(/[^0-9]/)) {
-                                    e.preventDefault();
-                                    return
-                                }
-
-                                setFormData({ ...formData, volumes: e.target.value })
-
-
-                            }}
-                            required
-                            inputProps={{ inputMode: 'numeric' }}
-                            style={{ width: 100 }}
-                            className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
-
-                        />
-                        <label className="input-label w-[10rem]">
-                            Código <p className="text-sm font-bold">(se o livro já tiver)</p>
-                        </label>
-                        <TextField
-                            value={formData.codigo}
-                            onBlur={() => searchBookWithExistingCode(formData.codigo)}
-                            onChange={e => setFormData({ ...formData, codigo: e.target.value })}
-                            placeholder="Código"
-                            style={{ width: 230 }}
-
-                            className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                        />
-                    </span>
-
-                    <button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" type="submit">
-
-                        {isRequesting ?
-                            <span className="loading m-auto loading-spinner loading-lg"></span>
-                            :
-                            "Adicionar livro"
-                        }
-                    </button>
-
-                </form>
-
-                <dialog id="bookCoverSelectionModal" className="modal">
-                    <div className="modal-box bg-[#F8F8F8] flex w-fit max-w-none gap-12 items-center">
-                        <div className=" w-fit">
-                            <h3 className="font-bold text-3xl">Escolha de Capa do Livro</h3>
-                            <p className="py-4">Escolha a capa do livro entre as opções.<br />Caso não haja, escolha a primeira opção (capa padrão).</p>
-                            <div className="flex gap-4">
-
-                                {
-                                    coverURLs.length > 1 ? (
-
-
-                                        coverURLs.map((b, i) => {
-                                            return <CoverOption id={i}
-                                                coverURL={b}
-                                                selectedCoverURL={selectedCoverURL} setselectedCoverURL={setselectedCoverURL} />
-                                        }))
-                                        : <span className="loading loading-spinner loading-lg"></span>
-
-                                }
-                            </div>
-                            <div>
-
-
-                            </div>
-                            <div className="modal-action">
-                                <form method="dialog">
-                                    <div className=" flex no-wrap gap-4">
-                                        <button onClick={(e) => {
-                                            document.getElementById('bookConfirmationModal').showModal()
-                                            console.log(coverURLs[selectedCoverURL]);
-
-                                        }} className="btn button button-search no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">Confirmar</button>
-                                        <button className="btn">Fechar</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </dialog>
-
-                <dialog id="bookConfirmationModal" className="modal">
-                    <div className="modal-box bg-[#F8F8F8] flex w-[60rem] max-w-none gap-12 items-center">
-                        {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-                        </svg> */}
-
-                        <div className=" w-full">
-                            <div className="flex gap-3 justify-between">
-                                <div>
-
-                                    <h3 className="font-bold text-3xl">Confirmar adição de livro</h3>
-                                    <p className="py-4 text-md">Confirme se as informaçoes do livro estão corretas.</p>
-                                    <div class="flex flex-col gap-4">
-                                        <span class="flex gap-7 w-full items-center">
-                                            <label className="input-label w-[7rem]">
-                                                Título
-                                            </label>
-                                            <TextField
-                                                value={formData.titulo}
-                                                onChange={e => setFormData({ ...formData, titulo: e.target.value })}
-                                                placeholder="Título"
-                                                style={{ width: 450 }}
-                                                disabled
-                                                required
-                                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                                            />
-                                        </span>
-                                        <span class="flex gap-7 w-full items-center">
-                                            <label className="input-label w-[7rem]">
-                                                Autor
-                                            </label>
-                                            <Autocomplete
-                                                value={formData.autor.autor}
-
-                                                options={["Machado de Assis"]}
-                                                id="controllable-states-demo"
-                                                size="sm"
-                                                disabled
-                                                required
-                                                fullWidth
-                                                placeholder="Autor"
-                                                sx={{ width: 450 }}
-                                                renderInput={(params) => <TextField  {...params}
-                                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                                                />}
-                                            />
-                                        </span>
-                                        <span class="flex gap-7 w-full items-center">
-                                            <label className="input-label w-[7rem]">
-                                                Editora
-                                            </label>
-                                            <TextField
-
-                                                value={formData.editora.editora}
-                                                id="controllable-states-demo"
-                                                size="sm"
-                                                required
-                                                disabled
-                                                sx={{ width: 450 }}
-                                                renderInput={(params) => <TextField {...params}
-                                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                                                />}
-
-                                            />
-                                        </span>
-                                        <span class="flex gap-12 w-full items-center">
-                                            <label className="input-label w-[5.8rem]">
-                                                Gêneros e cursos
-                                            </label>
-
-
-                                            <Autocomplete
-                                                multiple
-                                                id="tags-filled"
-                                                fullWidth
-                                                value={tempGenres}
-                                                // options={["Nutrição"]}
-                                                // onChange={(event, values) => setSelectedCategories(values)}
-                                                freeSolo
-                                                disabled
-                                                sx={{ width: 450 }}
-                                                renderTags={(value, getTagProps) =>
-                                                    value.map((option, index) => (
-                                                        <Chip variant="outlined" className='text-lg' label={option} />
-
-                                                    ))
-                                                }
-                                                renderInput={(params) => <TextField {...params}
-                                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                                                />}
-                                            />
-
-                                        </span>
-
-                                        <span class="flex gap-7 w-full items-center">
-                                            <label className="input-label w-[7rem]">
-                                                Sinopse (gerada por IA)
-                                            </label>
-
-                                            {
-
-                                                formData.sinopse.length > 2 ? <TextField
-                                                    value={formData.sinopse}
-                                                    onChange={e => setFormData({ ...formData, titulo: e.target.value })}
-                                                    placeholder="Título"
-                                                    style={{ width: 450 }}
-
-                                                    disabled
-                                                    multiline
-                                                    rows={4}
-                                                    required
-                                                    className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                                                /> :
-                                                    <span className="loading loading-spinner loading-lg"></span>
-                                            }
-
-
-
-
-
-
-
-                                        </span>
-
-                                        <span class="flex gap-7 w-full items-center">
-                                            <label className="input-label w-[7rem]">
-                                                Número de volumes
-                                            </label>
-
-                                            <TextField
-                                                placeholder="0"
-                                                value={formData.volumes}
-                                                onKeyDown={(e) => {
-                                                    if (Number.isInteger(e)) return e
-                                                }}
-                                                onChange={e => {
-                                                    if (e.target.value.match(/[^0-9]/)) {
-                                                        e.preventDefault();
-                                                        return
-                                                    }
-
-                                                    setFormData({ ...formData, volumes: e.target.value })
-
-
-                                                }}
-                                                disabled
-                                                required
-                                                inputProps={{ inputMode: 'numeric' }}
-                                                style={{ width: 100 }}
-                                                className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
-
-                                            />
-
-                                        </span>
-
-                                        <span class="flex gap-7 w-full items-center">
-                                            <label className="input-label w-[7rem]">
-                                                Código <p className="text-sm font-bold">(gerado)</p>
-                                            </label>
-                                            <TextField
-                                                value={formData.codigo}
-                                                placeholder="Código"
-                                                style={{ width: 230 }}
-                                                disabled
-
-                                                className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
-                                            /></span>
-
-                                    </div>
-                                </div>
-                                <div className="w-[18rem] h-[28rem] relative">
-                                    <img className="rounded-2xl h-[100%] object-top bg-cover duration-500" src={coverURLs[selectedCoverURL]} />
-                                </div>
-
-                            </div>
-                            <div className="modal-action">
-                                <form method="dialog">
-                                    <div className=" flex no-wrap gap-4">
-                                        <button onClick={(e) => {
-
-                                            addBook(e)
-                                        }} className="btn button button-search no-wrap items-center flex gap-3 align-center py-2 px-4 rounded-xl text-lg">
-
-                                            {isRequesting ?
-                                                <span className="loading loading-spinner loading-md"></span>
-                                                :
-                                                "Confirmar"
-                                            }
-
-
-                                        </button>
-                                        <button onClick={e => setIsRequesting(false)} className="btn" >Voltar e editar</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </dialog>
-
-                <dialog id="modalAddSuccess" className="modal">
-                    <div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                        </svg>
-
-                        <div>
-                            <h3 className="font-bold text-3xl ">Sucesso!</h3>
-                            <p className="py-4">Livro adicionado ao sistema!</p>
-                            <p className="py-4">Código do livro: <span className="font-bold">{formData.codigo}</span></p>
-                            <div className="modal-action">
-                                <form method="dialog">
-                                    <button className="btn">Fechar</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </dialog>
-
-                <dialog id="modalGenreError" className="modal ">
-                    <div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-                        </svg>
-
-                        <div>
-                            <h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
-                            <p className="py-4 text-slate-50">O livro deve ter pelo menos 1 categoria, autor e editora!</p>
-                            <div className="modal-action">
-                                <form method="dialog">
-                                    <button className="btn">Fechar</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </dialog>
-
-
-
-            </ThemeProvider>
-        </>
-    )
+								<TextField
+									placeholder="RM"
+									value={formData.RM}
+									inputProps={{ maxLength: 6 }}
+									onBlur={() => searchForStudentByRM(formData.RM)}
+									onKeyDown={(e) => {
+										onKeyDownRM(e)
+									}} onChange={e => {
+										setFormData({ ...formData, RM: e.target.value })
+									}}
+									required
+									style={{ width: 200 }}
+									className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
+
+								/>
+							</span>
+							<span class="flex gap-7 w-full items-center justify-between my-3">
+								<label className="input-label w-[5rem]">
+									Nome
+								</label>
+								<TextField
+									placeholder="Nome"
+									value={formData.name} onBlur={() => searchForBookByCode(formData.name)} onChange={e => setFormData({ ...formData, name: e.target.value })}
+									readOnly
+									disabled
+									multiline
+									required
+									style={{ width: 300 }}
+									rows={2}
+									className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+
+								/>
+							</span>
+						</div>
+						<div className="flex items-center gap-3 m-auto">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#62AD47" className="w-12 h-12">
+								<path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z" />
+							</svg>
+
+							<div className="flex flex-col">
+								<p className="text-[#62AD47] text-base">
+									Bibliotecário(a),
+								</p>
+								<h3 className="text-[#62AD47] font-bold text-lg">
+									Exija a comprovação do aluno! <br />
+									(Carteirinha ou Identidade)
+								</h3>
+
+							</div>
+						</div>
+					</div>
+
+					<hr />
+
+					<span class="flex gap-7 w-full items-center justify-start my-3">
+
+						<FormControl><div class="flex">
+
+							<label className="input-label pr-3 w-[8rem]">
+								Prazo
+							</label>
+							<RadioGroup
+								row
+								aria-labelledby="demo-controlled-radio-buttons-group"
+								name="controlled-radio-buttons-group"
+								value={formData.time}
+								onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+							>
+								<FormControlLabel value="2" control={<Radio />} label="2 semanas" />
+								<FormControlLabel value="3" control={<Radio />} label="3 semanas" />
+
+							</RadioGroup></div>
+						</FormControl>
+
+
+					</span>
+
+					<button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" type="submit" onSubmit={(e) => handleLoan(e)}>
+						{isRequesting ? <span className="loading m-auto loading-spinner loading-lg"></span> : "Registrar empréstimo"}
+					</button>
+				</form>
+
+				<dialog id="modalNoBooksError" className="modal ">
+					<div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+							<p className="py-4 text-slate-50">Não há mais livros disponíveis!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									{/* if there is a button in form, it will close the modal */}
+									<button className="btn">Fechar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
+
+				<dialog id="modalRMError" className="modal ">
+					<div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+							<p className="py-4 text-slate-50">Não há nenhum livro emprestado por esse aluno!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									{/* if there is a button in form, it will close the modal */}
+									<button className="btn">Fechar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
+
+				<dialog id="modalBookError" className="modal ">
+					<div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+							<p className="py-4 text-slate-50">Verifique se o código de livro está preenchido corretamente!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									{/* if there is a button in form, it will close the modal */}
+									<button className="btn">Fechar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
+
+				<dialog id="modalEmptyError" className="modal ">
+					<div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+							<p className="py-4 text-slate-50">Verifique se há algum campo vazio!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									{/* if there is a button in form, it will close the modal */}
+									<button className="btn">Fechar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
+
+				<dialog id="modalLoanSuccess" className="modal ">
+					<div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl ">Sucesso!</h3>
+							<p className="py-4">Empréstimo realizado!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									<button className="btn">Fechar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
+
+			</>
+		)
+
+	}
+
+	function devolutionContent() {
+		return (
+			<>
+				<hr />
+
+				<p className="p-hint">
+					Identifique o aluno
+				</p>
+
+				<form onSubmit={(e) => handleDevolutionBooksRequest(e)}>
+					<div className="flex flex-nowrap justify-between gap-5">
+						<div>
+							<span class="flex gap-7 w-full items-center justify-start my-3">
+								<label className="input-label w-[5rem]">
+									RM
+								</label>
+
+								<TextField
+									placeholder="RM"
+									value={formData.RM}
+									inputProps={{ maxLength: 6 }}
+									onBlur={() => searchForStudentByRM(formData.RM)}
+									onKeyDown={(e) => {
+										onKeyDownRM(e)
+									}} onChange={e => {
+										setFormData({ ...formData, RM: e.target.value })
+									}}
+									required
+									style={{ width: 200 }}
+									className="bg-gray-100 appearance-none border-[1px] border-gray-300 rounded w-[50vw] py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete"
+
+								/>
+							</span>
+							<span class="flex gap-7 w-full items-center justify-between my-3">
+								<label className="input-label w-[5rem]">
+									Nome
+								</label>
+								<TextField
+									placeholder="Nome"
+									value={formData.name} onBlur={() => searchForBookByCode(formData.name)} onChange={e => setFormData({ ...formData, name: e.target.value })}
+									readOnly
+									disabled
+									multiline
+									required
+									style={{ width: 300 }}
+									rows={2}
+									className='bg-gray-100 appearance-none border-[1px] border-gray-300 rounded py-none px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 autocomplete'
+
+								/>
+							</span>
+						</div>
+						<div className="flex items-center gap-3 m-auto">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#62AD47" className="w-12 h-12">
+								<path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z" />
+							</svg>
+
+							<div className="flex flex-col">
+								<p className="text-[#62AD47] text-base">
+									Bibliotecário(a),
+								</p>
+								<h3 className="text-[#62AD47] font-bold text-lg">
+									Exija a comprovação do aluno! <br />
+									(Carteirinha ou Identidade)
+								</h3>
+
+							</div>
+						</div>
+					</div>
+					<button className="button no-wrap align-center w-full py-2 px-4 rounded text-lg" type="submit">
+						Buscar por livros emprestados
+					</button>
+				</form>
+
+
+				{
+					hasRequestedDevolution ? <DevolutionBooksContainer isRequesting={isRequesting} setHasRequestedDevolution={setHasRequestedDevolution} devolutionBooks={devolutionBooks} setFormData={setFormData} /> : ""
+				}
+
+				<dialog id="modal_success" className="modal ">
+					<div className="modal-box bg-green-200 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#0c9115" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl ">Jão!</h3>
+							<p className="py-4">Devolução realizada!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									<button className="btn">Fechar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
+
+				<dialog id="modal_error" className="modal ">
+					<div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl text-slate-50">Jão!</h3>
+							<p className="py-4 text-slate-50">Devolução realizada!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									<button className="btn">Fechar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
+
+				<dialog id="modalRMError" className="modal ">
+					<div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+							<path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+						</svg>
+
+						<div>
+							<h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+							<p className="py-4 text-slate-50">Verifique se o RM está preenchido corretamente!</p>
+							<div className="modal-action">
+								<form method="dialog">
+									<button className="btn">Fechar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</dialog>
+
+
+			</>
+
+		)
+	}
+
+	return (
+		<section>
+			<ThemeProvider theme={theme}>
+
+				<h1 className="pb-5 text-3xl">
+					{loanOrDevolution == 0 ? "📘 Empréstimo" : "🔄 Devolução"} de livro
+				</h1>
+
+				<div class="flex mb-3">
+					<button className={`button button-loan${loanOrDevolution == 0 ? "--active" : ""} no-wrap items-center flex gap-3 align-center mx-2 w-fit py-2 px-4 rounded text-lg`} onClick={() => setLoanOrDevolution(0)}>
+						Empréstimo
+					</button>
+					<button className={`button button-loan${loanOrDevolution == 1 ? "--active" : ""} no-wrap items-center flex gap-3 align-center mx-2 w-fit py-2 px-4 rounded text-lg`} onClick={() => setLoanOrDevolution(1)}>
+						Devolução/renovação
+					</button>
+				</div>
+
+				{
+					loanOrDevolution == 0 ? loanContent() : devolutionContent()
+				}
+
+			</ThemeProvider>
+
+
+
+
+
+		</section>
+	)
 }
