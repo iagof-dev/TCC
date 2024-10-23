@@ -6,7 +6,7 @@ import Info from '../../components/Info';
 import Book from '../../components/Book'
 import BookSearchContainer from '../../components/BookSearchContainer';
 import { Api } from '../../api';
-import { groupBooksByCode } from '../miscellaneous';
+import { groupBooksByCode, sortStrings } from '../miscellaneous';
 
 export default function Search(props) {
 	const { setPath, path, librarianId } = { ...props }
@@ -135,6 +135,9 @@ export default function Search(props) {
 	});
 
 	async function handleEdit() {
+		if(formData.generos.length == 0) return document.getElementById('modalGenreError').showModal()
+
+
 		await Api.books.editBook(newFormData).then(() => {
 			setFormData({
 				"codigo": "",
@@ -153,6 +156,7 @@ export default function Search(props) {
 			document.getElementById('modalEditSuccess').showModal()
 
 			let generosNovos = []
+			
 			
 
 			formData.generos.forEach(g => {
@@ -218,12 +222,15 @@ export default function Search(props) {
 
 		(async () => {
 			const data = await Api.authors.getAllAuthors()
+			data.sort((a,b) => sortStrings(a.nome, b.nome));
 			setAuthors(data.map(a => a.nome))
 
 			const dataPublishers = await Api.publishers.getAllPublishers()
+			dataPublishers.sort((a,b) => sortStrings(a.editora, b.editora));
 			setPublishers(dataPublishers.map(p => p.editora))
 
 			const dataGeneros = await Api.genres.getAllGenres()
+			dataGeneros.sort((a,b) => sortStrings(a.genero, b.genero));
 			setGeneros(dataGeneros.map(g => g.genero))
 
 			const genresData = await Api.genres.getAllGenres()
@@ -471,6 +478,24 @@ export default function Search(props) {
 						</div>
 					</div>
 				</dialog>
+
+				<dialog id="modalGenreError" className="modal ">
+                    <div className="modal-box bg-red-300 flex w-fit gap-12 items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#EF4444" className="w-32 h-32">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                        </svg>
+
+                        <div>
+                            <h3 className="font-bold text-3xl text-slate-50">Ocorreu um erro!</h3>
+                            <p className="py-4 text-slate-50">O livro deve ter pelo menos 1 categoria, autor e editora!</p>
+                            <div className="modal-action">
+                                <form method="dialog">
+                                    <button className="btn">Fechar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </dialog>
 			</ThemeProvider>
 		} else {
 			return <ThemeProvider theme={theme}>
