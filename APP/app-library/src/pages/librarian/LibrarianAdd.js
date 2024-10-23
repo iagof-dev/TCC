@@ -1,6 +1,6 @@
 import { Autocomplete, Chip, TextField, ThemeProvider, createTheme } from "@mui/material"
 import { useEffect, useState } from "react";
-import { onKeyDownRM } from "../miscellaneous";
+import { onKeyDownRM, sortStrings } from "../miscellaneous";
 import BlankBookCover from '../../assets/img/book-cover.png'
 import CoverOption from "../../components/CoverOption";
 import { Api } from "../../api";
@@ -272,6 +272,11 @@ export default function LibrarianAdd() {
             const authors = await Api.authors.getAllAuthors()
             const publishers = await Api.publishers.getAllPublishers()
             const existingCodesData = await Api.books.getAllCodes()
+
+            genres.sort((a,b) => sortStrings(a.genero, b.genero))
+            authors.sort((a,b) => sortStrings(a.nome, b.nome))
+            publishers.sort((a,b) => sortStrings(a.editora, b.editora))
+            existingCodesData.sort((a,b) => sortStrings(a.codigo, b.codigo))
 
             setAllGenres(genres.map(g => g.genero))
             setAllAuthors(authors.map(a => a.nome))
