@@ -4,11 +4,9 @@ const apiSource = require("./api_conform");
 
 class LendingRoutine {
   constructor() {
-    //USO POSTERIOR PRA OTIMIZAÇÃO
+    
   }
-
-
-
+  
   async message_sender(client, io) {
     try {
       let dataMap_lendings = await apiSource.get_lendings();
@@ -42,15 +40,16 @@ class LendingRoutine {
           }
           await actionCommands.sendMessage(client, student_phone, message_body, "aluno");
 
-          await actionCommands.delay(5000);
+          await actionCommands.delay(3000);
 
           if(parseInt(lending.renovavel) == 1){
 
           message_body = "Parece que a renovação automática para este livro ainda está habilitada, digite */listar* caso deseje ver sua lista de pendências e renovações disponíveis.";
-           await actionCommands.sendMessage(client, student_phone, message_body, "aluno");
+          await actionCommands.sendMessage(client, student_phone, message_body, "aluno");
+          await actionCommands.delay(2000);
           }
 
-          //Adicionar veriricação para mensagem de renovação
+         
 
           if (parseInt(lending.renovavel) == 1) { //&& dia atrasado
             coordinator_sender(client, lending, lending_initial_date, lending_final_date);

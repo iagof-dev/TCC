@@ -1,10 +1,10 @@
 const actionCommands = require('../commands/actions');
 const apiSource = require("./api_conform");
-const userStates = {};
+//const userStates = {}; ESTADO DO USUARIO AO INTERAGIR COM O BOT
 
 class UserCommands {
   constructor() {
-    var check_renewal = false;
+   // var check_renewal = false; USO PARA CASO DE HABILITAR OU DESABILITAR O SERVIÇO DE RENOVAÇÃO AUTOMÁTICA
   }
 
   async reply_options(client, io) {
@@ -48,10 +48,10 @@ class UserCommands {
               }
 
               console.log("-- A LISTA DE PENDENCIAS FOI MONTADA!");
-              actionCommands.sendMessage(client, phone_number, `Olá!👋 Vejamos os livros alugados que você pode renovar...\nEi! acabei achando essa lista, que tal? \n${verifity_request_body}\n\n*Caso queira renovar algum desses...basta digitar seu devido código!*`, "solicitador");
+              actionCommands.sendMessage(client, phone_number, `Olá!👋 Vejamos os livros alugados que você pode renovar...\nEi! acabei achando essa lista, que tal? \n=========//=========\n${verifity_request_body}\n*Caso queira renovar algum desses...basta digitar seu devido código, e a renovação automática será consultada!*`, "solicitador");
             } else {
               console.log("-- A LISTA DE PENDENCIAS NAO FOI MONTADA!");
-              actionCommands.sendMessage(client, phone_number, "Este número não possui nenhum empéstimo registrado. ❌", "solicitador");
+              actionCommands.sendMessage(client, phone_number, "Este número não possui nenhum empéstimo registrado. ❌ \nNotou algum erro? Tente de novo mais tarde...", "solicitador");
             }
 
             console.log("Enviado!");
@@ -87,7 +87,7 @@ class UserCommands {
             }
           }
 
-          // VER SE AINDA VAI USAR ESSA PARTE BOMBA!
+          // FUNÇÕES PRINCIPAIS PÓS RECEBIMENTO -- FIM
         }
       });
 

@@ -4,7 +4,8 @@ const { exec } = require('child_process');
 const express = require('express');
 const http = require('http');
 const path = require('path');
-const { Server } = require('socket.io');
+const { Server, WebSocketServer } = require('socket.io');
+
 const initBot = require('./index');
 
 const app = express();
@@ -42,10 +43,51 @@ io.on('connection', (socket) => {
 
 });
 
-const PORT = process.env.PORT || 6500;
+const PORT = process.env.PORT || 4322;
+
 server.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
-  const url = 'http://localhost:6500';
+  const url = 'http://localhost:' + PORT;
 
+
+  //exec(`xdg-open ${url}`); -- ON LINUX 
   exec(`start ${url}`);
 });
+
+/*function removeStoredSingletonLock(puppeteerOptions, spinnies, options) { -- ON LINUX
+     return new Promise((resolve, reject) => {
+    try {
+      const platform = os.platform()
+      const { userDataDir } = puppeteerOptions
+      const singletonLockPath = path.join(
+        path.resolve(userDataDir, "SingletonLock")
+      )
+
+      if (platform === "win32") {
+        // No need to remove the lock on Windows, so resolve with true directly.
+        resolve(true)
+      } else {
+        fs.unlink(singletonLockPath, error => {
+          spinnies.add(`path-stored-singleton-lock-${options.session}`, {
+            text: `...`
+          })
+          if (error && error.code !== "ENOENT") {
+            spinnies.fail(`path-stored-singleton-lock-${options.session}`, {
+              text: `Error removing "SingletonLock": ${error}`
+            })
+
+            reject(false)
+          } else {
+            spinnies.succeed(`path-stored-singleton-lock-${options.session}`, {
+              text: `Removing SingletonLock path: ${singletonLockPath}`
+            })
+            resolve(true)
+          }
+        })
+      }
+    } catch {
+      resolve(true)
+    }
+  });
+   
+}*/

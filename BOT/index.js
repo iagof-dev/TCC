@@ -16,7 +16,7 @@ function initBot(io) {
   let currentStatus = 'Initializing...';
 
   venom.create(
-    'bot-whatsapp',
+    'whatsapp-bot',
       (base64Qr, asciiQR, attempts, urlCode) => {
         console.log('QR Code recebido', attempts);
         latestQRCode = `<img src="${base64Qr}" alt="QR Code" class="w-full h-full"/>`;
@@ -30,7 +30,7 @@ function initBot(io) {
     {
       multidevice: true,
       folderNameToken: 'tokens',
-      headless: true,
+      headless: 'new',
       logQR: false,
       debug: true,
       disableWelcome: true,
@@ -70,11 +70,11 @@ function start(client, io, executed) {
 
 
 
-cron.schedule('* 10-23 * * 1-5', () => {
+cron.schedule('* 10-23 * * *', () => {
   if (!executed) {
     console.log('-- HORARIO DE VERFICAÇÃO --');
       lending_routine.message_sender(client, io);
-    executed = true;
+      executed = true;
   }
   if (new Date().getHours() === 0) executed = false;
   fs.writeFileSync(stateFile, JSON.stringify({ executed }));
