@@ -8,7 +8,15 @@ class DB
     {
         if(!$this->isConnected()){
             $config_info = (new config())->get();
-            $this->db = new PDO("mysql:host=". $config_info['db_ip'] .":". $config_info['db_port'] .";dbname=".$config_info['db_name'].";charset=UTF8", $config_info['db_user'], $config_info['db_pass']);
+			try{
+                $this->db = new PDO("mysql:host=". $config_info['db_ip'] .":". $config_info['db_port'] .";dbname=".$config_info['db_name'].";charset=UTF8", $config_info['db_user'], $config_info['db_pass']);
+			}
+			catch(PDOException $e){
+                if($e->getCode() == 1045){
+                    die(json_encode(["status" => "error", "message" => "Houve um erro ao conectar ao banco de dados. Verifique as credenciais de acesso."]));
+                }
+                die(json_encode(["status" => "error", "message" => $e->getMessage()]));
+			}
         }        
     }
 
