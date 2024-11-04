@@ -15,8 +15,7 @@ function initBot(io) {
   let latestQRCode = '';
   let currentStatus = 'Initializing...';
 
-  venom.create(
-    'whatsapp-bot',
+  venom.create({ session: 'bot' },
       (base64Qr, asciiQR, attempts, urlCode) => {
         console.log('QR Code recebido', attempts);
         latestQRCode = `<img src="${base64Qr}" alt="QR Code" class="w-full h-full"/>`;
@@ -31,7 +30,7 @@ function initBot(io) {
       multidevice: true,
       folderNameToken: 'tokens',
       headless: 'new',
-      logQR: false,
+      logQR: true,
       debug: true,
       disableWelcome: true,
       updatesLog: false,
@@ -52,23 +51,8 @@ function initBot(io) {
 }
 
 function start(client, io, executed) {
-  console.log("BOT STARTADO!");
-
   const user_commands = new UserCommands();
   const lending_routine = new LendingRoutine();
-
- /* lending_routine.message_sender(client, io);
-  user_commands.reply_options(client, io);*/
-
-  //const now = moment().tz('America/Sao_Paulo');
-//const runTime = moment().tz('America/Sao_Paulo').set({ hour: 18, minute: 0 });
-
-// Verificar e rodar se já passou das 18h, mas não exatamente 18h
-/*if (now.isAfter(runTime) && now.diff(runTime, 'minutes') !== 0 && now.day() >= 1 && now.day() <= 5) {
-  lending_routine.message_sender(client);
-}*/
-
-
 
 cron.schedule('* 10-23 * * *', () => {
   if (!executed) {
@@ -81,11 +65,6 @@ cron.schedule('* 10-23 * * *', () => {
 }, {
   timezone: "America/Sao_Paulo" 
 });
-
 user_commands.reply_options(client, io); 
- 
-
-  
 }
-
 module.exports = initBot;
