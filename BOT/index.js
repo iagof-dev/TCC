@@ -15,7 +15,7 @@ function initBot(io) {
   let latestQRCode = '';
   let currentStatus = 'Initializing...';
 
-  venom.create({ session: 'bot' },
+  venom.create({ session: 'bot',  autoClose: 0, logQR: false, folderNameToken: 'tokens', },
       (base64Qr, asciiQR, attempts, urlCode) => {
         console.log('QR Code recebido', attempts);
         latestQRCode = `<img src="${base64Qr}" alt="QR Code" class="w-full h-full"/>`;
@@ -27,14 +27,14 @@ function initBot(io) {
         io.emit('status', currentStatus);
       },
     {
+      //SUBIR PARA A DECLARAÇÃO ACIMA CASO DESEJE USAR 
       multidevice: true,
-      folderNameToken: 'tokens',
       headless: 'new',
-      logQR: true,
+      logQR: false,
       debug: true,
       disableWelcome: true,
       updatesLog: false,
-      autoClose: 0,
+     
     })
     .then((client) => {let ex = fs.existsSync(stateFile) ? JSON.parse(fs.readFileSync(stateFile)).executed : false; start(client, io, ex);})
     .catch((error) => {
@@ -54,7 +54,7 @@ function start(client, io, executed) {
   const user_commands = new UserCommands();
   const lending_routine = new LendingRoutine();
 
-cron.schedule('* 10-23 * * *', () => {
+cron.schedule('* * * * *', () => {
   if (!executed) {
     console.log('-- HORARIO DE VERFICAÇÃO --');
       lending_routine.message_sender(client, io);

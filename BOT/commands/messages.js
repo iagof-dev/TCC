@@ -1,8 +1,20 @@
 function coordinatorBodyMessage(item_lending, item_student, item_coordinator, final_date, initial_date){
-    return "*-- NOVA CHAMADA DE ATRASO DE LIVRO! 🚨🚨🚨*\n"+
+    let date_year = new Date().getFullYear();
+    let student_grade;
+
+  if(item_student.ano == date_year)
+    student_grade = "1° Série";
+  else if(item_student.ano == date_year-1)
+    student_grade = "2° Série";
+  else if (item_student.ano == date_year-2)
+    student_grade = "3° Série";
+  else
+  student_grade = "Comunidade escolar";
+  
+  return "*-- NOVA CHAMADA DE ATRASO DE LIVRO! 🚨🚨🚨*\n"+
     `*RM:* ${item_student.rm}\n` +
     `*NOME:* ${item_student.nome}\n` +
-    `*SÉRIE:* ${(new Date().getFullYear() - parseInt(item_coordinator.ano)) -1}° Série\n` +
+    `*SÉRIE:* ${student_grade}` +
     `*CURSO:* ${item_coordinator.curso}\n` +
     "*--------------//--------------*\n"+
     `*LIVRO EM COBRANÇA:* ${item_lending.livro_titulo}\n` +

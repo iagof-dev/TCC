@@ -19,7 +19,7 @@ app.use(express.static('public')); // Serve o index.html
 
 app.post('/shutdown', () => process.exit()); // Encerra o servidor
 
-app.listen(4000);
+app.listen(8001);
 
 
 
@@ -43,15 +43,15 @@ io.on('connection', (socket) => {
 
 });
 
-const PORT = process.env.PORT || 4322;
+const PORT = process.env.PORT || 8000;
 
 server.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
   const url = 'http://localhost:' + PORT;
 
 
-  //exec(`xdg-open ${url}`); -- ON LINUX 
-  exec(`start ${url}`);
+  exec(`xdg-open ${url}`); 
+  //exec(`start ${url}`);
 });
 
 /*function removeStoredSingletonLock(puppeteerOptions, spinnies, options) { -- ON LINUX
