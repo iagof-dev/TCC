@@ -80,6 +80,33 @@ const constUrl = "https://marciossupiais.shop/tcc";
     }
 }
 
+async function get_iteration(student_id) {
+    let data_map = new Map();
+    
+    try {
+        const response = await fetch(constUrl+`/notificacoes/listar/rm/`+student_id).then(res => res.json());
+        
+        response.DATA
+            
+            .forEach(item => {
+                data_map.set(item.id, item); 
+            });
+
+            
+
+            if(data_map.size != 0){
+                const map_iteration = Array.from(data_map).pop();
+                return parseInt(map_iteration[1].get("iteracao"));
+            }else{
+                return 0;
+            }
+        
+    } catch (error) {
+        console.error('Erro ao buscar pelos cursos listados: ', error);
+        return 0;
+    }
+}
+
 async function post_renewal(lending_id) {  
     try {
         const formData = new FormData();
@@ -102,6 +129,31 @@ async function post_renewal(lending_id) {
       }
 }
 
+async function post_notification(lending_id, student_id, post_date, iteration) {  
+    try {
+        const formData = new FormData();
+        formData.append('authpass', 'c38a7e02bfca0da201015ce51931b09d462080b7');
+        formData.append('id_aluno', student_id);
+        formData.append('id_emprestimo', lending_id);
+        formData.append('data_envio', post_date);
+        formData.append('iteracao', iteration);
+
+    
+        const response = await fetch(constUrl + `/notificacoes/registrar/`, {
+          method: 'POST',
+          body: formData
+        });
+    
+        const responseData = await response.json();
+        console.log(responseData);
+        console.log(response.ok ? "Notificação registrada com sucesso!" : `Erro na resposta da API: ${responseData}`);
+        return response.ok;
+      } catch (error) {
+        console.error('Erro ao enviar a requisição: ', error);
+        return false;
+      }
+}
+
 
   
     module.exports = {
@@ -109,5 +161,7 @@ async function post_renewal(lending_id) {
         get_especific_lending,
         get_especific_student,
         get_coordinators,
-        post_renewal
+        get_iteration,
+        post_renewal,
+        post_notification
       };

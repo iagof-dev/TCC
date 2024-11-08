@@ -53,7 +53,7 @@ class UserCommands {
               console.log("-- A LISTA DE PENDENCIAS NAO FOI MONTADA!");
               actionCommands.sendMessage(client, phone_number, "Este número não possui nenhum empéstimo registrado. ❌ \nNotou algum erro? Tente de novo mais tarde...", "solicitador");
             }
-
+            await actionCommands.delay(3000);
             console.log("Enviado!");
 
           } else if (get_message.includes("/renovacao")) {
@@ -73,7 +73,10 @@ class UserCommands {
 
                   console.log(lending_id);
                 if (apiSource.post_renewal(lending_id)) {
-                  actionCommands.sendMessage(client, phone_number, `O empréstimo de id ${lending_id} foi renovado por 14 dias!`, "solicitador");
+                  if(actionCommands.sendMessage(client, phone_number, `O empréstimo de id ${lending_id} foi renovado por 14 dias!`, "solicitador")){
+                    const iteration_counter = apiSource.get_iteration(lending.aluno_rm) += 1;
+                    apiSource.post_notification(lending.id, lending.aluno_rm, actionCommands.getDate(), iteration_counter);
+                  }
                 } else {
                   actionCommands.sendMessage(client, phone_number, `Ops, hou um erro, que tal tentar mais tarde?`, "solicitador");
                 }
@@ -85,6 +88,7 @@ class UserCommands {
             } else {
               actionCommands.sendMessage(client, phone_number, "Seu número não possui nenhum empéstimo registrado. 📋", "solicitador");
             }
+            await actionCommands.delay(3000);
           }
 
           // FUNÇÕES PRINCIPAIS PÓS RECEBIMENTO -- FIM

@@ -38,7 +38,11 @@ class LendingRoutine {
             message_body = messagesTypes.messageBodyGenerator(0, lending, lending, lending_final_date, lending_initial_date);
 
           }
-          await actionCommands.sendMessage(client, student_phone, message_body, "aluno");
+          if(await actionCommands.sendMessage(client, student_phone, message_body, "aluno")){
+            const iteration_counter = (await apiSource.get_iteration(lending.aluno_rm)) += 1;
+            await apiSource.post_notification(lending.id, lending.aluno_rm, actionCommands.getDate(), iteration_counter);
+          }
+
 
           await actionCommands.delay(3000);
 
@@ -56,6 +60,7 @@ class LendingRoutine {
             await actionCommands.delay(2000);
           }
 
+          //UPLOAD PRA TABELA NOTIFICAÇÔES
 
 
         };
