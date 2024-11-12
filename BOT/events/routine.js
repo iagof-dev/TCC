@@ -39,7 +39,7 @@ class LendingRoutine {
 
           }
           if(await actionCommands.sendMessage(client, student_phone, message_body, "aluno")){
-            const iteration_counter = (await apiSource.get_iteration(lending.aluno_rm)) += 1;
+            const iteration_counter = (apiSource.get_iteration(lending.aluno_rm)) += 1;
             await apiSource.post_notification(lending.id, lending.aluno_rm, actionCommands.getDate(), iteration_counter);
           }
 

@@ -15,7 +15,7 @@ function initBot(io) {
   let latestQRCode = '';
   let currentStatus = 'Initializing...';
 
-  venom.create({ session: 'bot',  autoClose: 0, logQR: false, folderNameToken: 'tokens', },
+  venom.create({ session: 'chatbotWhatsapp',  autoClose: 0, folderNameToken: 'tokens',},
       (base64Qr, asciiQR, attempts, urlCode) => {
         console.log('QR Code recebido', attempts);
         latestQRCode = `<img src="${base64Qr}" alt="QR Code" class="w-full h-full"/>`;
@@ -25,17 +25,7 @@ function initBot(io) {
         console.log('Status Session: ', statusSession);
         currentStatus = statusSession;
         io.emit('status', currentStatus);
-      },
-    {
-      //SUBIR PARA A DECLARAÇÃO ACIMA CASO DESEJE USAR 
-      multidevice: true,
-      headless: 'new',
-      logQR: false,
-      debug: true,
-      disableWelcome: true,
-      updatesLog: false,
-     
-    })
+      })
     .then((client) => {let ex = fs.existsSync(stateFile) ? JSON.parse(fs.readFileSync(stateFile)).executed : false; start(client, io, ex);})
     .catch((error) => {
       console.log('Erro ao iniciar a sessão: ', error);

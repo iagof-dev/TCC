@@ -19,9 +19,9 @@ class UserCommands {
 
           const get_message = message.body.toLowerCase();
           //VERIFICA SE O NÚMERO POSSUI ALGUM STEP // COLOCAR UM IF SE CASO OCORRER /SETAR, O ESTADO VIRA ZERO ou delete userStates[userId];
-          if (!userStates[phone_number]) {
+          /*if (!userStates[phone_number]) {
             userStates[phone_number] = { step: 0 };
-          }
+          }*/
 
 
           if (get_message === '/listar') {
