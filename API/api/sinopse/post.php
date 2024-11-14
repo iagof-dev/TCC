@@ -23,7 +23,7 @@ switch ($action) {
         }
 
         gerar:
-		$gemini_api_key = "AIzaSyACpODdQcmGzh8tohEozvlpG722cw50NGg";
+		$gemini_api_key = "";
 		$ai_model = "gemini-1.5-flash-latest";
 		$url = 'https://generativelanguage.googleapis.com/v1beta/models/'. $ai_model .':generateContent?key=' . $gemini_api_key;
 		$headers = ['Content-Type: application/json'];
