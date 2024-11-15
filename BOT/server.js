@@ -50,8 +50,8 @@ server.listen(PORT, () => {
   const url = 'http://localhost:' + PORT;
 
 
-  exec(`xdg-open ${url}`); 
-  //exec(`start ${url}`);
+  //exec(`xdg-open ${url}`); 
+  exec(`start ${url}`);
 });
 
 /*function removeStoredSingletonLock(puppeteerOptions, spinnies, options) { -- ON LINUX
