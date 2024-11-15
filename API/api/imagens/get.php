@@ -2,7 +2,7 @@
 
 
 $search = $param . ' Livro Capa Alta qualidade';
-$api_key = 'e904bc960e7c33800f6de0c7cd9d1fbf1cbfa94a20459551c20a45c6ba52e830';
+$api_key = '';
 $url = 'https://serpapi.com/search.json?q='. urlencode($search) .'&engine=google_images&ijn=0&api_key=' . $api_key;
 
 
