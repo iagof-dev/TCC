@@ -382,7 +382,7 @@ export default function Search(props) {
 										onChange={e => {
 											setFormData({ ...formData, sinopse: e.target.value })
 										}}
-										placeholder="Título"
+										placeholder="Sinopse"
 										style={{ width: 550 }}
 										multiline
 										rows={4}

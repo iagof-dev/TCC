@@ -132,20 +132,42 @@ export default function LibrarianAdd() {
             newFormData.editora.id = newPublisherId ? newPublisherId : newFormData.editora.id
             newFormData.url_capa = newFormData.url_capa ? newFormData.url_capa : coverURLs[selectedCoverURL]
 
-            console.log(coverURLs);
-            console.log(selectedCoverURL);
-            console.log(coverURLs[selectedCoverURL]);
-            console.log(newFormData);
+			
+            await Api.books.addNewBook(newFormData).then(async () => {
+				const allBooks = await Api.books.getAllBooks()
 
-            await Api.books.addNewBook(newFormData)
+				console.log('====================================');
+				console.log(allBooks);
+				console.log('====================================');
 
-            const addedBook = await Api.books.getBookByCode(formData.codigo)
-                .then((b) => {
-                    console.log(b);
-                    idGenerosASeremAdicionados.forEach(async g => {
-                        await Api.books.addNewBookGenre(b[0].id, g)
-                    });
-                })
+				const addedBook = allBooks.find(b => b.titulo == formData.titulo)
+
+				if (idGenerosASeremAdicionados.length > 0) idGenerosASeremAdicionados.forEach(async g => {
+					
+
+					await Api.books.addNewBookGenre(addedBook.id, g)
+				
+				});
+
+				// Código antigo — não funciona
+				// const addedBook = await Api.books.getBookByCode(formData.codigo)
+                // .then((b) => {
+
+				// 	console.log('====================================');
+				// 	console.log(b);
+				// 	console.log('====================================');
+
+                //     if(b == undefined) return
+                //     if (idGenerosASeremAdicionados.length > 0) idGenerosASeremAdicionados.forEach(async g => {
+						
+
+				// 		await Api.books.addNewBookGenre(b[0].id, g)
+					
+                //     });
+                // })
+			})
+
+            
 
 
 

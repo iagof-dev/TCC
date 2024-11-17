@@ -19,7 +19,8 @@ async function post(url, formData) {
 
 }
 
-const url = "https://marciossupiais.shop/tcc"
+// const url = "https://marciossupiais.shop/tcc"
+const url = "https://alt.marciossupiais.shop/"
 const authpass = "c38a7e02bfca0da201015ce51931b09d462080b7"
 
 const Api = {
@@ -93,7 +94,7 @@ const Api = {
         getBookByTitle: async function (title) {
             if (title == "" || title == undefined) return {}
             
-            return await fetch(url + '/livros/listar/titulo/' + encodeURLParam(title)).then(res => res.json()).then(data => data.DATA)
+            return await fetch(url + '/livros/listar/titulo/' + encodeURLParam(title.slice(0, -1))).then(res => res.json()).then(data => data.DATA)
         },
 
         getBookByTag: async function (tag) {
