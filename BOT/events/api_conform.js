@@ -1,6 +1,6 @@
 const actionCommands = require('../commands/actions');
 const date = require('date-fns');
-const constUrl = "https://marciossupiais.shop/tcc";
+const constUrl = "https://alt.marciossupiais.shop";
 
      async function get_lendings() {
         let data_map = new Map();
