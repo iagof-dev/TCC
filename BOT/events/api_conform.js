@@ -9,7 +9,7 @@ const constUrl = "https://alt.marciossupiais.shop";
             const response = await fetch(constUrl+"/emprestimos/").then(res => res.json());
             
             response.DATA
-                filter(item => actionCommands.checkIsTodayDataAPI(item,2) || actionCommands.checkIsTodayDataAPI(item,1) || actionCommands.checkIsTodayDataAPI(item,0) || actionCommands.checkIsTodayDataAPI(item,-1)) // Filtrando os itens
+                .filter(item => actionCommands.checkIsTodayDataAPI(item,2) || actionCommands.checkIsTodayDataAPI(item,1) || actionCommands.checkIsTodayDataAPI(item,0) || actionCommands.checkIsTodayDataAPI(item,-1)) // Filtrando os itens
                 .forEach(item => {
                     data_map.set(item.id, item); 
                 });
@@ -155,6 +155,29 @@ async function post_notification(lending_id, student_id, post_date, iteration) {
 }
 
 
+async function update_lending(lending_id) {  
+    try {
+        const formData = new FormData();
+        formData.append('authpass', 'c38a7e02bfca0da201015ce51931b09d462080b7');
+        formData.append('ID', student_id);
+        formData.append('id_status_emprestimo', 1);
+    
+        const response = await fetch(constUrl + `/emprestimos/modificar/`, {
+          method: 'POST',
+          body: formData
+        });
+    
+        const responseData = await response.json();
+        console.log(responseData);
+        console.log(response.ok ? "Atualização de empréstimo registrada com sucesso!" : `Erro na resposta da API: ${responseData}`);
+        return response.ok;
+      } catch (error) {
+        console.error('Erro ao enviar a requisição: ', error);
+        return false;
+      }
+}
+
+
   
     module.exports = {
         get_lendings,
@@ -163,5 +186,6 @@ async function post_notification(lending_id, student_id, post_date, iteration) {
         get_coordinators,
         get_iteration,
         post_renewal,
-        post_notification
+        post_notification,
+        update_lending
       };

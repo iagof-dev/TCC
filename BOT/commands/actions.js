@@ -13,7 +13,7 @@ function checkIsTodayDataAPI(element, past_days) {
 }
 
 function addDaysToDate(past_date, add_days){
-   return date.format(date.addDays(new Date(past_date), Number(add_days)), 'dd/MM/yyyy');
+   return date.format(date.addDays(new Date(past_date), Number(add_days)+1), 'dd/MM/yyyy');
 }
 
 function getDate(){

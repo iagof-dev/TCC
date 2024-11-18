@@ -37,25 +37,28 @@ class LendingRoutine {
           } else if (await actionCommands.checkIsTodayDataAPI(lending, 0)) {
             message_body = messagesTypes.messageBodyGenerator(0, lending, lending, lending_final_date, lending_initial_date);
 
+          } else if (await actionCommands.checkIsTodayDataAPI(lending, -1)) {
+            await apiSource.update_lending(lending.id);
+            message_body = messagesTypes.messageBodyGenerator(-1, lending, lending, lending_final_date, lending_initial_date);
+
           }
+
           if(await actionCommands.sendMessage(client, student_phone, message_body, "aluno")){
             const iteration_counter = (apiSource.get_iteration(lending.aluno_rm)) += 1;
             await apiSource.post_notification(lending.id, lending.aluno_rm, actionCommands.getDate(), iteration_counter);
           }
 
 
-          await actionCommands.delay(3000);
+          await actionCommands.delay(2000);
 
-          if(parseInt(lending.renovavel) == 1){
+          if(parseInt(lending.renovavel) == 1 && !(await actionCommands.checkIsTodayDataAPI(lending, -1))){
 
           message_body = "Parece que a renovação automática para este livro ainda está habilitada, digite */listar* caso deseje ver sua lista de pendências e renovações disponíveis.";
           await actionCommands.sendMessage(client, student_phone, message_body, "aluno");
           await actionCommands.delay(2000);
           }
 
-         
-
-          if (parseInt(lending.renovavel) == 1) { //&& dia atrasado
+          if ((await actionCommands.checkIsTodayDataAPI(lending, -1))) { //&& dia atrasado
             coordinator_sender(client, lending, lending_initial_date, lending_final_date);
             await actionCommands.delay(2000);
           }
