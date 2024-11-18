@@ -28,7 +28,7 @@ class LendingRoutine {
           const lending_initial_date = new Date(lending.data_aluguel).toLocaleDateString('pt-BR');
           let message_body;
 
-          if (true) {//await actionCommands.checkIsTodayDataAPI(lending, 2)){ //2 dias
+          if (await actionCommands.checkIsTodayDataAPI(lending, 2)){ //2 dias
             message_body = messagesTypes.messageBodyGenerator(2, lending, lending, lending_final_date, lending_initial_date);
 
           } else if (await actionCommands.checkIsTodayDataAPI(lending, 1)) {

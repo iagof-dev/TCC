@@ -9,7 +9,7 @@ const constUrl = "https://alt.marciossupiais.shop";
             const response = await fetch(constUrl+"/emprestimos/").then(res => res.json());
             
             response.DATA
-                //.filter(item => actionCommands.checkIsTodayDataAPI(item,2) || actionCommands.checkIsTodayDataAPI(item,1) || actionCommands.checkIsTodayDataAPI(item,0) || actionCommands.checkIsTodayDataAPI(item,-1)) // Filtrando os itens
+                filter(item => actionCommands.checkIsTodayDataAPI(item,2) || actionCommands.checkIsTodayDataAPI(item,1) || actionCommands.checkIsTodayDataAPI(item,0) || actionCommands.checkIsTodayDataAPI(item,-1)) // Filtrando os itens
                 .forEach(item => {
                     data_map.set(item.id, item); 
                 });
