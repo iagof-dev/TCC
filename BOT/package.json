@@ -16,6 +16,6 @@
     "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2",
     "socket.io": "^4.8.0",
-    "venom-bot": "^5.1.0"
+    "venom-bot": "github:orkestral/venom#master"
   }
 }
