@@ -15,7 +15,7 @@ Integrantes: [Alisson Moreno](https://github.com/AlissonMMC), [Ana Clara Pinto](
 
 ## API & Documentação
 
-[Link da API](https://marciossupiais.shop/tcc/)
+~[Link da API]()~
 
 [Documentação](https://n3rdy.gitbook.io/sistema-gerenciamento-da-biblioteca-api-tcc/)
 
